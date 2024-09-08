@@ -100,9 +100,9 @@ function xdot = segwayLinearized(t, x, param)
     
     
     x1dot = x2;
-    x2dot = ((param.J + param.m*param.l^2)*param.c)/(param.l^2*param.m^2 - (param.J + param.m*param.l^2)*(param.M+param.m)) * x2 -(param.g*param.l^2*param.m^2)/(param.l^2*param.m^2 - (param.J + param.m*param.l^2)*(param.M+param.m)) * x3 + (param.gamma*param.l*param.m)/(param.l^2*param.m^2 - (param.J + param.m*param.l^2)*(param.M+param.m))*x4 - (param.J + param.m*param.l^2)/(param.l^2*param.m^2 - (param.J + param.m*param.l^2)*(param.M+param.m)) * F ;
+    x2dot = (1/((param.J + param.m*param.l^2)*(param.M+param.m) - param.l^2*param.m^2 )) * ( -((param.J + param.m*param.l^2)*param.c) * x2   +        (param.g*param.l^2*param.m^2)       * x3   -  (param.gamma*param.l*param.m)  * x4        + (param.J + param.m*param.l^2) * F) ;
     x3dot = x4;
-    x4dot = (param.c*param.l*param.m)/(param.l^2*param.m^2 - (param.J + param.m*param.l^2)*(param.M+param.m)) * x2 -((param.M+param.m)*param.g*param.l*param.m)/(param.l^2*param.m^2 - (param.J + param.m*param.l^2)*(param.M+param.m)) * x3 + ((param.M+param.m)*param.gamma)/(param.l^2*param.m^2 - (param.J + param.m*param.l^2)*(param.M+param.m))*x4 - (param.m*param.l)/(param.l^2*param.m^2 - (param.J + param.m*param.l^2)*(param.M+param.m)) * F;
+    x4dot = (1/((param.J + param.m*param.l^2)*(param.M+param.m) - param.l^2*param.m^2 )) * (       -(param.c*param.l*param.m)         * x2   +((param.M+param.m)*param.g*param.l*param.m) * x3   - ((param.M+param.m)*param.gamma) * x4        + (param.m*param.l)             * F);
 
     xdot = [x1dot; x2dot; x3dot; x4dot];
 
