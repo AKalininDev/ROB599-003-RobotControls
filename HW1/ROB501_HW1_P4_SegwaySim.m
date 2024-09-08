@@ -96,7 +96,7 @@ function xdot = segway(t, x, param)
     x3 = x(3); % Pendulum angle
     x4 = x(4); % Pendulum angular velocity
 
-    F = calculate_force(t)
+    F = calculate_force(t);
 
     x1dot = x2;
     x2dot = (F*(param.J + param.m*param.l^2) - (param.J + param.m*param.l^2)*param.c*x2 - (param.J + param.m*param.l^2)*param.l*param.m*x4^2*sin(x3) + param.g*param.l^2*param.m^2*sin(2*x3)/2 - param.gamma*param.l*param.m*x4*cos(x3))/((param.J + param.m*param.l^2)*(param.M+param.m) - param.l^2*param.m^2*cos(x3)*cos(x3));
