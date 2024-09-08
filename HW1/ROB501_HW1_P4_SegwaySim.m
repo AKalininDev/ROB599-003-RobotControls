@@ -15,7 +15,7 @@ param.g = 9.81;
 
 %% Simulation Parameters
 to = 0;
-tFinal = 20;
+tFinal = 10;
 tSim = [to tFinal]
 xo = [0; 0; pi/8; 0]
 
