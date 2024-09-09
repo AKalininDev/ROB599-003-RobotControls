@@ -16,7 +16,7 @@ param.g = 9.81;
 %% Simulation Parameters
 to = 0;
 tFinal = 10;
-tSim = [to tFinal]
+tSim = 0:0.01:10
 xo = [0; 0; pi/8; 0]
 
 [tOut, xOut] = ode45(@(t,x) segway(t, x, param), tSim, xo);
