@@ -1,4 +1,4 @@
-%% ROB599-HW1-Problem7
+%% ROB599-HW1-Problem7-B
 % Evaluating linearized system at the equillibrium point and finding its
 % eigenvalues to check for stability
 
@@ -7,7 +7,7 @@ clear
 clc
 close all
 
-%% State Space Of the System
+%% State Space of the System
 syms x1 x2 x3 x4
 syms F
 syms M
@@ -50,7 +50,7 @@ A = subs(A, u, u_eq);
 B = subs(jacu, u, u_eq);
 B = subs(B, x, x_eq);
 
-%% Evaluating A, B with given parameters
+%% Evaluating A, B with Given Parameters
 
 % Borrowed from problem 4
 param.m = 0.2;

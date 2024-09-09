@@ -4,7 +4,6 @@
 clear
 clc
 close all
-
 %% System Parameters
 syms x1 x2 x3 x4
 syms F
@@ -12,18 +11,15 @@ syms M
 syms m J l
 syms c gamma
 syms g
-
 % Substitutions (easier algebra)
 syms Jt Mt
 
-% Equillibrium State
+% Equillibrium State Values
 x1_eq = 0;
 x2_eq = 0;
 x3_eq = 0;
 x4_eq = 0;
 x_eq = [x1_eq; x2_eq; x3_eq; x4_eq];
-
-% Equillibrium Inputs
 F_eq = 0;
 u_eq = [F_eq];
 
@@ -43,17 +39,12 @@ x4dot = subs(x4dot, (M + m), Mt);
 xdot = [x1dot x2dot x3dot x4dot];
 x = [x1; x2; x3; x4];
 u = [F];
-
 %% Linearisation
+jacx = jacobian(xdot, x); % Jacobian for x
+jacu = jacobian(xdot, u); % Jacobian for u
 
-% Jacobians for X and U
-jacx = jacobian(xdot, x);
-jacu = jacobian(xdot, u);
-
-% Getting matrix A (at equillibrium)
+% Getting matrix A and B (at equillibrium)
 A = subs(jacx, x, x_eq);
 A = subs(A, u, u_eq)
-
-% Getting matrix B (at equillibrium)
 B = subs(jacu, u, u_eq);
 B = subs(B, x, x_eq)

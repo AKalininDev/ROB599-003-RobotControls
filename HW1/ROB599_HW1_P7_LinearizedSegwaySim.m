@@ -1,5 +1,4 @@
-
-%% ROB599-HW1-Problem 7
+%% ROB599-HW1-Problem7-A
 % Simulating pendulum on a cart using a linearised model (linearized only @
 % equillibrium x=0, u=0.
 %% Cleanup
@@ -36,6 +35,8 @@ for i = 1:length(tOut)
 end
 
 %% Show the Plots
+figure('Position', [100, 100, 1200, 900]);  % Width: 1200, Height: 900
+
 
 sgtitle('Segway System Dynamics Simulation. Variable External Force.', 'FontSize', 24, 'FontWeight', 'bold');
 
@@ -74,6 +75,8 @@ xlabel('Time (s)', 'FontSize', 14, 'FontWeight', 'bold');
 ylabel('Force (N)', 'FontSize', 12, 'FontWeight', 'bold');
 set(gca, 'FontSize', 12);
 grid on;
+
+print(gcf, 'SegwayPlot.png', '-dpng', '-r300'); 
 
 
 %% Calculate the Force Applied to the Cart

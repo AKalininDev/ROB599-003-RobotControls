@@ -34,6 +34,9 @@ for i = 1:length(tOut)
 end
 
 %% Show the Plots
+figure('Position', [100, 100, 1200, 900]);  % Width: 1200, Height: 900
+
+
 sgtitle('Segway System Dynamics Simulation. Variable External Force.', 'FontSize', 24, 'FontWeight', 'bold');
 
 % Plot Cart Position
@@ -72,6 +75,7 @@ ylabel('Force (N)', 'FontSize', 12, 'FontWeight', 'bold');
 set(gca, 'FontSize', 12); 
 grid on;
 
+print(gcf, 'SegwayPlot.png', '-dpng', '-r300'); 
 
 %% Calculate the Force Applied to the Cart
 function F = calculate_force(t)
@@ -98,9 +102,16 @@ function xdot = segway(t, x, param)
     F = calculate_force(t);
 
     x1dot = x2;
-    x2dot = (F*(param.J + param.m*param.l^2) - (param.J + param.m*param.l^2)*param.c*x2 - (param.J + param.m*param.l^2)*param.l*param.m*x4^2*sin(x3) + param.g*param.l^2*param.m^2*sin(2*x3)/2 - param.gamma*param.l*param.m*x4*cos(x3))/((param.J + param.m*param.l^2)*(param.M+param.m) - param.l^2*param.m^2*cos(x3)*cos(x3));
+
+    x2dot = (F*(param.J + param.m*param.l^2) - (param.J + param.m*param.l^2)*param.c*x2 ...
+        - (param.J + param.m*param.l^2)*param.l*param.m*x4^2*sin(x3) + param.g*param.l^2*param.m^2*sin(2*x3)/2 ...
+        - param.gamma*param.l*param.m*x4*cos(x3))/((param.J + param.m*param.l^2)*(param.M+param.m) - param.l^2*param.m^2*cos(x3)*cos(x3));
+
     x3dot = x4;
-    x4dot = (F*param.l*param.m*cos(x3) + (param.M+param.m)*param.g*param.l*param.m*sin(x3) - (param.M+param.m)*param.gamma*x4 - param.c*param.l*param.m*x2*cos(x3) - param.l^2*param.m^2*x4^2*sin(2*x3)/2)/((param.J + param.m*param.l^2)*(param.M+param.m) - param.l^2*param.m^2*cos(x3)*cos(x3));
+
+    x4dot = (F*param.l*param.m*cos(x3) + (param.M+param.m)*param.g*param.l*param.m*sin(x3) ...
+        - (param.M+param.m)*param.gamma*x4 - param.c*param.l*param.m*x2*cos(x3) - param.l^2*param.m^2*x4^2*sin(2*x3)/2)/((param.J ...
+        + param.m*param.l^2)*(param.M+param.m) - param.l^2*param.m^2*cos(x3)*cos(x3));
 
     xdot = [x1dot; x2dot; x3dot; x4dot];
 
