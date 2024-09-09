@@ -1,3 +1,8 @@
+
+%% ROB599-HW1-Problem 7
+% Simulating pendulum on a cart using a linearised model (linearized only @
+% equillibrium x=0, u=0.
+%% Cleanup
 clear
 clc
 close all
@@ -8,17 +13,19 @@ param.m = 0.2;
 param.M = 0.5;
 param.J = 0.006;
 param.l = 0.3;
+
 param.c = 0.1;
 param.gamma = 0.1;
-param.g = 9.81;
 
+param.g = 9.81;
 
 %% Simulation Parameters
 to = 0;
 tFinal = 10;
-tSim = [to tFinal];
+tSim = 0:0.01:10;
 xo = [0; 0; pi/8; 0];
 
+%% Simulation
 [tOut, xOut] = ode45(@(t,x) segwayLinearized(t, x, param), tSim, xo);
 
 
@@ -29,7 +36,6 @@ for i = 1:length(tOut)
 end
 
 %% Show the Plots
-figure('Position', [100, 100, 800, 1000]); % Increase figure size (width x height)
 
 sgtitle('Segway System Dynamics Simulation. Variable External Force.', 'FontSize', 24, 'FontWeight', 'bold');
 
@@ -37,28 +43,28 @@ sgtitle('Segway System Dynamics Simulation. Variable External Force.', 'FontSize
 subplot(5,1,1);
 plot(tOut, xOut(:,1), 'LineWidth', 3, 'Color', 'b');
 ylabel('Cart Pose (m)', 'FontSize', 12, 'FontWeight', 'bold');
-set(gca, 'FontSize', 12); % Increase font size of x and y ticks
+set(gca, 'FontSize', 12);
 grid on;
 
 % Plot Cart Velocity
 subplot(5,1,2);
 plot(tOut, xOut(:,2), 'LineWidth', 3, 'Color', 'g');
 ylabel('Cart Vel (m/s)', 'FontSize', 12, 'FontWeight', 'bold');
-set(gca, 'FontSize', 12); % Increase font size of x and y ticks
+set(gca, 'FontSize', 12); 
 grid on;
 
 % Plot Pendulum Angle
 subplot(5,1,3);
 plot(tOut, xOut(:,3), 'LineWidth', 3,'Color', [1 0.5 0]);
 ylabel('Pend. Angle (rad)', 'FontSize', 12, 'FontWeight', 'bold');
-set(gca, 'FontSize', 12); % Increase font size of x and y ticks
+set(gca, 'FontSize', 12);
 grid on;
 
 % Plot Pendulum Angular Velocity
 subplot(5,1,4);
 plot(tOut, xOut(:,4),  'LineWidth', 3, 'Color', 'm');
 ylabel('Pendulum Ang. Vel. (rad/s)', 'FontSize', 12, 'FontWeight', 'bold');
-set(gca, 'FontSize', 12); % Increase font size of x and y ticks
+set(gca, 'FontSize', 12);
 grid on;
 
 % Plot Applied Force
@@ -66,12 +72,8 @@ subplot(5,1,5);
 plot(tOut, F_t, 'LineWidth', 3, 'Color', 'r');
 xlabel('Time (s)', 'FontSize', 14, 'FontWeight', 'bold');
 ylabel('Force (N)', 'FontSize', 12, 'FontWeight', 'bold');
-set(gca, 'FontSize', 12); % Increase font size of x and y ticks
+set(gca, 'FontSize', 12);
 grid on;
-
-% Adjust spacing between subplots to prevent overlap
-set(gcf, 'Position', [100, 100, 800, 1000]); % Adjust figure size to increase screen area
-sgtitle('Segway System Dynamics Simulation. Variable External Force Over Time.', 'FontSize', 24, 'FontWeight', 'bold');
 
 
 %% Calculate the Force Applied to the Cart
@@ -87,14 +89,14 @@ function F = calculate_force(t)
     end
 end
 
-%% State Space Of the System
+%% State Space Of the System (Linearized)
 function xdot = segwayLinearized(t, x, param)
 
     % State variables
-    x1 = x(1); % Cart position
-    x2 = x(2); % Cart velocity
-    x3 = x(3); % Pendulum angle
-    x4 = x(4); % Pendulum angular velocity
+    x1 = x(1);
+    x2 = x(2);
+    x3 = x(3); 
+    x4 = x(4);
 
     F = calculate_force(t);
     
