@@ -28,10 +28,10 @@ x4dot = (F*l*m*cos(x3) + (M+m)*g*l*m*sin(x3) - (M+m)*gamma*x4 - c*l*m*x2*cos(x3)
 
 
 % Subs for simplifications
-x2dot = subs(x2dot, (J + m*l^2), Jt);
-x2dot = subs(x2dot, (M + m), Mt);
-x4dot = subs(x4dot, (J + m*l^2), Jt);
-x4dot = subs(x4dot, (M + m), Mt);
+%x2dot = subs(x2dot, (J + m*l^2), Jt);
+%x2dot = subs(x2dot, (M + m), Mt);
+%x4dot = subs(x4dot, (J + m*l^2), Jt);
+%x4dot = subs(x4dot, (M + m), Mt);
 
 
 
@@ -49,3 +49,18 @@ A = subs(A, u, u_eq)
 
 B = subs(jacu, u, u_eq);
 B = subs(B, x, x_eq)
+
+%% Addition for Problem 7. Evaluating A, B with given parameters
+
+
+param.m = 0.2;
+param.M = 0.5;
+param.J = 0.006;
+param.l = 0.3;
+param.c = 0.1;
+param.gamma = 0.1;
+param.g = 9.81;
+
+
+A_eval = eval(subs(A, {m, M, J, l, c, gamma, g}, {param.m, param.M, param.J, param.l, param.c, param.gamma, param.g}))
+B_eval = eval(subs(B, {m, M, J, l, c, gamma, g}, {param.m, param.M, param.J, param.l, param.c, param.gamma, param.g}))
