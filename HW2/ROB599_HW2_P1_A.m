@@ -70,7 +70,7 @@ U_eq = [ueq];
 % Get the X Jacobian at equillibrium
 Xjacobian = jacobian(X_dot, X);
 Xjacobian = subs(Xjacobian, X, X_eq);
-Xjacobian = subs(Xjacobian, U, Ueq)
+Xjacobian = subs(Xjacobian, U, U_eq)
 
 % Get the U Jacobian at equillibrium
 Ujacobian = jacobian(X_dot, U);
