@@ -78,7 +78,7 @@ sgtitle('Figure 1. Linearized Inverted Pendulum. Feedback Controller. Kp = 5, Kd
 % Plot Pendulum Angle Command Signal    
 subplot(3,1,1);
 plot(tSim, theta_command, 'LineWidth', 2.5, 'Color', '#0072BD');
-ylabel('\fontsize{14}{16}\textbf{Input $\theta_{\mathrm{cmd}}$ (rad)}', 'FontSize', 18, ...
+ylabel('\fontsize{12}{16}\textbf{Input $\theta_{\mathrm{cmd}}$ (rad)}', 'FontSize', 18, ...
     'FontWeight', 'bold', 'Interpreter', 'latex');
 set(gca, 'FontSize', 14, 'Box', 'off', 'LineWidth', 1.5, 'FontName', 'Helvetica');
 grid on;
@@ -87,7 +87,7 @@ grid minor;
 % Plot Pendulum Angular Position
 subplot(3,1,2);
 plot(tOut, xOut(:,1), 'LineWidth', 2.5, 'Color', '#D95319');
-ylabel('\fontsize{14}{16}\textbf{x1 = ${\theta}$ (rad)}', 'FontSize', 18, ...
+ylabel('\fontsize{12}{16}\textbf{x1 = ${\theta}$ (rad)}', 'FontSize', 18, ...
     'FontWeight', 'bold', 'Interpreter', 'latex');
 set(gca, 'FontSize', 14, 'Box', 'off', 'LineWidth', 1.5, 'FontName', 'Helvetica');
 grid on;
@@ -96,7 +96,7 @@ grid minor;
 % Plot Pendulum Angular Velocity
 subplot(3,1,3);
 plot(tOut, xOut(:,2), 'LineWidth', 2.5, 'Color', '#EDB120');
-ylabel('\fontsize{14}{16}\textbf{x2 = $\dot{\theta}$ (rad/s)}', 'FontSize', 18, ...
+ylabel('\fontsize{12}{16}\textbf{x2 = $\dot{\theta}$ (rad/s)}', 'FontSize', 18, ...
     'FontWeight', 'bold', 'Interpreter', 'latex');
 set(gca, 'FontSize', 14, 'Box', 'off', 'LineWidth', 1.5, 'FontName', 'Helvetica');
 xlabel('Time (s)', 'FontSize', 18, 'FontWeight', 'bold', 'FontName', 'Helvetica');
