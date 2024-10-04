@@ -4,12 +4,13 @@
 
 %% Define System Parameters
 
-sysPar.SI.m = 0.2     %kg
-sysPar.SI.J = 0.006   %kgm2
-sysPar.SI.l = 0.3     %m
+sysPar.SI.m = 0.2;     %kg
+sysPar.SI.J = 0.006;   %kgm2
+sysPar.SI.l = 0.3;     %m
 
-sysPar.SI.gamma = 0.1 %Nms/rad
-sysPar.SI.g = 9.81    %m2/sec
+sysPar.SI.gamma = 0.1; %Nms/rad
+sysPar.SI.g = 9.81;    %m2/sec
+
 
 %% Define Equation of Motion
 % Variables Definition

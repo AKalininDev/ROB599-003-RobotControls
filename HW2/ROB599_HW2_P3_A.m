@@ -50,7 +50,9 @@ B = [b_1; b_2]
 D
 %% Solve for x(t->inf) (Stable Linearized System)
 X_final = -inv(A) * B
-X_final_eval = X_final*[systemInput(); param.w]
+
+% Evaluating Final State
+X_final_eval = X_final*[pi/3; param.w]
 
 %% Simulation Parameters
 to = 0;

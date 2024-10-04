@@ -1,0 +1,445 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>ROB599-HW2-Problem-3A</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-10-04">
+<meta name="DC.source" content="ROB599_HW2_P3_A.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>ROB599-HW2-Problem-3A</h1>
+<!--introduction-->
+<p>Simulating inverted pendulum controller using a linearised model (linearized only @equillibrium x1=0, x2=0.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Cleanup</a>
+</li>
+<li>
+<a href="#2">System Parameters (SI)</a>
+</li>
+<li>
+<a href="#3">Evaluating Numerical A and B</a>
+</li>
+<li>
+<a href="#4">Checking Stability of the System</a>
+</li>
+<li>
+<a href="#5">Solve for x(t-&gt;inf) (Stable Linearized System)</a>
+</li>
+<li>
+<a href="#6">Simulation Parameters</a>
+</li>
+<li>
+<a href="#7">Run Simulation</a>
+</li>
+<li>
+<a href="#8">Display the Results</a>
+</li>
+<li>
+<a href="#9">Target Angle Calculator</a>
+</li>
+<li>
+<a href="#10">State Space Of the System (Linearized)</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Cleanup</h2>
+<pre class="codeinput">clear
+clc
+close <span class="string">all</span>
+</pre>
+<h2 id="2">System Parameters (SI)</h2>
+<pre class="codeinput">
+<span class="comment">% Inertial</span>
+param.m = 0.2;      <span class="comment">%kg</span>
+param.J = 0.006;    <span class="comment">%kgm2</span>
+param.l = 0.3;      <span class="comment">%m</span>
+
+<span class="comment">% Non-Conservative</span>
+param.gamma = 0.1; <span class="comment">%N*m*sec/rad</span>
+
+<span class="comment">% Fundamental</span>
+param.g = 9.81;    <span class="comment">%N/kg</span>
+
+<span class="comment">% Disturbances</span>
+param.w = 3;       <span class="comment">%rad/sec</span>
+
+<span class="comment">% Controller Gains</span>
+param.kp = 5;
+param.kd = 0.1;
+
+
+param
+</pre>
+<pre class="codeoutput">
+param = 
+
+  struct with fields:
+
+        m: 0.2000
+        J: 0.0060
+        l: 0.3000
+    gamma: 0.1000
+        g: 9.8100
+        w: 3
+       kp: 5
+       kd: 0.1000
+
+</pre>
+<h2 id="3">Evaluating Numerical A and B</h2>
+<pre class="codeinput">
+<span class="comment">% State Matrix</span>
+a_1 = [0, 1];
+a_2 = [(1/(param.J + param.m * param.l^2)) * ((param.m*param.g - param.kp)*param.l), <span class="keyword">...</span>
+     - (param.gamma + param.l*param.kd) * (1/(param.J + param.m * param.l^2)); ];
+
+A = [a_1; a_2]
+
+<span class="comment">% Input Matrix</span>
+b_1 = [0, 0];
+b_2 = [(param.l/(param.J + param.m * param.l^2)) * param.kp, (param.l/(param.J + param.m * param.l^2)) * param.kd];
+
+B = [b_1; b_2]
+</pre>
+<pre class="codeoutput">
+A =
+
+         0    1.0000
+  -37.9750   -5.4167
+
+
+B =
+
+         0         0
+   62.5000    1.2500
+
+</pre>
+<h2 id="4">Checking Stability of the System</h2>
+<pre class="codeinput">[V, D] = eig(A);
+D
+</pre>
+<pre class="codeoutput">
+D =
+
+  -2.7083 + 5.5353i   0.0000 + 0.0000i
+   0.0000 + 0.0000i  -2.7083 - 5.5353i
+
+</pre>
+<h2 id="5">Solve for x(t-&gt;inf) (Stable Linearized System)</h2>
+<pre class="codeinput">X_final = -inv(A) * B
+
+X_final_eval = X_final*[systemInput(); param.w]
+</pre>
+<pre class="codeoutput">
+X_final =
+
+    1.6458    0.0329
+         0         0
+
+</pre>
+<h2 id="6">Simulation Parameters</h2>
+<pre class="codeinput">to = 0;
+tFinal = 10;
+
+<span class="comment">% Generating the time vector</span>
+tSim = to:0.01:tFinal;
+
+<span class="comment">% Initial Conditions</span>
+xo = [pi/10; 0.3];
+
+<span class="comment">% Input Signal (Constant)</span>
+theta_command = systemInput(tSim) * ones(size(tSim));
+</pre>
+<h2 id="7">Run Simulation</h2>
+<pre class="codeinput">[tOut, xOut] = ode45(@(t,x) LinearizedInvertedPendulumFB(t, x, param), tSim, xo);
+</pre>
+<h2 id="8">Display the Results</h2>
+<pre class="codeinput">figure(<span class="string">'Position'</span>, [100, 100, 1200, 900]);  <span class="comment">% Width: 1200, Height: 900</span>
+
+
+sgtitle(<span class="string">'Figure 1. Linearized Inverted Pendulum. Feedback Controller. Kp = 5, Kd = 0.1'</span>,<span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 24, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);
+
+<span class="comment">% Plot Pendulum Angle Command Signal</span>
+subplot(3,1,1);
+plot(tSim, theta_command, <span class="string">'LineWidth'</span>, 2.5, <span class="string">'Color'</span>, <span class="string">'#0072BD'</span>);
+ylabel(<span class="string">'\fontsize{12}{16}\textbf{Input $\theta_{\mathrm{cmd}}$ (rad)}'</span>, <span class="string">'FontSize'</span>, 18, <span class="keyword">...</span>
+    <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+set(gca, <span class="string">'FontSize'</span>, 14, <span class="string">'Box'</span>, <span class="string">'off'</span>, <span class="string">'LineWidth'</span>, 1.5, <span class="string">'FontName'</span>, <span class="string">'Helvetica'</span>);
+grid <span class="string">on</span>;
+grid <span class="string">minor</span>;
+
+<span class="comment">% Plot Pendulum Angular Position</span>
+subplot(3,1,2);
+plot(tOut, xOut(:,1), <span class="string">'LineWidth'</span>, 2.5, <span class="string">'Color'</span>, <span class="string">'#D95319'</span>);
+ylabel(<span class="string">'\fontsize{12}{16}\textbf{x1 = ${\theta}$ (rad)}'</span>, <span class="string">'FontSize'</span>, 18, <span class="keyword">...</span>
+    <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+set(gca, <span class="string">'FontSize'</span>, 14, <span class="string">'Box'</span>, <span class="string">'off'</span>, <span class="string">'LineWidth'</span>, 1.5, <span class="string">'FontName'</span>, <span class="string">'Helvetica'</span>);
+grid <span class="string">on</span>;
+grid <span class="string">minor</span>;
+
+<span class="comment">% Plot Pendulum Angular Velocity</span>
+subplot(3,1,3);
+plot(tOut, xOut(:,2), <span class="string">'LineWidth'</span>, 2.5, <span class="string">'Color'</span>, <span class="string">'#EDB120'</span>);
+ylabel(<span class="string">'\fontsize{12}{16}\textbf{x2 = $\dot{\theta}$ (rad/s)}'</span>, <span class="string">'FontSize'</span>, 18, <span class="keyword">...</span>
+    <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+set(gca, <span class="string">'FontSize'</span>, 14, <span class="string">'Box'</span>, <span class="string">'off'</span>, <span class="string">'LineWidth'</span>, 1.5, <span class="string">'FontName'</span>, <span class="string">'Helvetica'</span>);
+xlabel(<span class="string">'Time (s)'</span>, <span class="string">'FontSize'</span>, 18, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontName'</span>, <span class="string">'Helvetica'</span>);
+grid <span class="string">on</span>;
+grid <span class="string">minor</span>;
+
+<span class="comment">% Reduce Margins</span>
+set(gca, <span class="string">'LooseInset'</span>, max(get(gca, <span class="string">'TightInset'</span>), 0.02));
+
+print(gcf, <span class="string">'ROB599-HW#2-Problem_3A-Inverted_Pendulum_PD_Control.png'</span>, <span class="keyword">...</span>
+    <span class="string">'-dpng'</span>, <span class="string">'-r300'</span>);
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW2_P3_A_01.png" alt=""> <h2 id="9">Target Angle Calculator</h2>
+<pre class="codeinput">
+<span class="keyword">function</span> theta_comand = systemInput(t)
+    theta_comand = pi/3;
+<span class="keyword">end</span>
+</pre>
+<pre class="codeoutput">
+X_final_eval =
+
+    1.8222
+         0
+
+</pre>
+<h2 id="10">State Space Of the System (Linearized)</h2>
+<pre class="codeinput">
+<span class="keyword">function</span> xdot = LinearizedInvertedPendulumFB(t, x, param)
+
+    <span class="comment">% State variables</span>
+    x1 = x(1);
+    x2 = x(2);
+    theta_command = systemInput(t);
+
+    x1dot = x2;
+    x2dot = (1/(param.J + param.m * param.l^2)) * ((param.m*param.g - param.kp)*param.l * x1 <span class="keyword">...</span>
+        - (param.gamma + param.l*param.kd)*x2 <span class="keyword">...</span>
+        + param.kp*param.l*theta_command + param.l*param.kd*param.w);
+
+    xdot = [x1dot; x2dot];
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% ROB599-HW2-Problem-3A
+% Simulating inverted pendulum controller using a
+% linearised model (linearized only @equillibrium x1=0, x2=0.
+%% Cleanup
+clear
+clc
+close all
+
+%% System Parameters (SI)
+
+% Inertial
+param.m = 0.2;      %kg
+param.J = 0.006;    %kgm2
+param.l = 0.3;      %m
+
+% Non-Conservative
+param.gamma = 0.1; %N*m*sec/rad
+
+% Fundamental
+param.g = 9.81;    %N/kg
+
+% Disturbances
+param.w = 3;       %rad/sec
+
+% Controller Gains
+param.kp = 5;
+param.kd = 0.1;
+
+
+param
+
+%% Evaluating Numerical A and B
+
+% State Matrix
+a_1 = [0, 1];
+a_2 = [(1/(param.J + param.m * param.l^2)) * ((param.m*param.g - param.kp)*param.l), ...
+     - (param.gamma + param.l*param.kd) * (1/(param.J + param.m * param.l^2)); ];
+
+A = [a_1; a_2]
+
+% Input Matrix
+b_1 = [0, 0];
+b_2 = [(param.l/(param.J + param.m * param.l^2)) * param.kp, (param.l/(param.J + param.m * param.l^2)) * param.kd];
+
+B = [b_1; b_2]
+
+%% Checking Stability of the System
+
+[V, D] = eig(A);
+D
+%% Solve for x(t->inf) (Stable Linearized System)
+X_final = -inv(A) * B
+
+X_final_eval = X_final*[systemInput(); param.w]
+
+%% Simulation Parameters
+to = 0;
+tFinal = 10;
+
+% Generating the time vector
+tSim = to:0.01:tFinal;
+
+% Initial Conditions
+xo = [pi/10; 0.3];
+
+% Input Signal (Constant)
+theta_command = systemInput(tSim) * ones(size(tSim));
+
+%% Run Simulation
+[tOut, xOut] = ode45(@(t,x) LinearizedInvertedPendulumFB(t, x, param), tSim, xo);
+
+%% Display the Results
+figure('Position', [100, 100, 1200, 900]);  % Width: 1200, Height: 900
+
+
+sgtitle('Figure 1. Linearized Inverted Pendulum. Feedback Controller. Kp = 5, Kd = 0.1',...
+    'FontSize', 24, 'FontWeight', 'bold');
+
+% Plot Pendulum Angle Command Signal    
+subplot(3,1,1);
+plot(tSim, theta_command, 'LineWidth', 2.5, 'Color', '#0072BD');
+ylabel('\fontsize{12}{16}\textbf{Input $\theta_{\mathrm{cmd}}$ (rad)}', 'FontSize', 18, ...
+    'FontWeight', 'bold', 'Interpreter', 'latex');
+set(gca, 'FontSize', 14, 'Box', 'off', 'LineWidth', 1.5, 'FontName', 'Helvetica');
+grid on;
+grid minor;
+
+% Plot Pendulum Angular Position
+subplot(3,1,2);
+plot(tOut, xOut(:,1), 'LineWidth', 2.5, 'Color', '#D95319');
+ylabel('\fontsize{12}{16}\textbf{x1 = ${\theta}$ (rad)}', 'FontSize', 18, ...
+    'FontWeight', 'bold', 'Interpreter', 'latex');
+set(gca, 'FontSize', 14, 'Box', 'off', 'LineWidth', 1.5, 'FontName', 'Helvetica');
+grid on;
+grid minor;
+
+% Plot Pendulum Angular Velocity
+subplot(3,1,3);
+plot(tOut, xOut(:,2), 'LineWidth', 2.5, 'Color', '#EDB120');
+ylabel('\fontsize{12}{16}\textbf{x2 = $\dot{\theta}$ (rad/s)}', 'FontSize', 18, ...
+    'FontWeight', 'bold', 'Interpreter', 'latex');
+set(gca, 'FontSize', 14, 'Box', 'off', 'LineWidth', 1.5, 'FontName', 'Helvetica');
+xlabel('Time (s)', 'FontSize', 18, 'FontWeight', 'bold', 'FontName', 'Helvetica');
+grid on;
+grid minor;
+
+% Reduce Margins
+set(gca, 'LooseInset', max(get(gca, 'TightInset'), 0.02));
+
+print(gcf, 'ROB599-HW#2-Problem_3A-Inverted_Pendulum_PD_Control.png', ...
+    '-dpng', '-r300');
+
+
+%% Target Angle Calculator
+function theta_comand = systemInput(t)
+    theta_comand = pi/3;
+end
+
+%% State Space Of the System (Linearized)
+function xdot = LinearizedInvertedPendulumFB(t, x, param)
+
+    % State variables
+    x1 = x(1);
+    x2 = x(2);
+    theta_command = systemInput(t);
+
+    x1dot = x2;
+    x2dot = (1/(param.J + param.m * param.l^2)) * ((param.m*param.g - param.kp)*param.l * x1 ...
+        - (param.gamma + param.l*param.kd)*x2 ...
+        + param.kp*param.l*theta_command + param.l*param.kd*param.w);
+    
+    xdot = [x1dot; x2dot];
+
+end
+##### SOURCE END #####
+-->
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Problem 1 A.</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-10-04">
+<meta name="DC.source" content="ROB599_HW2_P1_A.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Problem 1 A.</h1>
+<!--introduction-->
+<p>Converting to State-Space Form. Linearizing the Model. Checking Stability.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Define System Parameters</a>
+</li>
+<li>
+<a href="#2">Define Equation of Motion</a>
+</li>
+<li>
+<a href="#3">Get the State-Space Representation</a>
+</li>
+<li>
+<a href="#4">Linearize the Model Around the Equilibrium</a>
+</li>
+<li>
+<a href="#5">Computing the Eigenvectors and Eigenvalues of the System</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Define System Parameters</h2>
+<pre class="codeinput">sysPar.SI.m = 0.2;     <span class="comment">%kg</span>
+sysPar.SI.J = 0.006;   <span class="comment">%kgm2</span>
+sysPar.SI.l = 0.3;     <span class="comment">%m</span>
+
+sysPar.SI.gamma = 0.1; <span class="comment">%Nms/rad</span>
+sysPar.SI.g = 9.81;    <span class="comment">%m2/sec</span>
+</pre>
+<h2 id="2">Define Equation of Motion</h2>
+<p>Variables Definition</p>
+<pre class="codeinput">syms <span class="string">theta</span> <span class="string">theta_dot</span> <span class="string">theta_dot_dot</span>
+
+syms <span class="string">J</span> <span class="string">m</span>
+syms <span class="string">l</span>
+
+syms <span class="string">gamma</span>
+
+syms <span class="string">g</span>
+
+syms <span class="string">F</span>
+
+<span class="comment">% Equation of Motion</span>
+motionEquation = (J + m*l^2)*theta_dot_dot + gamma*theta_dot - m*g*l*sin(theta) == l*cos(theta)*F
+</pre>
+<pre class="codeoutput"> 
+motionEquation =
+ 
+theta_dot_dot*(m*l^2 + J) + gamma*theta_dot - g*l*m*sin(theta) == F*l*cos(theta)
+ 
+</pre>
+<h2 id="3">Get the State-Space Representation</h2>
+<p>Define State-Space Variables</p>
+<pre class="codeinput">syms <span class="string">x1</span> <span class="string">x2</span>
+syms <span class="string">x1_dot</span> <span class="string">x2_dot</span>
+
+syms <span class="string">u</span>
+
+<span class="comment">% Define the matrices</span>
+syms <span class="string">X_dot</span>
+syms <span class="string">X</span>
+syms <span class="string">U</span>
+
+X_dot = [x1_dot; x2_dot];
+X = [x1; x2];
+U = [u];
+
+<span class="comment">% Extract theta_dot_dot from the motion equation</span>
+theta_dot_dot_expr = solve(motionEquation, theta_dot_dot);
+
+X_dot = subs(X_dot, x1_dot, theta_dot);
+X_dot = subs(X_dot, x2_dot, theta_dot_dot_expr);
+
+<span class="comment">% Now, replace the thetas with xs to get the state-space representation</span>
+X_dot = subs(X_dot, {theta, theta_dot, F}, {x1, x2, u})
+</pre>
+<pre class="codeoutput"> 
+X_dot =
+ 
+                                                  x2
+(l*u*cos(x1) - gamma*x2 + g*l*m*sin(x1))/(m*l^2 + J)
+ 
+</pre>
+<h2 id="4">Linearize the Model Around the Equilibrium</h2>
+<p>Define the equillibrium location</p>
+<pre class="codeinput">
+<span class="comment">% State Equillibrium</span>
+syms <span class="string">xeq_1</span> <span class="string">xeq_2</span>
+
+xeq_1 = 0;
+xeq_2 = 0;
+X_eq = [xeq_1; xeq_2];
+
+<span class="comment">% Input Equillibrium</span>
+syms <span class="string">ueq</span>
+ueq = 0;
+U_eq = [ueq];
+
+<span class="comment">% Get the X Jacobian at equillibrium</span>
+Xjacobian = jacobian(X_dot, X);
+Xjacobian = subs(Xjacobian, X, X_eq);
+Xjacobian = subs(Xjacobian, U, U_eq)
+
+<span class="comment">% Get the U Jacobian at equillibrium</span>
+Ujacobian = jacobian(X_dot, U);
+Ujacobian = subs(Ujacobian, X, X_eq);
+Ujacobian = subs(Ujacobian, U, U_eq)
+
+<span class="comment">% Evaluate using system parameters</span>
+XJacEval = eval(subs(Xjacobian, {m, J, l, gamma, g}, {sysPar.SI.m, sysPar.SI.J, sysPar.SI.l, sysPar.SI.gamma, sysPar.SI.g}))
+UJacEval = eval(subs(Ujacobian, {m, J, l, gamma, g}, {sysPar.SI.m, sysPar.SI.J, sysPar.SI.l, sysPar.SI.gamma, sysPar.SI.g}))
+</pre>
+<pre class="codeoutput"> 
+Xjacobian =
+ 
+[                  0,                  1]
+[(g*l*m)/(m*l^2 + J), -gamma/(m*l^2 + J)]
+ 
+ 
+Ujacobian =
+ 
+            0
+l/(m*l^2 + J)
+ 
+
+XJacEval =
+
+         0    1.0000
+   24.5250   -4.1667
+
+
+UJacEval =
+
+         0
+   12.5000
+
+</pre>
+<h2 id="5">Computing the Eigenvectors and Eigenvalues of the System</h2>
+<pre class="codeinput">[V, D] = eig(XJacEval);
+
+D
+V
+</pre>
+<pre class="codeoutput">
+D =
+
+    3.2893         0
+         0   -7.4560
+
+
+V =
+
+    0.2909   -0.1329
+    0.9568    0.9911
+
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Problem 1 A.
+% Converting to State-Space Form. Linearizing the Model. Checking
+% Stability.
+
+%% Define System Parameters
+
+sysPar.SI.m = 0.2;     %kg
+sysPar.SI.J = 0.006;   %kgm2
+sysPar.SI.l = 0.3;     %m
+
+sysPar.SI.gamma = 0.1; %Nms/rad
+sysPar.SI.g = 9.81;    %m2/sec
+
+
+%% Define Equation of Motion
+% Variables Definition
+syms theta theta_dot theta_dot_dot 
+
+syms J m
+syms l
+
+syms gamma 
+
+syms g
+
+syms F
+
+% Equation of Motion
+motionEquation = (J + m*l^2)*theta_dot_dot + gamma*theta_dot - m*g*l*sin(theta) == l*cos(theta)*F
+
+%% Get the State-Space Representation
+% Define State-Space Variables
+syms x1 x2
+syms x1_dot x2_dot
+
+syms u
+
+% Define the matrices
+syms X_dot
+syms X
+syms U
+
+X_dot = [x1_dot; x2_dot];
+X = [x1; x2];
+U = [u];
+
+% Extract theta_dot_dot from the motion equation
+theta_dot_dot_expr = solve(motionEquation, theta_dot_dot);
+
+X_dot = subs(X_dot, x1_dot, theta_dot);
+X_dot = subs(X_dot, x2_dot, theta_dot_dot_expr);
+
+% Now, replace the thetas with xs to get the state-space representation
+X_dot = subs(X_dot, {theta, theta_dot, F}, {x1, x2, u})
+
+%% Linearize the Model Around the Equilibrium
+% Define the equillibrium location
+
+% State Equillibrium
+syms xeq_1 xeq_2
+
+xeq_1 = 0;
+xeq_2 = 0;
+X_eq = [xeq_1; xeq_2];
+
+% Input Equillibrium
+syms ueq
+ueq = 0;
+U_eq = [ueq];
+
+% Get the X Jacobian at equillibrium
+Xjacobian = jacobian(X_dot, X);
+Xjacobian = subs(Xjacobian, X, X_eq);
+Xjacobian = subs(Xjacobian, U, U_eq)
+
+% Get the U Jacobian at equillibrium
+Ujacobian = jacobian(X_dot, U);
+Ujacobian = subs(Ujacobian, X, X_eq);
+Ujacobian = subs(Ujacobian, U, U_eq)
+
+% Evaluate using system parameters
+XJacEval = eval(subs(Xjacobian, {m, J, l, gamma, g}, {sysPar.SI.m, sysPar.SI.J, sysPar.SI.l, sysPar.SI.gamma, sysPar.SI.g}))
+UJacEval = eval(subs(Ujacobian, {m, J, l, gamma, g}, {sysPar.SI.m, sysPar.SI.J, sysPar.SI.l, sysPar.SI.gamma, sysPar.SI.g}))
+
+%% Computing the Eigenvectors and Eigenvalues of the System
+[V, D] = eig(XJacEval);
+
+D
+V
+##### SOURCE END #####
+-->
+</body>
+</html>

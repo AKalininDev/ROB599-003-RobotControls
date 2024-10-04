@@ -28,8 +28,6 @@ param.ki = 2.3562
 param.kd = 0.1;
 
 
-param
-
 %% Evaluating Numerical A and B
 
 % State Matrix
@@ -59,7 +57,10 @@ D
 %% Solve for x(t->inf) (Stable Linearized System)
 
 X_final = -inv(A) * B
-X_final_eval = -inv(A) * B * [systemInput(); param.w]
+
+% Evaluating the final values
+X_final_eval = -inv(A) * B * [pi/3; param.w]
+
 
 %% Simulation Parameters
 to = 0;
