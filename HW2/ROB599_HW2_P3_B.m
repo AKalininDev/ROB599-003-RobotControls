@@ -44,9 +44,9 @@ A = [a_1; a_2; a_3]
 
 
 % Input Matrix
-b_1 = 0; % assuming no disturbance
-b_2 = (1/(param.J + param.m * param.l^2)) * param.kp*param.l;
-b_3 = 1;
+b_1 = [0, 0]; % assuming no disturbance
+b_2 = [(1/(param.J + param.m * param.l^2)) * param.kp*param.l, (1/(param.J + param.m * param.l^2)) * param.kd*param.l];
+b_3 = [1, 0];
 
 B = [b_1; b_2; b_3]
 
@@ -59,7 +59,7 @@ D
 %% Solve for x(t->inf) (Stable Linearized System)
 
 X_final = -inv(A) * B
-X_final_eval = -inv(A) * B * systemInput()
+X_final_eval = -inv(A) * B * [systemInput(); param.w]
 
 %% Simulation Parameters
 to = 0;
@@ -86,37 +86,41 @@ sgtitle('Figure 2. Linearized Inverted Pendulum. Feedback Controller. Kp = 5, Ki
  
 % Plot Pendulum Angle Command Signal    
 subplot(4,1,1);
-plot(tSim, theta_command, 'LineWidth', 3, 'Color', 'r');
-ylabel('\fontsize{14}{16}\textbf{Input $\theta_{\mathrm{cmd}}$ (rad)}', 'FontSize', 20, ...
+plot(tSim, theta_command, 'LineWidth', 2.5, 'Color', '#0072BD');
+ylabel('\fontsize{12}{16}\textbf{Input $\theta_{\mathrm{cmd}}$ (rad)}', 'FontSize', 18, ...
     'FontWeight', 'bold', 'Interpreter', 'latex');
-set(gca, 'FontSize', 12); 
+set(gca, 'FontSize', 14, 'Box', 'off', 'LineWidth', 1.5, 'FontName', 'Helvetica');
 grid on;
-
+grid minor;
 
 % Plot Pendulum Angular Position
 subplot(4,1,2);
-plot(tOut, xOut(:,1), 'LineWidth', 3, 'Color', 'b');
-ylabel('\fontsize{14}{16}\textbf{x1 = ${\theta}$ (rad)}', 'FontSize', 20, ...
+plot(tOut, xOut(:,1), 'LineWidth', 2.5, 'Color', '#D95319');
+ylabel('\fontsize{12}{16}\textbf{x1 = ${\theta}$ (rad)}', 'FontSize', 18, ...
     'FontWeight', 'bold', 'Interpreter', 'latex');
-set(gca, 'FontSize', 12);
+set(gca, 'FontSize', 14, 'Box', 'off', 'LineWidth', 1.5, 'FontName', 'Helvetica');
 grid on;
+grid minor;
 
 % Plot Pendulum Angular Velocity
 subplot(4,1,3);
-plot(tOut, xOut(:,2), 'LineWidth', 3, 'Color', 'g');
-ylabel('\fontsize{14}{16}\textbf{x2 = $\dot{\theta}$ (rad/s)}', 'FontSize', 20, ...
+plot(tOut, xOut(:,2), 'LineWidth', 2.5, 'Color', '#EDB120');
+ylabel('\fontsize{12}{16}\textbf{x2 = $\dot{\theta}$ (rad/s)}', 'FontSize', 18, ...
     'FontWeight', 'bold', 'Interpreter', 'latex');
-set(gca, 'FontSize', 12); 
+set(gca, 'FontSize', 14, 'Box', 'off', 'LineWidth', 1.5, 'FontName', 'Helvetica');
 grid on;
+grid minor;
 
-% Plot Pendulum Angle Integrator
+
+% Plot Pendulum Angular Velocity
 subplot(4,1,4);
-plot(tOut, xOut(:,3), 'LineWidth', 3, 'Color', 'c');
-ylabel('\fontsize{14}{16}\textbf{x3 = $\int \theta_{\mathrm{err}}\, dt$ (rad$\cdot$s)}', 'FontSize', 20, ...
+plot(tOut, xOut(:,3), 'LineWidth', 2.5, 'Color', '#EDB120');
+ylabel('\fontsize{12}{16}\textbf{x3 = $\int \theta_{\mathrm{err}}\, dt$ (rad$\cdot$s)}', 'FontSize', 18, ...
     'FontWeight', 'bold', 'Interpreter', 'latex');
-set(gca, 'FontSize', 12); 
-xlabel('Time (s)', 'FontSize', 16, 'FontWeight', 'bold');
+set(gca, 'FontSize', 14, 'Box', 'off', 'LineWidth', 1.5, 'FontName', 'Helvetica');
+xlabel('Time (s)', 'FontSize', 18, 'FontWeight', 'bold', 'FontName', 'Helvetica');
 grid on;
+grid minor;
 
 % Reduce Margins
 set(gca, 'LooseInset', max(get(gca, 'TightInset'), 0.02));
@@ -139,12 +143,12 @@ function xdot = LinearizedInvertedPendulumFB(t, x, param)
     x3 = x(3);
     theta_command = systemInput(t);
    
-    x1dot = x2 + param.w;
+    x1dot = x2;
 
     x2dot = (1/(param.J + param.m * param.l^2))* ((param.m*param.g - param.kp)*param.l * x1 ...
         - (param.gamma + param.l*param.kd)*x2 ...
         + param.l*param.ki*x3...
-        + param.kp*param.l*theta_command);
+        + param.kp*param.l*theta_command + param.kp*param.l*param.w);
 
     x3dot = -x1 + theta_command;
 
