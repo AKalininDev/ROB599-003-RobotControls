@@ -114,7 +114,7 @@ grid minor;
 
 % Plot Pendulum Angular Velocity
 subplot(4,1,4);
-plot(tOut, xOut(:,3), 'LineWidth', 2.5, 'Color', '#EDB120');
+plot(tOut, xOut(:,3), 'LineWidth', 2.5, 'Color', 'c');
 ylabel('\fontsize{12}{16}\textbf{x3 = $\int \theta_{\mathrm{err}}\, dt$ (rad$\cdot$s)}', 'FontSize', 18, ...
     'FontWeight', 'bold', 'Interpreter', 'latex');
 set(gca, 'FontSize', 14, 'Box', 'off', 'LineWidth', 1.5, 'FontName', 'Helvetica');
