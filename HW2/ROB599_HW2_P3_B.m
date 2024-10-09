@@ -26,8 +26,6 @@ param.w = 3;       %rad/sec
 param.kp = 5;
 param.ki = 2.3562
 param.kd = 0.1;
-
-
 %% Evaluating Numerical A and B
 
 % State Matrix
@@ -37,25 +35,19 @@ a_2 = [(1/(param.J + param.m * param.l^2)) * ((param.m*param.g - param.kp)*param
      (1/(param.J + param.m * param.l^2))*param.l*param.ki];
 a_3 = [-1, 0, 0];
 
-
 A = [a_1; a_2; a_3]
-
 
 % Input Matrix
 b_1 = [0, 0]; % assuming no disturbance
-b_2 = [(1/(param.J + param.m * param.l^2)) * param.kp*param.l, (1/(param.J + param.m * param.l^2)) * param.kd*param.l];
+b_2 = [(1/(param.J + param.m * param.l^2)) * param.kp*param.l, -(1/(param.J + param.m * param.l^2)) * param.kd*param.l];
 b_3 = [1, 0];
 
 B = [b_1; b_2; b_3]
-
 %% Checking Stability of the System
-
 [V, D] = eig(A);
 D 
 
-
 %% Solve for x(t->inf) (Stable Linearized System)
-
 X_final = -inv(A) * B
 
 % Evaluating the final values
@@ -80,11 +72,8 @@ theta_command = systemInput(tSim) * ones(size(tSim));
 
 %% Display the Results
 figure('Position', [100, 100, 1200, 900]);  % Width: 1200, Height: 900
-
-
 sgtitle('Figure 2. Linearized Inverted Pendulum. Feedback Controller. Kp = 5, Ki = 2.3562, Kd = 0.1',...
     'FontSize', 24, 'FontWeight', 'bold');
- 
 % Plot Pendulum Angle Command Signal    
 subplot(4,1,1);
 plot(tSim, theta_command, 'LineWidth', 2.5, 'Color', '#0072BD');
@@ -112,7 +101,6 @@ set(gca, 'FontSize', 14, 'Box', 'off', 'LineWidth', 1.5, 'FontName', 'Helvetica'
 grid on;
 grid minor;
 
-
 % Plot Pendulum Angular Velocity
 subplot(4,1,4);
 plot(tOut, xOut(:,3), 'LineWidth', 2.5, 'Color', 'c');
@@ -125,11 +113,7 @@ grid minor;
 
 % Reduce Margins
 set(gca, 'LooseInset', max(get(gca, 'TightInset'), 0.02));
-
-print(gcf, 'ROB599-HW#2-Problem_3B-Inverted_Pendulum_PID_Control.png', ...
-    '-dpng', '-r300'); 
-
-
+print(gcf, 'ROB599-HW#2-Problem_3B-Inverted_Pendulum_PID_Control.png', '-dpng', '-r300'); 
 %% Target Angle Calculator
 function theta_comand = systemInput(t)
     theta_comand = pi/3;
@@ -149,7 +133,7 @@ function xdot = LinearizedInvertedPendulumFB(t, x, param)
     x2dot = (1/(param.J + param.m * param.l^2))* ((param.m*param.g - param.kp)*param.l * x1 ...
         - (param.gamma + param.l*param.kd)*x2 ...
         + param.l*param.ki*x3...
-        + param.kp*param.l*theta_command + param.kd*param.l*param.w);
+        + param.kp*param.l*theta_command - param.kd*param.l*param.w);
 
     x3dot = -x1 + theta_command;
 

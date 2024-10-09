@@ -1,4 +1,4 @@
-%% ROB599-HW2-Problem-3A
+o%% ROB599-HW2-Problem-3A
 % Simulating inverted pendulum controller using a
 % linearised model (linearized only @equillibrium x1=0, x2=0.
 %% Cleanup
@@ -40,7 +40,7 @@ A = [a_1; a_2]
 
 % Input Matrix
 b_1 = [0, 0];
-b_2 = [(param.l/(param.J + param.m * param.l^2)) * param.kp, (param.l/(param.J + param.m * param.l^2)) * param.kd];
+b_2 = [(param.l/(param.J + param.m * param.l^2)) * param.kp, -(param.l/(param.J + param.m * param.l^2)) * param.kd];
 
 B = [b_1; b_2]
 
@@ -72,8 +72,6 @@ theta_command = systemInput(tSim) * ones(size(tSim));
 
 %% Display the Results
 figure('Position', [100, 100, 1200, 900]);  % Width: 1200, Height: 900
-
-
 sgtitle('Figure 1. Linearized Inverted Pendulum. Feedback Controller. Kp = 5, Kd = 0.1',...
     'FontSize', 24, 'FontWeight', 'bold');
 
@@ -107,10 +105,8 @@ grid minor;
 
 % Reduce Margins
 set(gca, 'LooseInset', max(get(gca, 'TightInset'), 0.02));
-
 print(gcf, 'ROB599-HW#2-Problem_3A-Inverted_Pendulum_PD_Control.png', ...
     '-dpng', '-r300');
-
 
 %% Target Angle Calculator
 function theta_comand = systemInput(t)
@@ -128,7 +124,7 @@ function xdot = LinearizedInvertedPendulumFB(t, x, param)
     x1dot = x2;
     x2dot = (1/(param.J + param.m * param.l^2)) * ((param.m*param.g - param.kp)*param.l * x1 ...
         - (param.gamma + param.l*param.kd)*x2 ...
-        + param.kp*param.l*theta_command + param.l*param.kd*param.w);
+        + param.kp*param.l*theta_command - param.l*param.kd*param.w);
     
     xdot = [x1dot; x2dot];
 
