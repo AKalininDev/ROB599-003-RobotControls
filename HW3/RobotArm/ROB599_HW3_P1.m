@@ -1,6 +1,9 @@
 %% ROB599_HW3_P1 
 % Evaluating the Model for q1 and q2
-
+%% Cleanup
+clear
+clc
+close all
 %% Define Symbolic Parameters
 
 % Parameters

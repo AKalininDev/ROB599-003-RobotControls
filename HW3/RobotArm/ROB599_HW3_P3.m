@@ -1,6 +1,9 @@
 %% ROB599_HW3_P3
 % Simiulating a PD Controller for Robot Arm.
-
+%% Cleanup
+clear
+clc
+close all
 %% Define Numerical Parameters of the System
 % Inertia Terms
 param.m1 = 7.848;
