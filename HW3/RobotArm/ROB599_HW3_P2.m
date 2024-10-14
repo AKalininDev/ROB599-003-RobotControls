@@ -116,7 +116,7 @@ y_lbl_handle.Position(1) = -0.25;
 y_lbl_handle.Position(2) = 0.35;
 
 % Set common y-axis limits for angle plots
-[ymin, ymax] = getCommonYlim([xout(:,1); qd_ref(:,1)], [xout(:,3); qd_ref(:,2)]);
+[ymin, ymax] = getCommonYlim([xout(:,1); x_target(:,1)], [xout(:,3); x_target(:,2)]);
 subplot(4,2,1); ylim([ymin, ymax]);
 subplot(4,2,2); ylim([ymin, ymax]);
 
