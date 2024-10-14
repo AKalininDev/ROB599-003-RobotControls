@@ -2,6 +2,8 @@
 % Author: Jiefu Zhang
 % Date: Jan 24 24
 %
+% Modified: Anatolii Kalinin
+% Date: Oct 13 24
 %
 % Input: 
 % t: time point
@@ -25,7 +27,7 @@
 % which generates the control input.
 % 
 %%
-function xdot = manipulator(t, x, controller, param, ref)
+function [xdot, tau]  = manipulator(t, x, controller, param, ref)
     q1 = x(1); q1dot = x(2); q2 = x(3); q2dot = x(4);
 
     % You can also define your physical parameters here so you don't need
@@ -60,5 +62,5 @@ function xdot = manipulator(t, x, controller, param, ref)
     xdot = [x(2);
             1/det(D)*(D(2,2)*a1 - D(1,2)*a2);
             x(4);
-            1/det(D)*(-D(2,1)*a1 + D(1,1)*a2);]; 
+            1/det(D)*(-D(2,1)*a1 + D(1,1)*a2)]; 
 end
