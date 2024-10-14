@@ -59,11 +59,11 @@ t_target = t;
 stamped_x_target = [x_target, t_target]';
 
 %% Run Simulation
-[tout, xout] = ode45(@(t, x) manipulator(t, x, @PDControllerWGramComp, param, ...
+[tout, xout] = ode45(@(t, x) manipulator(t, x, @PDControllerGravComp, param, ...
    stamped_x_target), t, x0);
 
 % Compute Torques
-tau_values = postComputeTorques(tout, xout, @manipulator, @PDControllerWGramComp, param, stamped_x_target);
+tau_values = postComputeTorques(tout, xout, @manipulator, @PDControllerGravComp, param, stamped_x_target);
 
 %% Postprocess Data
 % Compute the Errors
@@ -76,7 +76,7 @@ zero_vector = getZeroVec(tout);
 
 %% Plot the Results
 figure('Position', [100, 100, 1800, 1200]);
-sgtitle('Figure 2. Robot Arm PD Controller w Gravity Comp. Kpi = 50. Kdi = 10.', ...
+sgtitle('Figure 2. Robot Arm. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10.', ...
 'FontSize', 24, 'FontWeight', 'bold');
 
 % Defining Colors
