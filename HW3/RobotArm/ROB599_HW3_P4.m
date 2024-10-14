@@ -96,6 +96,10 @@ e2_dot_dot = computeErrors(q2_dot_dot, q2d_dot_dot_vec);
 % Generate the Error Target Vector
 zero_vector = getZeroVec(tout);
 
+%% Animation
+
+robotAnimation(tout, xout);
+
 %% Plot the Results
 % This section plots desired outputs.
 
