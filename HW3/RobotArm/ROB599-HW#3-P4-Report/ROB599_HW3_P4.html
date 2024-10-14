@@ -1,0 +1,1475 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>ROB599_HW3_P4</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-10-14">
+<meta name="DC.source" content="ROB599_HW3_P4.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>ROB599_HW3_P4</h1>
+<!--introduction-->
+<p>Simiulating a PD Controller for Robot Arm with Moving Trajectory.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Cleanup</a>
+</li>
+<li>
+<a href="#2">Define Numerical Parameters of the System</a>
+</li>
+<li>
+<a href="#3">Define Initial Simulation Prameters</a>
+</li>
+<li>
+<a href="#4">Generate Target Trajectory</a>
+</li>
+<li>
+<a href="#5">Run Simulation</a>
+</li>
+<li>
+<a href="#6">Postprocess Data</a>
+</li>
+<li>
+<a href="#7">Animation</a>
+</li>
+<li>
+<a href="#8">Plot the Results</a>
+</li>
+<li>
+<a href="#9">Plot the System States and Reference</a>
+</li>
+<li>
+<a href="#10">Plot the System Errors</a>
+</li>
+<li>
+<a href="#11">Plot the Robot Arm Input Evolution</a>
+</li>
+<li>
+<a href="#12">Combined Tall Plot</a>
+</li>
+<li>
+<a href="#13">Helper Functions</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Cleanup</h2>
+<pre class="codeinput">clear
+clc
+close <span class="string">all</span>
+</pre>
+<h2 id="2">Define Numerical Parameters of the System</h2>
+<p>Inertia Terms</p>
+<pre class="codeinput">param.m1 = 7.848;
+param.m2 = 4.49;
+
+param.I1 = 0.176;
+param.I2 = 0.0411;
+
+<span class="comment">% Geometry Terms</span>
+param.l1 = 0.3;
+param.lc1 = 0.1554;
+param.lc2 = 0.0341;
+
+<span class="comment">% Fundamental Constants</span>
+param.g = 9.81;
+
+<span class="comment">% Gains</span>
+param.kp1 = 50;
+param.kd1 = 10;
+
+param.kp2 = 50;
+param.kd2 = 10;
+
+<span class="comment">% Limits</span>
+param.tau1Max = 50;
+param.tau1Min = -50;
+
+param.tau2Max = 50;
+param.tau2Min = -50;
+</pre>
+<h2 id="3">Define Initial Simulation Prameters</h2>
+<pre class="codeinput">
+<span class="comment">% Initial Conditions</span>
+t = linspace(0,4,100000)';
+x0 = [0;0;0;0];
+tau = [0; 0];
+</pre>
+<h2 id="4">Generate Target Trajectory</h2>
+<p>Cubic Polynomial Trajectory Waypoints</p>
+<pre class="codeinput">t_waypoints = [0; 2; 4];
+q_waypoints = [0; pi/2; 0];
+
+t_dot_waypoints = [0; 2; 4];
+q_dot_waypoints = [0; 0; 0];
+
+<span class="comment">% Generate the Cubic Trajectories</span>
+[q, qd, qdd, pp] = cubicpolytraj(q_waypoints', t_waypoints', t, <span class="string">'VelocityBoundaryCondition'</span>, q_dot_waypoints');
+
+<span class="comment">% Import the Trajectory into State Space</span>
+q1d_vec = q';
+q1d_dot_vec = qd';
+q1d_dot_dot_vec = qdd';
+
+q2d_vec = q';
+q2d_dot_vec = qd';
+q2d_dot_dot_vec = qdd';
+
+<span class="comment">% Generate Stamped Target State Trajectory</span>
+x_target = [q1d_vec, q1d_dot_vec, q2d_vec, q2d_dot_vec];
+t_target = t;
+
+stamped_x_target = [x_target, t_target]';
+</pre>
+<h2 id="5">Run Simulation</h2>
+<pre class="codeinput">[tout, xout] = ode45(@(t, x) manipulator(t, x, @PDControllerGravComp, param, <span class="keyword">...</span>
+   stamped_x_target), t, x0);
+
+<span class="comment">% Compute Torques</span>
+tau_values = postComputeTorques(tout, xout, @manipulator, @PDControllerGravComp, param, stamped_x_target);
+</pre>
+<h2 id="6">Postprocess Data</h2>
+<p>Compute the Errors</p>
+<pre class="codeinput">error_vals_1 = computeErrors(xout(:,1), x_target(:,1));
+error_vals_2 = computeErrors(xout(:,2),x_target(:,2));
+
+error_vals_3 = computeErrors(xout(:,3), x_target(:,3));
+error_vals_4 = computeErrors(xout(:,4), x_target(:,4));
+
+error_vals =[error_vals_1, error_vals_2, error_vals_3, error_vals_4];
+
+<span class="comment">% Calculate accelerations</span>
+dt = diff(tout);
+[q1_dot_dot, q2_dot_dot] = savitzkyGolayDerivative(tout, xout(:,2), xout(:,4));
+
+<span class="comment">% Calculate acceleration errors</span>
+e1_dot_dot = computeErrors(q1_dot_dot, q1d_dot_dot_vec);
+e2_dot_dot = computeErrors(q2_dot_dot, q2d_dot_dot_vec);
+
+<span class="comment">% Generate the Error Target Vector</span>
+zero_vector = getZeroVec(tout);
+</pre>
+<h2 id="7">Animation</h2>
+<pre class="codeinput">robotAnimation(tout, xout);
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW3_P4_01.png" alt=""> <h2 id="8">Plot the Results</h2>
+<p>This section plots desired outputs.</p>
+<pre class="codeinput">angle_pose_color = [0.2980, 0.4471, 0.6902];
+ref_color = [0, 0, 0];
+velocity_color = [0.8359, 0.3682, 0.0784];
+torque_color = [0.4667, 0.6745, 0.1882];
+acceleration_color = [0.4940, 0.1840, 0.5560];
+</pre>
+<h2 id="9">Plot the System States and Reference</h2>
+<pre class="codeinput">figure(<span class="string">'Position'</span>, [0, 0, 1200, 1000]);
+
+tLayout = tiledlayout(3,2,<span class="string">'Padding'</span>,<span class="string">'Compact'</span>);
+tLayout.Title.String = <span class="string">"Figure 3.1. Robot Arm State Evolution. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10."</span> + newline;
+tLayout.Title.FontSize = 20;
+tLayout.Title.FontWeight = <span class="string">'bold'</span>;
+
+<span class="comment">% Poses</span>
+<span class="comment">% Plot q1 and q1ref</span>
+nexttile;
+plot(tout, xout(:,1), <span class="string">'Color'</span>, angle_pose_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{q_1}$, (rad)'</span>);
+hold <span class="string">on</span>;
+plot(t', x_target(:,1), <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{q_{1,ref}}$, (rad)'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{q_1}$, Shoulder (rad)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 18, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.17;
+y_lbl_handle.Position(2) = 0.35;
+
+<span class="comment">% Plot q2 and q2ref</span>
+nexttile;
+plot(tout, xout(:,3), <span class="string">'Color'</span>, angle_pose_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{q_2}$, (rad)'</span>);
+hold <span class="string">on</span>;
+plot(t', x_target(:,3), <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{q_{2,ref}}$, (rad)'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{q_2}$, Elbow (rad)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 18, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.17;
+y_lbl_handle.Position(2) = 0.35;
+
+<span class="comment">% Set common y-axis limits for angle plots</span>
+[ymin, ymax] = getCommonYlim([xout(:,1); x_target(:,1)], [xout(:,3); x_target(:,2)]);
+nexttile(1); ylim([ymin, ymax]);
+nexttile(2); ylim([ymin, ymax]);
+
+<span class="comment">% Velocities</span>
+<span class="comment">% Plot q1dot</span>
+nexttile;
+plot(tout, xout(:,2), <span class="string">'Color'</span>, velocity_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\dot{q}_1}$, (rad/s)'</span>);
+hold <span class="string">on</span>;
+plot(t', x_target(:,2), <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\dot{q}_{1,ref}}$, (rad/s)'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\dot{q}_1}$, Shoulder Vel (rad/s)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 18, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.17;
+
+<span class="comment">% Plot q2dot</span>
+nexttile;
+plot(tout, xout(:,4), <span class="string">'Color'</span>, velocity_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\dot{q}_2}$, (rad/s)'</span>);
+setSubplotProperties(gca);
+hold <span class="string">on</span>;
+plot(t', x_target(:,2), <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\dot{q}_{2,ref}}$, (rad/s)'</span>);
+hold <span class="string">off</span>;
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\dot{q}_2}$, Elbow Vel (rad/s)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 18, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.17;
+
+<span class="comment">% Set common y-axis limits for angular velocity plots</span>
+[ymin, ymax] = getCommonYlim(xout(:,2), xout(:,4));
+nexttile(3); ylim([ymin, ymax]);
+nexttile(4); ylim([ymin, ymax]);
+
+
+<span class="comment">% Accelerations</span>
+nexttile;
+plot(tout, q1_dot_dot, <span class="string">'Color'</span>, acceleration_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\ddot{q}_1}$, (rad/s$^2$)'</span>);
+hold <span class="string">on</span>;
+plot(t', q1d_dot_dot_vec, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\ddot{q}_{1,ref}}$, (rad/s$^2$)'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\ddot{q}_1}$, Shoulder Acc (rad/s$^2$)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 18, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.17;
+
+nexttile;
+plot(tout, q2_dot_dot, <span class="string">'Color'</span>, acceleration_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\ddot{q}_2}$, (rad/s$^2$)'</span>);
+hold <span class="string">on</span>;
+plot(t', q2d_dot_dot_vec, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\ddot{q}_{2,ref}}$, (rad/s$^2$)'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\ddot{q}_2}$, Elbow Acc (rad/s$^2$)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 18, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.17;
+
+<span class="comment">% Set common y-axis limits for acceleration plots</span>
+[ymin, ymax] = getCommonYlim([q1_dot_dot; q1d_dot_dot_vec], [q2_dot_dot; q2d_dot_dot_vec]);
+nexttile(5); ylim([ymin, ymax]);
+nexttile(6); ylim([ymin, ymax]);
+
+<span class="comment">%print('ROB599-HW#3-Problem4-Fig3.1.png', '-dpng', '-r300');</span>
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW3_P4_02.png" alt=""> <h2 id="10">Plot the System Errors</h2>
+<pre class="codeinput">figure(<span class="string">'Position'</span>, [0, 0, 1200, 1000]);
+
+tLayout = tiledlayout(3,2,<span class="string">'Padding'</span>,<span class="string">'Compact'</span>);
+tLayout.Title.String = <span class="string">"Figure 3.2. Robot Arm Errors Evolution. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10."</span> + newline;
+tLayout.Title.FontSize = 20;
+tLayout.Title.FontWeight = <span class="string">'bold'</span>;
+
+<span class="comment">% Error</span>
+<span class="comment">% Plot e1</span>
+nexttile;
+plot(tout, error_vals(:,1), <span class="string">'Color'</span>, angle_pose_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{e_1}$, (rad)'</span>);
+hold <span class="string">on</span>;
+plot(tout, zero_vector, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'HandleVisibility'</span>, <span class="string">'off'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{e_1}$, Shoulder Err (rad)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 18, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.17;
+
+<span class="comment">% Plot e2</span>
+nexttile;
+plot(tout, error_vals(:,3), <span class="string">'Color'</span>, angle_pose_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{e_2}$, (rad)'</span>);
+hold <span class="string">on</span>;
+plot(tout, zero_vector, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'HandleVisibility'</span>, <span class="string">'off'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{e_2}$, Elbow Err (rad)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 18, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.17;
+
+<span class="comment">% Set common y-axis limits for angle plots</span>
+[ymin, ymax] = getCommonYlim(error_vals(:,1), error_vals(:,3));
+nexttile(1); ylim([ymin, ymax]);
+nexttile(2); ylim([ymin, ymax]);
+
+
+<span class="comment">% Error Derivative</span>
+<span class="comment">% Plot e1 derivative</span>
+nexttile;
+plot(tout, error_vals(:,2), <span class="string">'Color'</span>, velocity_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\dot{e}_1}$, (rad/s)'</span>);
+hold <span class="string">on</span>;
+plot(tout, zero_vector, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'HandleVisibility'</span>, <span class="string">'off'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\dot{e}_1}$, Shoulder Vel Err (rad/s)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 18, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.17;
+
+<span class="comment">% Plot e2 derivative</span>
+nexttile;
+plot(tout, error_vals(:,4), <span class="string">'Color'</span>, velocity_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\dot{e}_2}$, (rad/s)'</span>);
+hold <span class="string">on</span>;
+plot(tout, zero_vector, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'HandleVisibility'</span>, <span class="string">'off'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\dot{e}_2}$, Elbow Vel Err (rad/s)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 18, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.17;
+y_lbl_handle.Position(2) = 0.0;
+
+<span class="comment">% Set common y-axis limits for angle plots</span>
+[ymin, ymax] = getCommonYlim(error_vals(:,2), error_vals(:,4));
+nexttile(3); ylim([ymin, ymax]);
+nexttile(4); ylim([ymin, ymax]);
+
+<span class="comment">% Error Acceleration</span>
+<span class="comment">% e1_dot_dot</span>
+nexttile;
+plot(tout, e1_dot_dot, <span class="string">'Color'</span>, acceleration_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\ddot{e}_1}$, (rad/s$^2$)'</span>);
+hold <span class="string">on</span>;
+plot(tout, zero_vector, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'HandleVisibility'</span>, <span class="string">'off'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\ddot{e}_1}$, Shoulder Acc Err (rad/s$^2$)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 18, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.17;
+
+<span class="comment">% e2_dot_dot</span>
+nexttile;
+plot(tout, e2_dot_dot, <span class="string">'Color'</span>, acceleration_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\ddot{e}_2}$, (rad/s$^2$)'</span>);
+hold <span class="string">on</span>;
+plot(tout, zero_vector, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'HandleVisibility'</span>, <span class="string">'off'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\ddot{e}_2}$, Elbow Acc Err (rad/s$^2$)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 18, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.17;
+
+<span class="comment">% Set common y-axis limits for acceleration error plots</span>
+[ymin, ymax] = getCommonYlim(e1_dot_dot, e2_dot_dot);
+nexttile(5); ylim([ymin, ymax]);
+nexttile(6); ylim([ymin, ymax]);
+
+<span class="comment">%print('ROB599-HW#3-Problem4-Fig3.2.png', '-dpng', '-r300');</span>
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW3_P4_03.png" alt=""> <h2 id="11">Plot the Robot Arm Input Evolution</h2>
+<pre class="codeinput">figure(<span class="string">'Position'</span>, [0, 0, 1200, 1000]);
+
+tLayout = tiledlayout(1,2,<span class="string">'Padding'</span>,<span class="string">'Compact'</span>);
+tLayout.Title.String = <span class="string">"Figure 3.3. Robot Arm Input Evolution. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10."</span> + newline;
+tLayout.Title.FontSize = 20;
+tLayout.Title.FontWeight = <span class="string">'bold'</span>;
+
+<span class="comment">% Plot tau1</span>
+nexttile;
+plot(tout, tau_values(:,1), <span class="string">'Color'</span>, torque_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\tau_1}$, (N$\mathbf{\cdot}$m)'</span>);
+ax = gca;
+setSubplotProperties(ax);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\tau_1}$, Shoulder Torque (N$\mathbf{\cdot}$m)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 22, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.15;
+
+<span class="comment">% Plot tau2</span>
+nexttile;
+plot(tout, tau_values(:,2), <span class="string">'Color'</span>, torque_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\tau_2}$, (N$\mathbf{\cdot}$m)'</span>);
+ax = gca;
+setSubplotProperties(ax);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\tau_2}$, Elbow Torque (N$\mathbf{\cdot}$m)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 22, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.15;
+y_lbl_handle.Position(2) = 12.5;
+
+<span class="comment">% Set common y-axis limits for torque plots</span>
+[ymin, ymax] = getCommonYlim(tau_values(:,1), tau_values(:,2));
+nexttile(1); ylim([ymin, ymax]);
+nexttile(2); ylim([ymin, ymax]);
+
+<span class="comment">% Adjust subplot aspect ratios</span>
+nexttile(1); pbaspect([1 0.5 1]);
+nexttile(2); pbaspect([1 0.5 1]);
+
+print(<span class="string">'ROB599-HW#3-Problem4-Fig3.3.png'</span>, <span class="string">'-dpng'</span>, <span class="string">'-r300'</span>);
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW3_P4_04.png" alt=""> <h2 id="12">Combined Tall Plot</h2>
+<pre class="codeinput">figure(<span class="string">'Position'</span>, [0, 0, 1200, 1200]);
+
+tLayout = tiledlayout(7,2,<span class="string">'Padding'</span>,<span class="string">'Compact'</span>);
+tLayout.Title.String = <span class="string">"Figure 3. Robot Arm. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10."</span> + newline;
+tLayout.Title.FontSize = 15;
+tLayout.Title.FontWeight = <span class="string">'bold'</span>;
+
+<span class="comment">% Plots (1,1), (1,2)</span>
+<span class="comment">% Plot q1 and q1ref</span>
+[ymin, ymax] = getCommonYlim([xout(:,1); x_target(:,1)], [xout(:,3); x_target(:,2)]);
+nexttile(1); ylim([ymin, ymax]);
+nexttile(2); ylim([ymin, ymax]);
+
+nexttile(1);
+plot(tout, xout(:,1), <span class="string">'Color'</span>, angle_pose_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{q_1}$, (rad)'</span>);
+hold <span class="string">on</span>;
+plot(t', x_target(:,1), <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{q_{1,ref}}$, (rad)'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{q_1}$, Shoulder (rad)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 30, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.12;
+y_lbl_handle.Position(2) = 0.8;
+legend(<span class="string">'FontSize'</span>, 24, <span class="string">'Location'</span>, <span class="string">'northeast'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+
+<span class="comment">% Plot q2 and q2ref</span>
+nexttile(2);
+plot(tout, xout(:,3), <span class="string">'Color'</span>, angle_pose_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{q_2}$, (rad)'</span>);
+hold <span class="string">on</span>;
+plot(t', x_target(:,3), <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{q_{2,ref}}$, (rad)'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{q_2}$, Elbow (rad)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 30, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.12;
+y_lbl_handle.Position(2) = 0.8;
+legend(<span class="string">'FontSize'</span>, 24, <span class="string">'Location'</span>, <span class="string">'northeast'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+
+
+<span class="comment">% Plots (2,1), (2,2)</span>
+<span class="comment">% Plot e1</span>
+[ymin, ymax] = getCommonYlim(error_vals(:,1), error_vals(:,3));
+nexttile(3); ylim([ymin, ymax]);
+nexttile(4); ylim([ymin, ymax]);
+
+nexttile(3);
+plot(tout, error_vals(:,1), <span class="string">'Color'</span>, angle_pose_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{e_1}$, (rad)'</span>);
+hold <span class="string">on</span>;
+plot(tout, zero_vector, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'HandleVisibility'</span>, <span class="string">'off'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{e_1}$, Shoulder Err (rad)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 30, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.12;
+legend(<span class="string">'FontSize'</span>, 24, <span class="string">'Location'</span>, <span class="string">'northeast'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+
+<span class="comment">% Plot e2</span>
+nexttile(4);
+plot(tout, error_vals(:,3), <span class="string">'Color'</span>, angle_pose_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{e_2}$, (rad)'</span>);
+hold <span class="string">on</span>;
+plot(tout, zero_vector, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'HandleVisibility'</span>, <span class="string">'off'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{q_2}$, Elbow Err (rad)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 30, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.12;
+legend(<span class="string">'FontSize'</span>, 24, <span class="string">'Location'</span>, <span class="string">'northeast'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+
+
+<span class="comment">% Plots (3,1), (3,2)</span>
+<span class="comment">% Plot q1dot</span>
+[ymin, ymax] = getCommonYlim(xout(:,2), xout(:,4));
+nexttile(5); ylim([ymin, ymax]);
+nexttile(6); ylim([ymin, ymax]);
+
+nexttile(5);
+plot(tout, xout(:,2), <span class="string">'Color'</span>, velocity_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\dot{q}_1}$, (rad/s)'</span>);
+hold <span class="string">on</span>;
+plot(t', x_target(:,2), <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\dot{q}_{1,ref}}$, (rad/s)'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\dot{q}_1}$, Shoulder Vel (rad/s)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 30, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.12;
+legend(<span class="string">'FontSize'</span>, 24, <span class="string">'Location'</span>, <span class="string">'northeast'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+
+<span class="comment">% Plot q2dot</span>
+nexttile(6);
+plot(tout, xout(:,4), <span class="string">'Color'</span>, velocity_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\dot{q}_2}$, (rad/s)'</span>);
+setSubplotProperties(gca);
+hold <span class="string">on</span>;
+plot(t', x_target(:,2), <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\dot{q}_{2,ref}}$, (rad/s)'</span>);
+hold <span class="string">off</span>;
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\dot{q}_2}$, Elbow Vel (rad/s)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 30, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.12;
+legend(<span class="string">'FontSize'</span>, 24, <span class="string">'Location'</span>, <span class="string">'northeast'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+
+
+<span class="comment">% Plots (4,1), (4,2)</span>
+<span class="comment">% e1 derivative</span>
+[ymin, ymax] = getCommonYlim(error_vals(:,2), error_vals(:,4));
+nexttile(7); ylim([ymin, ymax]);
+nexttile(8); ylim([ymin, ymax]);
+
+nexttile(7);
+plot(tout, error_vals(:,2), <span class="string">'Color'</span>, velocity_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\dot{e}_2}$, (rad/s)'</span>);
+hold <span class="string">on</span>;
+plot(tout, zero_vector, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'HandleVisibility'</span>, <span class="string">'off'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\dot{e}_1}$, Shoulder Vel Err (rad/s)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 30, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.12;
+legend(<span class="string">'FontSize'</span>, 24, <span class="string">'Location'</span>, <span class="string">'northeast'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+
+<span class="comment">% e2 derivative</span>
+nexttile(8);
+plot(tout, error_vals(:,4), <span class="string">'Color'</span>, velocity_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\dot{e}_2}$, (rad/s)'</span>);
+hold <span class="string">on</span>;
+plot(tout, zero_vector, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'HandleVisibility'</span>, <span class="string">'off'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\dot{e}_2}$, Elbow Vel Err (rad/s)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 30, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.12;
+legend(<span class="string">'FontSize'</span>, 24, <span class="string">'Location'</span>, <span class="string">'northeast'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+
+
+<span class="comment">% Plots (5,1), (5,2)</span>
+<span class="comment">% Accelerations</span>
+[ymin, ymax] = getCommonYlim([q1_dot_dot; q1d_dot_dot_vec], [q2_dot_dot; q2d_dot_dot_vec]);
+nexttile(9); ylim([ymin, ymax]);
+nexttile(10); ylim([ymin, ymax]);
+
+<span class="comment">% q1_dot_dot</span>
+nexttile(9);
+plot(tout, q1_dot_dot, <span class="string">'Color'</span>, acceleration_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\ddot{q}_1}$, (rad/s$^2$)'</span>);
+hold <span class="string">on</span>;
+plot(t', q1d_dot_dot_vec, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\ddot{q}_{1,ref}}$, (rad/s$^2$)'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\ddot{q}_1}$, Shoulder Acc (rad/s$^2$)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 30, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.12;
+legend(<span class="string">'FontSize'</span>, 24, <span class="string">'Location'</span>, <span class="string">'northeast'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+
+<span class="comment">% q2_dot_dot</span>
+nexttile(10);
+plot(tout, q2_dot_dot, <span class="string">'Color'</span>, acceleration_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\ddot{q}_2}$, (rad/s$^2$)'</span>);
+hold <span class="string">on</span>;
+plot(t', q2d_dot_dot_vec, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\ddot{q}_{2,ref}}$, (rad/s$^2$)'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\ddot{q}_2}$, Elbow Acc (rad/s$^2$)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 30, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.12;
+legend(<span class="string">'FontSize'</span>, 24, <span class="string">'Location'</span>, <span class="string">'northeast'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+
+
+<span class="comment">% Plots (6,1), (6,2)</span>
+<span class="comment">% e1_dot_dot</span>
+[ymin, ymax] = getCommonYlim(e1_dot_dot, e2_dot_dot);
+nexttile(11); ylim([ymin, ymax]);
+nexttile(12); ylim([ymin, ymax]);
+
+nexttile(11);
+plot(tout, e1_dot_dot, <span class="string">'Color'</span>, acceleration_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\ddot{e}_1}$, (rad/s$^2$)'</span>);
+hold <span class="string">on</span>;
+plot(tout, zero_vector, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'HandleVisibility'</span>, <span class="string">'off'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\ddot{e}_1}$, Shoulder Acc Err (rad/s$^2$)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 30, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.12;
+legend(<span class="string">'FontSize'</span>, 24, <span class="string">'Location'</span>, <span class="string">'northeast'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+
+<span class="comment">% e2_dot_dot</span>
+nexttile(12);
+plot(tout, e2_dot_dot, <span class="string">'Color'</span>, acceleration_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\ddot{e}_2}$, (rad/s$^2$)'</span>);
+hold <span class="string">on</span>;
+plot(tout, zero_vector, <span class="string">'Color'</span>, ref_color, <span class="string">'LineStyle'</span>, <span class="string">'--'</span>, <span class="keyword">...</span>
+    <span class="string">'LineWidth'</span>, 5, <span class="string">'HandleVisibility'</span>, <span class="string">'off'</span>);
+hold <span class="string">off</span>;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\ddot{e}_2}$, Elbow Acc Err (rad/s$^2$)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 30, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.12;
+legend(<span class="string">'FontSize'</span>, 24, <span class="string">'Location'</span>, <span class="string">'northeast'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+
+
+<span class="comment">% Plots for Torques (7,1), (7,2)</span>
+[ymin, ymax] = getCommonYlim(tau_values(:,1), tau_values(:,2));
+nexttile(13); ylim([ymin, ymax]);
+nexttile(14); ylim([ymin, ymax]);
+
+<span class="comment">% tau1</span>
+nexttile(13);
+plot(tout, tau_values(:,1), <span class="string">'Color'</span>, torque_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\tau_1}$, (N$\mathbf{\cdot}$m)'</span>);
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\tau_1}$, Shoulder Trq (N$\mathbf{\cdot}$m)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 30, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.12;
+legend(<span class="string">'FontSize'</span>, 24, <span class="string">'Location'</span>, <span class="string">'northeast'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+
+<span class="comment">% tau2</span>
+nexttile(14);
+plot(tout, tau_values(:,2), <span class="string">'Color'</span>, torque_color, <span class="string">'LineWidth'</span>, 5, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\mathbf{\tau_2}$, (N$\mathbf{\cdot}$m)'</span>);
+setSubplotProperties(gca);
+y_lbl_handle = ylabel(<span class="string">'\textbf{$\mathbf{\tau_2}$, Elbow Trq (N$\mathbf{\cdot}$m)}'</span>, <span class="keyword">...</span>
+    <span class="string">'FontSize'</span>, 30, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+y_lbl_handle.Position(1) = -0.12;
+y_lbl_handle.Position(2) = 0.0;
+legend(<span class="string">'FontSize'</span>, 24, <span class="string">'Location'</span>, <span class="string">'northeast'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+
+<span class="comment">% Save the Plot</span>
+<span class="comment">%set(gcf, 'PaperUnits', 'inches');</span>
+<span class="comment">%set(gcf, 'PaperPosition', [0 0 36 48]);</span>
+<span class="comment">%print('ROB599-HW#3-Problem4.png', '-dpng', '-r300');</span>
+</pre>
+<h2 id="13">Helper Functions</h2>
+<p>Computes the Torque Values at Give State Vector</p>
+<pre class="codeinput">
+<span class="keyword">function</span> tau_values = postComputeTorques(tout, xout, model_ref, controller_ref, param, ref)
+
+    num_steps = length(tout);
+    tau_values = zeros(num_steps, 2);
+    <span class="keyword">for</span> i = 1:num_steps
+        [~, tau] = model_ref(tout(i), xout(i,:)', controller_ref, param, ref);
+        tau_values(i,:) = tau';
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Computes the Error Vector</span>
+<span class="keyword">function</span> error_vals = computeErrors(x_actual, x_ref)
+    error_vals = x_ref - x_actual;
+<span class="keyword">end</span>
+
+<span class="comment">% Generates a Zero Vector</span>
+<span class="keyword">function</span> zero_vector = getZeroVec(t_out)
+    zero_vector = zeros(size(t_out));
+<span class="keyword">end</span>
+
+<span class="comment">% Returns Y-axis Limits for Two Sets of Data</span>
+<span class="keyword">function</span> [ymin, ymax] = getCommonYlim(data1, data2)
+    ymin = min(min(data1), min(data2));
+    ymax = max(max(data1), max(data2));
+    range = ymax - ymin;
+    ymin = ymin - 0.1 * range;
+    ymax = ymax + 0.1 * range;
+<span class="keyword">end</span>
+
+<span class="comment">% Sets Subplot Properties</span>
+<span class="keyword">function</span> setSubplotProperties(ax)
+
+    grid(ax, <span class="string">'on'</span>);
+    grid(ax, <span class="string">'minor'</span>);
+
+    ax.TickLabelInterpreter = <span class="string">'latex'</span>;
+    ax.FontSize = 14;
+
+    xlabel(ax, <span class="string">'\textbf{Time (s)}'</span>, <span class="string">'FontSize'</span>, 20, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+    lgd = legend(ax, <span class="string">'FontSize'</span>, 18, <span class="string">'Location'</span>, <span class="string">'northeast'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+    <span class="comment">% Set semi-transparent background</span>
+    lgd.BoxFace.ColorType = <span class="string">'truecoloralpha'</span>;
+    lgd.BoxFace.ColorData = uint8([255 255 255 200]');
+<span class="keyword">end</span>
+
+
+<span class="keyword">function</span> [accel1, accel2] = savitzkyGolayDerivative(t, vel1, vel2)
+    <span class="comment">% Parameters for Savitzky-Golay filter</span>
+    window_length = 2001;  <span class="comment">% Must be odd</span>
+    polynomial_order = 1;
+
+    <span class="comment">% Compute accelerations using Savitzky-Golay filter</span>
+    accel1 = gradient(smooth(vel1, window_length, <span class="string">'sgolay'</span>, polynomial_order), t);
+    accel2 = gradient(smooth(vel2, window_length, <span class="string">'sgolay'</span>, polynomial_order), t);
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% ROB599_HW3_P4
+% Simiulating a PD Controller for Robot Arm with Moving Trajectory.
+%% Cleanup
+clear
+clc
+close all
+%% Define Numerical Parameters of the System
+% Inertia Terms
+param.m1 = 7.848;
+param.m2 = 4.49;
+
+param.I1 = 0.176;
+param.I2 = 0.0411;
+
+% Geometry Terms
+param.l1 = 0.3;
+param.lc1 = 0.1554;
+param.lc2 = 0.0341;
+
+% Fundamental Constants
+param.g = 9.81;
+
+% Gains
+param.kp1 = 50;
+param.kd1 = 10;
+
+param.kp2 = 50;
+param.kd2 = 10;
+
+% Limits
+param.tau1Max = 50;
+param.tau1Min = -50;
+
+param.tau2Max = 50;
+param.tau2Min = -50;
+
+%% Define Initial Simulation Prameters
+
+% Initial Conditions
+t = linspace(0,4,100000)';
+x0 = [0;0;0;0];
+tau = [0; 0];
+
+%% Generate Target Trajectory
+% Cubic Polynomial Trajectory Waypoints
+
+t_waypoints = [0; 2; 4];
+q_waypoints = [0; pi/2; 0];
+
+t_dot_waypoints = [0; 2; 4];
+q_dot_waypoints = [0; 0; 0];
+
+% Generate the Cubic Trajectories
+[q, qd, qdd, pp] = cubicpolytraj(q_waypoints', t_waypoints', t, 'VelocityBoundaryCondition', q_dot_waypoints');
+
+% Import the Trajectory into State Space
+q1d_vec = q';
+q1d_dot_vec = qd';
+q1d_dot_dot_vec = qdd';
+
+q2d_vec = q';
+q2d_dot_vec = qd';
+q2d_dot_dot_vec = qdd';
+
+% Generate Stamped Target State Trajectory
+x_target = [q1d_vec, q1d_dot_vec, q2d_vec, q2d_dot_vec];
+t_target = t;
+
+stamped_x_target = [x_target, t_target]';
+
+%% Run Simulation
+[tout, xout] = ode45(@(t, x) manipulator(t, x, @PDControllerGravComp, param, ...
+   stamped_x_target), t, x0);
+
+% Compute Torques
+tau_values = postComputeTorques(tout, xout, @manipulator, @PDControllerGravComp, param, stamped_x_target);
+
+%% Postprocess Data
+% Compute the Errors
+error_vals_1 = computeErrors(xout(:,1), x_target(:,1));
+error_vals_2 = computeErrors(xout(:,2),x_target(:,2));
+
+error_vals_3 = computeErrors(xout(:,3), x_target(:,3));
+error_vals_4 = computeErrors(xout(:,4), x_target(:,4));
+
+error_vals =[error_vals_1, error_vals_2, error_vals_3, error_vals_4];
+
+% Calculate accelerations 
+dt = diff(tout);
+[q1_dot_dot, q2_dot_dot] = savitzkyGolayDerivative(tout, xout(:,2), xout(:,4));
+
+% Calculate acceleration errors
+e1_dot_dot = computeErrors(q1_dot_dot, q1d_dot_dot_vec);
+e2_dot_dot = computeErrors(q2_dot_dot, q2d_dot_dot_vec);
+
+% Generate the Error Target Vector
+zero_vector = getZeroVec(tout);
+
+%% Animation
+
+robotAnimation(tout, xout);
+
+%% Plot the Results
+% This section plots desired outputs.
+
+angle_pose_color = [0.2980, 0.4471, 0.6902];
+ref_color = [0, 0, 0]; 
+velocity_color = [0.8359, 0.3682, 0.0784]; 
+torque_color = [0.4667, 0.6745, 0.1882]; 
+acceleration_color = [0.4940, 0.1840, 0.5560];
+%% Plot the System States and Reference
+
+figure('Position', [0, 0, 1200, 1000]);
+
+tLayout = tiledlayout(3,2,'Padding','Compact');
+tLayout.Title.String = "Figure 3.1. Robot Arm State Evolution. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10." + newline;
+tLayout.Title.FontSize = 20;
+tLayout.Title.FontWeight = 'bold';
+
+% Poses
+% Plot q1 and q1ref
+nexttile;
+plot(tout, xout(:,1), 'Color', angle_pose_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{q_1}$, (rad)');
+hold on;
+plot(t', x_target(:,1), 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'DisplayName', '$\mathbf{q_{1,ref}}$, (rad)');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{q_1}$, Shoulder (rad)}', ...
+    'FontSize', 18, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.17;
+y_lbl_handle.Position(2) = 0.35;
+
+% Plot q2 and q2ref
+nexttile;
+plot(tout, xout(:,3), 'Color', angle_pose_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{q_2}$, (rad)');
+hold on;
+plot(t', x_target(:,3), 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'DisplayName', '$\mathbf{q_{2,ref}}$, (rad)');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{q_2}$, Elbow (rad)}', ...
+    'FontSize', 18, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.17;
+y_lbl_handle.Position(2) = 0.35;
+
+% Set common y-axis limits for angle plots
+[ymin, ymax] = getCommonYlim([xout(:,1); x_target(:,1)], [xout(:,3); x_target(:,2)]);
+nexttile(1); ylim([ymin, ymax]);
+nexttile(2); ylim([ymin, ymax]);
+
+% Velocities
+% Plot q1dot
+nexttile;
+plot(tout, xout(:,2), 'Color', velocity_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\dot{q}_1}$, (rad/s)');
+hold on;
+plot(t', x_target(:,2), 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'DisplayName', '$\mathbf{\dot{q}_{1,ref}}$, (rad/s)');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\dot{q}_1}$, Shoulder Vel (rad/s)}', ...
+    'FontSize', 18, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.17;
+
+% Plot q2dot
+nexttile;
+plot(tout, xout(:,4), 'Color', velocity_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\dot{q}_2}$, (rad/s)');
+setSubplotProperties(gca);
+hold on;
+plot(t', x_target(:,2), 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'DisplayName', '$\mathbf{\dot{q}_{2,ref}}$, (rad/s)');
+hold off;
+y_lbl_handle = ylabel('\textbf{$\mathbf{\dot{q}_2}$, Elbow Vel (rad/s)}', ...
+    'FontSize', 18, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.17;
+
+% Set common y-axis limits for angular velocity plots
+[ymin, ymax] = getCommonYlim(xout(:,2), xout(:,4));
+nexttile(3); ylim([ymin, ymax]);
+nexttile(4); ylim([ymin, ymax]);
+
+
+% Accelerations
+nexttile;
+plot(tout, q1_dot_dot, 'Color', acceleration_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\ddot{q}_1}$, (rad/s$^2$)');
+hold on;
+plot(t', q1d_dot_dot_vec, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'DisplayName', '$\mathbf{\ddot{q}_{1,ref}}$, (rad/s$^2$)');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\ddot{q}_1}$, Shoulder Acc (rad/s$^2$)}', ...
+    'FontSize', 18, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.17;
+
+nexttile;
+plot(tout, q2_dot_dot, 'Color', acceleration_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\ddot{q}_2}$, (rad/s$^2$)');
+hold on;
+plot(t', q2d_dot_dot_vec, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'DisplayName', '$\mathbf{\ddot{q}_{2,ref}}$, (rad/s$^2$)');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\ddot{q}_2}$, Elbow Acc (rad/s$^2$)}', ...
+    'FontSize', 18, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.17;
+
+% Set common y-axis limits for acceleration plots
+[ymin, ymax] = getCommonYlim([q1_dot_dot; q1d_dot_dot_vec], [q2_dot_dot; q2d_dot_dot_vec]);
+nexttile(5); ylim([ymin, ymax]);
+nexttile(6); ylim([ymin, ymax]);
+
+%print('ROB599-HW#3-Problem4-Fig3.1.png', '-dpng', '-r300');
+%% Plot the System Errors
+
+figure('Position', [0, 0, 1200, 1000]);
+
+tLayout = tiledlayout(3,2,'Padding','Compact');
+tLayout.Title.String = "Figure 3.2. Robot Arm Errors Evolution. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10." + newline;
+tLayout.Title.FontSize = 20;
+tLayout.Title.FontWeight = 'bold';
+
+% Error
+% Plot e1
+nexttile;
+plot(tout, error_vals(:,1), 'Color', angle_pose_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{e_1}$, (rad)');
+hold on;
+plot(tout, zero_vector, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'HandleVisibility', 'off');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{e_1}$, Shoulder Err (rad)}', ...
+    'FontSize', 18, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.17;
+
+% Plot e2
+nexttile;
+plot(tout, error_vals(:,3), 'Color', angle_pose_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{e_2}$, (rad)');
+hold on;
+plot(tout, zero_vector, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'HandleVisibility', 'off');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{e_2}$, Elbow Err (rad)}', ...
+    'FontSize', 18, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.17;
+
+% Set common y-axis limits for angle plots
+[ymin, ymax] = getCommonYlim(error_vals(:,1), error_vals(:,3));
+nexttile(1); ylim([ymin, ymax]);
+nexttile(2); ylim([ymin, ymax]);
+
+
+% Error Derivative
+% Plot e1 derivative
+nexttile;
+plot(tout, error_vals(:,2), 'Color', velocity_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\dot{e}_1}$, (rad/s)');
+hold on;
+plot(tout, zero_vector, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'HandleVisibility', 'off');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\dot{e}_1}$, Shoulder Vel Err (rad/s)}', ...
+    'FontSize', 18, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.17;
+
+% Plot e2 derivative
+nexttile;
+plot(tout, error_vals(:,4), 'Color', velocity_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\dot{e}_2}$, (rad/s)');
+hold on;
+plot(tout, zero_vector, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'HandleVisibility', 'off');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\dot{e}_2}$, Elbow Vel Err (rad/s)}', ...
+    'FontSize', 18, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.17;
+y_lbl_handle.Position(2) = 0.0;
+
+% Set common y-axis limits for angle plots
+[ymin, ymax] = getCommonYlim(error_vals(:,2), error_vals(:,4));
+nexttile(3); ylim([ymin, ymax]);
+nexttile(4); ylim([ymin, ymax]);
+
+% Error Acceleration
+% e1_dot_dot
+nexttile;
+plot(tout, e1_dot_dot, 'Color', acceleration_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\ddot{e}_1}$, (rad/s$^2$)');
+hold on;
+plot(tout, zero_vector, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'HandleVisibility', 'off');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\ddot{e}_1}$, Shoulder Acc Err (rad/s$^2$)}', ...
+    'FontSize', 18, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.17;
+
+% e2_dot_dot
+nexttile;
+plot(tout, e2_dot_dot, 'Color', acceleration_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\ddot{e}_2}$, (rad/s$^2$)');
+hold on;
+plot(tout, zero_vector, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'HandleVisibility', 'off');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\ddot{e}_2}$, Elbow Acc Err (rad/s$^2$)}', ...
+    'FontSize', 18, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.17;
+
+% Set common y-axis limits for acceleration error plots
+[ymin, ymax] = getCommonYlim(e1_dot_dot, e2_dot_dot);
+nexttile(5); ylim([ymin, ymax]);
+nexttile(6); ylim([ymin, ymax]);
+
+%print('ROB599-HW#3-Problem4-Fig3.2.png', '-dpng', '-r300');
+
+%% Plot the Robot Arm Input Evolution
+
+figure('Position', [0, 0, 1200, 1000]);
+
+tLayout = tiledlayout(1,2,'Padding','Compact');
+tLayout.Title.String = "Figure 3.3. Robot Arm Input Evolution. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10." + newline;
+tLayout.Title.FontSize = 20;
+tLayout.Title.FontWeight = 'bold';
+
+% Plot tau1
+nexttile;
+plot(tout, tau_values(:,1), 'Color', torque_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\tau_1}$, (N$\mathbf{\cdot}$m)');
+ax = gca;
+setSubplotProperties(ax);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\tau_1}$, Shoulder Torque (N$\mathbf{\cdot}$m)}', ...
+    'FontSize', 22, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.15;
+
+% Plot tau2
+nexttile;
+plot(tout, tau_values(:,2), 'Color', torque_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\tau_2}$, (N$\mathbf{\cdot}$m)');
+ax = gca;
+setSubplotProperties(ax);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\tau_2}$, Elbow Torque (N$\mathbf{\cdot}$m)}', ...
+    'FontSize', 22, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.15;
+y_lbl_handle.Position(2) = 12.5;
+
+% Set common y-axis limits for torque plots
+[ymin, ymax] = getCommonYlim(tau_values(:,1), tau_values(:,2));
+nexttile(1); ylim([ymin, ymax]);
+nexttile(2); ylim([ymin, ymax]);
+
+% Adjust subplot aspect ratios
+nexttile(1); pbaspect([1 0.5 1]);
+nexttile(2); pbaspect([1 0.5 1]);
+
+print('ROB599-HW#3-Problem4-Fig3.3.png', '-dpng', '-r300');
+
+%% Combined Tall Plot
+figure('Position', [0, 0, 1200, 1200]);
+
+tLayout = tiledlayout(7,2,'Padding','Compact');
+tLayout.Title.String = "Figure 3. Robot Arm. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10." + newline;
+tLayout.Title.FontSize = 15;
+tLayout.Title.FontWeight = 'bold';
+
+% Plots (1,1), (1,2)
+% Plot q1 and q1ref
+[ymin, ymax] = getCommonYlim([xout(:,1); x_target(:,1)], [xout(:,3); x_target(:,2)]);
+nexttile(1); ylim([ymin, ymax]);
+nexttile(2); ylim([ymin, ymax]);
+
+nexttile(1);
+plot(tout, xout(:,1), 'Color', angle_pose_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{q_1}$, (rad)');
+hold on;
+plot(t', x_target(:,1), 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'DisplayName', '$\mathbf{q_{1,ref}}$, (rad)');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{q_1}$, Shoulder (rad)}', ...
+    'FontSize', 30, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.12;
+y_lbl_handle.Position(2) = 0.8;
+legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
+
+% Plot q2 and q2ref
+nexttile(2);
+plot(tout, xout(:,3), 'Color', angle_pose_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{q_2}$, (rad)');
+hold on;
+plot(t', x_target(:,3), 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'DisplayName', '$\mathbf{q_{2,ref}}$, (rad)');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{q_2}$, Elbow (rad)}', ...
+    'FontSize', 30, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.12;
+y_lbl_handle.Position(2) = 0.8;
+legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
+
+
+% Plots (2,1), (2,2)
+% Plot e1
+[ymin, ymax] = getCommonYlim(error_vals(:,1), error_vals(:,3));
+nexttile(3); ylim([ymin, ymax]);
+nexttile(4); ylim([ymin, ymax]);
+
+nexttile(3);
+plot(tout, error_vals(:,1), 'Color', angle_pose_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{e_1}$, (rad)');
+hold on;
+plot(tout, zero_vector, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'HandleVisibility', 'off');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{e_1}$, Shoulder Err (rad)}', ...
+    'FontSize', 30, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.12;
+legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
+
+% Plot e2
+nexttile(4);
+plot(tout, error_vals(:,3), 'Color', angle_pose_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{e_2}$, (rad)');
+hold on;
+plot(tout, zero_vector, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'HandleVisibility', 'off');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{q_2}$, Elbow Err (rad)}', ...
+    'FontSize', 30, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.12;
+legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
+
+
+% Plots (3,1), (3,2)
+% Plot q1dot
+[ymin, ymax] = getCommonYlim(xout(:,2), xout(:,4));
+nexttile(5); ylim([ymin, ymax]);
+nexttile(6); ylim([ymin, ymax]);
+
+nexttile(5);
+plot(tout, xout(:,2), 'Color', velocity_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\dot{q}_1}$, (rad/s)');
+hold on;
+plot(t', x_target(:,2), 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'DisplayName', '$\mathbf{\dot{q}_{1,ref}}$, (rad/s)');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\dot{q}_1}$, Shoulder Vel (rad/s)}', ...
+    'FontSize', 30, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.12;
+legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
+
+% Plot q2dot
+nexttile(6);
+plot(tout, xout(:,4), 'Color', velocity_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\dot{q}_2}$, (rad/s)');
+setSubplotProperties(gca);
+hold on;
+plot(t', x_target(:,2), 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'DisplayName', '$\mathbf{\dot{q}_{2,ref}}$, (rad/s)');
+hold off;
+y_lbl_handle = ylabel('\textbf{$\mathbf{\dot{q}_2}$, Elbow Vel (rad/s)}', ...
+    'FontSize', 30, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.12;
+legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
+
+
+% Plots (4,1), (4,2)
+% e1 derivative
+[ymin, ymax] = getCommonYlim(error_vals(:,2), error_vals(:,4));
+nexttile(7); ylim([ymin, ymax]);
+nexttile(8); ylim([ymin, ymax]);
+
+nexttile(7);
+plot(tout, error_vals(:,2), 'Color', velocity_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\dot{e}_2}$, (rad/s)');
+hold on;
+plot(tout, zero_vector, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'HandleVisibility', 'off');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\dot{e}_1}$, Shoulder Vel Err (rad/s)}', ...
+    'FontSize', 30, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.12;
+legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
+
+% e2 derivative
+nexttile(8);
+plot(tout, error_vals(:,4), 'Color', velocity_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\dot{e}_2}$, (rad/s)');
+hold on;
+plot(tout, zero_vector, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'HandleVisibility', 'off');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\dot{e}_2}$, Elbow Vel Err (rad/s)}', ...
+    'FontSize', 30, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.12;
+legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
+
+
+% Plots (5,1), (5,2)
+% Accelerations
+[ymin, ymax] = getCommonYlim([q1_dot_dot; q1d_dot_dot_vec], [q2_dot_dot; q2d_dot_dot_vec]);
+nexttile(9); ylim([ymin, ymax]);
+nexttile(10); ylim([ymin, ymax]);
+
+% q1_dot_dot
+nexttile(9);
+plot(tout, q1_dot_dot, 'Color', acceleration_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\ddot{q}_1}$, (rad/s$^2$)');
+hold on;
+plot(t', q1d_dot_dot_vec, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'DisplayName', '$\mathbf{\ddot{q}_{1,ref}}$, (rad/s$^2$)');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\ddot{q}_1}$, Shoulder Acc (rad/s$^2$)}', ...
+    'FontSize', 30, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.12;
+legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
+
+% q2_dot_dot
+nexttile(10);
+plot(tout, q2_dot_dot, 'Color', acceleration_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\ddot{q}_2}$, (rad/s$^2$)');
+hold on;
+plot(t', q2d_dot_dot_vec, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'DisplayName', '$\mathbf{\ddot{q}_{2,ref}}$, (rad/s$^2$)');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\ddot{q}_2}$, Elbow Acc (rad/s$^2$)}', ...
+    'FontSize', 30, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.12;
+legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
+
+
+% Plots (6,1), (6,2)
+% e1_dot_dot
+[ymin, ymax] = getCommonYlim(e1_dot_dot, e2_dot_dot);
+nexttile(11); ylim([ymin, ymax]);
+nexttile(12); ylim([ymin, ymax]);
+
+nexttile(11);
+plot(tout, e1_dot_dot, 'Color', acceleration_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\ddot{e}_1}$, (rad/s$^2$)');
+hold on;
+plot(tout, zero_vector, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'HandleVisibility', 'off');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\ddot{e}_1}$, Shoulder Acc Err (rad/s$^2$)}', ...
+    'FontSize', 30, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.12;
+legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
+
+% e2_dot_dot
+nexttile(12);
+plot(tout, e2_dot_dot, 'Color', acceleration_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\ddot{e}_2}$, (rad/s$^2$)');
+hold on;
+plot(tout, zero_vector, 'Color', ref_color, 'LineStyle', 'REPLACE_WITH_DASH_DASH', ...
+    'LineWidth', 5, 'HandleVisibility', 'off');
+hold off;
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\ddot{e}_2}$, Elbow Acc Err (rad/s$^2$)}', ...
+    'FontSize', 30, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.12;
+legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
+
+
+% Plots for Torques (7,1), (7,2)
+[ymin, ymax] = getCommonYlim(tau_values(:,1), tau_values(:,2));
+nexttile(13); ylim([ymin, ymax]);
+nexttile(14); ylim([ymin, ymax]);
+
+% tau1
+nexttile(13);
+plot(tout, tau_values(:,1), 'Color', torque_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\tau_1}$, (N$\mathbf{\cdot}$m)'); 
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\tau_1}$, Shoulder Trq (N$\mathbf{\cdot}$m)}', ...
+    'FontSize', 30, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.12;
+legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
+
+% tau2
+nexttile(14);
+plot(tout, tau_values(:,2), 'Color', torque_color, 'LineWidth', 5, ...
+    'DisplayName', '$\mathbf{\tau_2}$, (N$\mathbf{\cdot}$m)');
+setSubplotProperties(gca);
+y_lbl_handle = ylabel('\textbf{$\mathbf{\tau_2}$, Elbow Trq (N$\mathbf{\cdot}$m)}', ...
+    'FontSize', 30, 'Interpreter', 'latex');
+y_lbl_handle.Position(1) = -0.12;
+y_lbl_handle.Position(2) = 0.0;
+legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
+
+% Save the Plot
+%set(gcf, 'PaperUnits', 'inches');
+%set(gcf, 'PaperPosition', [0 0 36 48]); 
+%print('ROB599-HW#3-Problem4.png', '-dpng', '-r300');
+
+%% Helper Functions
+% Computes the Torque Values at Give State Vector
+function tau_values = postComputeTorques(tout, xout, model_ref, controller_ref, param, ref)
+    
+    num_steps = length(tout);
+    tau_values = zeros(num_steps, 2);
+    for i = 1:num_steps
+        [~, tau] = model_ref(tout(i), xout(i,:)', controller_ref, param, ref);
+        tau_values(i,:) = tau';
+    end
+end
+
+% Computes the Error Vector
+function error_vals = computeErrors(x_actual, x_ref)
+    error_vals = x_ref - x_actual;
+end
+
+% Generates a Zero Vector
+function zero_vector = getZeroVec(t_out)
+    zero_vector = zeros(size(t_out));
+end
+
+% Returns Y-axis Limits for Two Sets of Data
+function [ymin, ymax] = getCommonYlim(data1, data2)
+    ymin = min(min(data1), min(data2));
+    ymax = max(max(data1), max(data2));
+    range = ymax - ymin;
+    ymin = ymin - 0.1 * range;
+    ymax = ymax + 0.1 * range;
+end
+
+% Sets Subplot Properties
+function setSubplotProperties(ax)
+
+    grid(ax, 'on');
+    grid(ax, 'minor');
+
+    ax.TickLabelInterpreter = 'latex'; 
+    ax.FontSize = 14;
+
+    xlabel(ax, '\textbf{Time (s)}', 'FontSize', 20, 'Interpreter', 'latex');
+    lgd = legend(ax, 'FontSize', 18, 'Location', 'northeast', 'Interpreter', 'latex');
+    % Set semi-transparent background
+    lgd.BoxFace.ColorType = 'truecoloralpha';
+    lgd.BoxFace.ColorData = uint8([255 255 255 200]');
+end
+
+
+function [accel1, accel2] = savitzkyGolayDerivative(t, vel1, vel2)
+    % Parameters for Savitzky-Golay filter
+    window_length = 2001;  % Must be odd
+    polynomial_order = 1;
+    
+    % Compute accelerations using Savitzky-Golay filter
+    accel1 = gradient(smooth(vel1, window_length, 'sgolay', polynomial_order), t);
+    accel2 = gradient(smooth(vel2, window_length, 'sgolay', polynomial_order), t);
+end
+##### SOURCE END #####
+-->
+</body>
+</html>
