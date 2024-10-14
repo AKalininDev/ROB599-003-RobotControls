@@ -110,11 +110,11 @@ torque_color = [0.4667, 0.6745, 0.1882];
 acceleration_color = [0.4940, 0.1840, 0.5560];
 %% Plot the System States and Reference
 
-figure('Position', [100, 100, 1800, 1200]);
+figure('Position', [0, 0, 1200, 1000]);
 
 tLayout = tiledlayout(3,2,'Padding','Compact');
 tLayout.Title.String = "Figure 3.1. Robot Arm State Evolution. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10." + newline;
-tLayout.Title.FontSize = 24;
+tLayout.Title.FontSize = 20;
 tLayout.Title.FontWeight = 'bold';
 
 % Poses
@@ -214,14 +214,14 @@ y_lbl_handle.Position(1) = -0.17;
 nexttile(5); ylim([ymin, ymax]);
 nexttile(6); ylim([ymin, ymax]);
 
-print('ROB599-HW#3-Problem4-Fig3.1.png', '-dpng', '-r300');
+%print('ROB599-HW#3-Problem4-Fig3.1.png', '-dpng', '-r300');
 %% Plot the System Errors
 
-figure('Position', [100, 100, 1800, 1200]);
+figure('Position', [0, 0, 1200, 1000]);
 
 tLayout = tiledlayout(3,2,'Padding','Compact');
 tLayout.Title.String = "Figure 3.2. Robot Arm Errors Evolution. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10." + newline;
-tLayout.Title.FontSize = 24;
+tLayout.Title.FontSize = 20;
 tLayout.Title.FontWeight = 'bold';
 
 % Error
@@ -322,15 +322,15 @@ y_lbl_handle.Position(1) = -0.17;
 nexttile(5); ylim([ymin, ymax]);
 nexttile(6); ylim([ymin, ymax]);
 
-print('ROB599-HW#3-Problem4-Fig3.2.png', '-dpng', '-r300');
+%print('ROB599-HW#3-Problem4-Fig3.2.png', '-dpng', '-r300');
 
 %% Plot the Robot Arm Input Evolution
 
-figure('Position', [100, 100, 1920, 800]);
+figure('Position', [0, 0, 1200, 1000]);
 
 tLayout = tiledlayout(1,2,'Padding','Compact');
 tLayout.Title.String = "Figure 3.3. Robot Arm Input Evolution. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10." + newline;
-tLayout.Title.FontSize = 24;
+tLayout.Title.FontSize = 20;
 tLayout.Title.FontWeight = 'bold';
 
 % Plot tau1
@@ -347,7 +347,7 @@ y_lbl_handle.Position(1) = -0.15;
 nexttile;
 plot(tout, tau_values(:,2), 'Color', torque_color, 'LineWidth', 5, ...
     'DisplayName', '$\mathbf{\tau_2}$, (N$\mathbf{\cdot}$m)');
-ax = gca
+ax = gca;
 setSubplotProperties(ax);
 y_lbl_handle = ylabel('\textbf{$\mathbf{\tau_2}$, Elbow Torque (N$\mathbf{\cdot}$m)}', ...
     'FontSize', 22, 'Interpreter', 'latex');
@@ -366,7 +366,7 @@ nexttile(2); pbaspect([1 0.5 1]);
 print('ROB599-HW#3-Problem4-Fig3.3.png', '-dpng', '-r300');
 
 %% Combined Tall Plot
-figure('Position', [100, 100, 1920, 920]);
+figure('Position', [0, 0, 1200, 1200]);
 
 tLayout = tiledlayout(7,2,'Padding','Compact');
 tLayout.Title.String = "Figure 3. Robot Arm. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10." + newline;
@@ -607,9 +607,9 @@ y_lbl_handle.Position(2) = 0.0;
 legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
 
 % Save the Plot
-set(gcf, 'PaperUnits', 'inches');
-set(gcf, 'PaperPosition', [0 0 36 48]); 
-print('ROB599-HW#3-Problem4.png', '-dpng', '-r300');
+%set(gcf, 'PaperUnits', 'inches');
+%set(gcf, 'PaperPosition', [0 0 36 48]); 
+%print('ROB599-HW#3-Problem4.png', '-dpng', '-r300');
 
 %% Helper Functions
 % Computes the Torque Values at Give State Vector
