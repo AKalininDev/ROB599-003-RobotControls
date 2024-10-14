@@ -40,16 +40,12 @@ tau = [0; 0];
 
 % Target Trajectory
 % Step Response for Shoulder and Elbow
-q1d_start = pi/2; % start
-q1d_new = 0;      % new
-t1_step = 2;      % time of start -> new transition
+qd_start = pi/2; % start
+qd_new = 0;      % new
+t_step = 2;      % time of start -> new transition
 
-q2d_start = q1d_start;
-q2d_new = q1d_new;
-t2_step = t1_step;
-
-q1d_vec = step(q1d_start, q1d_new, t, t1_step);
-q2d_vec = step(q2d_start, q2d_new, t, t2_step);
+q1d_vec = step(qd_start, qd_new, t, t_step);
+q2d_vec = q1d_vec;
 
 % Generate Stamped Target State Trajectory
 nan_vector = nan(size(q1d_vec));
