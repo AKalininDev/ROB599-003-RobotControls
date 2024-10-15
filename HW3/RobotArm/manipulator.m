@@ -16,7 +16,7 @@ function [xdot, tau]  = manipulator(t, x, controller, param, ref)
     N = computeManipulatorGravityN(x, param);
     
     % Compute Controller Input
-    [tau, ~] = controller(t, x, param, ref);
+    tau = controller(t, x, param, ref);
     
     % Compute the derivative terms for velocities
     q_dd = M \ (tau - C*q_dot - N);

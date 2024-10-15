@@ -1,7 +1,7 @@
 %% PD Controller with Gravity Compensation.
 % Specific for Robot Manpulator with System Described in manipulator.m
 
-function [tau, b] = PDControllerGravComp(t, x, param, ref)
+function tau = PDControllerGravComp(t, x, param, ref)
     
     % Interpreting State Space
     q1 = x(1); q1dot = x(2); q2 = x(3); q2dot = x(4);
@@ -48,8 +48,6 @@ function [tau, b] = PDControllerGravComp(t, x, param, ref)
     % Safety Constrains
     tau(1) = constrain(tau(1), tau1UpperLim, tau1LowerLim);
     tau(2) = constrain(tau(2), tau2UpperLim, tau2LowerLim);
-
-    b = 0;
 
 end
 
