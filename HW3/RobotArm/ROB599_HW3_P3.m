@@ -72,7 +72,8 @@ error_vals =[error_vals_1, error_vals_2];
 
 % Generate the Error Target Vector
 zero_vector = getZeroVec(tout);
-
+%% Animation
+robotAnimation(tout, xout);
 %% Plot the Results
 figure('Position', [100, 100, 1800, 1200]);
 sgtitle('Figure 2. Robot Arm. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10.', ...

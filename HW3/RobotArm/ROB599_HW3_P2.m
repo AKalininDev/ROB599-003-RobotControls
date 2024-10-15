@@ -78,6 +78,8 @@ error_vals =[error_vals_1, error_vals_2];
 % Generate the Error Target Vector
 zero_vector = getZeroVec(tout);
 
+%% Animation
+robotAnimation(tout, xout);
 %% Plot the Results
 figure('Position', [100, 100, 1800, 1200]);
 sgtitle('Figure 1. Robot Arm PD Controller. Kp1 = Kp2 = 50. Kd1 = Kd2 = 10.', ...
@@ -122,7 +124,6 @@ y_lbl_handle.Position(2) = 0.35;
 [ymin, ymax] = getCommonYlim([xout(:,1); x_target(:,1)], [xout(:,3); x_target(:,2)]);
 subplot(4,2,1); ylim([ymin, ymax]);
 subplot(4,2,2); ylim([ymin, ymax]);
-
 
 % Plots (2,1), (2,2)
 % Plot q1 and q1ref
