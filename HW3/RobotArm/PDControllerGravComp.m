@@ -3,7 +3,7 @@
 
 function [tau, b] = PDControllerGravComp(t, x, param, ref)
     
-    % State Space Vars
+    % Interpreting State Space
     q1 = x(1); q1dot = x(2); q2 = x(3); q2dot = x(4);
     
     % Import Gains
@@ -20,33 +20,35 @@ function [tau, b] = PDControllerGravComp(t, x, param, ref)
     tau2UpperLim = param.tau2Max;
     tau2LowerLim = param.tau2Min;
 
-    % Import System Parameters
-    m1 = param.m1; m2 = param.m2; g = param.g;
-    l1 = param.l1; lc1 = param.lc1; lc2 = param.lc2; 
+    % Get Kp and Kd Matricies
+    Kp = [Kp1, 0;
+          0, Kp2];
+
+    Kd = [Kd1, 0;
+          0, Kd2];
 
     % Interpolate the Target State
     x_1_target = interp1(ref(end, :), ref(1, :), t, "nearest");
-    x_2_target = interp1(ref(end, :), ref(2, :), t, "nearest");
     x_3_target = interp1(ref(end, :), ref(3, :), t, "nearest");
-    x_4_target = interp1(ref(end, :), ref(4, :), t, "nearest");
 
-    % Interprete State Space
+    % Interprete Target State Space
     q1d = x_1_target;
     q2d = x_3_target;
+    
+    % Get Error and Derivative State Vectors
+    e = [q1d - q1; q2d - q2];
+    q_dot = [q1dot; q2dot];
 
-    % Compute Gravity Compensation (Borrowed from manipulator.m)
-    N_1 = m1*g*lc1*cos(q1) + m2*g*(l1*cos(q1) + lc2*cos(q1 + q2));
-    N_2 = m2*g*lc2*cos(q1 + q2);
+    % Compute Gravity Compensation
+    N = computeManipulatorGravityN(x, param);
 
     % Compute Controller Input
-    tau1 = Kp1 * (q1d - q1) - Kd1*q1dot + N_1;
-    tau2 = Kp2 * (q2d - q2) - Kd2*q2dot + N_2;
-    
-    % Safety Constrains
-    tau1 = constrain(tau1, tau1UpperLim, tau1LowerLim);
-    tau2 = constrain(tau2, tau2UpperLim, tau2LowerLim);
+    tau = Kp*e - Kd*q_dot + N;
 
-    tau = [tau1; tau2];
+    % Safety Constrains
+    tau(1) = constrain(tau(1), tau1UpperLim, tau1LowerLim);
+    tau(2) = constrain(tau(2), tau2UpperLim, tau2LowerLim);
+
     b = 0;
 
 end
