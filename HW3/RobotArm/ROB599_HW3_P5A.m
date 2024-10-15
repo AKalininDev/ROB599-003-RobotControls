@@ -604,7 +604,7 @@ legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
 % Save the Plot
 set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPosition', [0 0 36 48]); 
-print('ROB599-HW#3-Problem5.png', '-dpng', '-r300');
+print('ROB599-HW#3-Problem5A.png', '-dpng', '-r300');
 
 %% Helper Functions
 % Computes the Torque Values at Give State Vector
