@@ -441,9 +441,10 @@ plot(tout, zero_vector, 'Color', ref_color, 'LineStyle', '--', ...
     'LineWidth', 5, 'HandleVisibility', 'off');
 hold off;
 setSubplotProperties(gca);
-y_lbl_handle = ylabel('\textbf{$\mathbf{q_2}$, Elbow Err (rad)}', ...
+y_lbl_handle = ylabel('\textbf{$\mathbf{e_2}$, Elbow Err (rad)}', ...
     'FontSize', 30, 'Interpreter', 'latex');
 y_lbl_handle.Position(1) = -0.12;
+y_lbl_handle.Position(2) = 0.025;
 legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
 [ymin, ymax] = getCommonYlim(error_vals(:,1), error_vals(:,3));
 nexttile(3); ylim([ymin, ymax]);
@@ -587,10 +588,6 @@ nexttile(11); ylim([ymin, ymax]);
 nexttile(12); ylim([ymin, ymax]);
 
 % Plots for Torques (7,1), (7,2)
-[ymin, ymax] = getCommonYlim(tau_values(:,1), tau_values(:,2));
-nexttile(13); ylim([ymin, ymax]);
-nexttile(14); ylim([ymin, ymax]);
-
 % tau1
 nexttile(13);
 plot(tout, tau_values(:,1), 'Color', torque_color, 'LineWidth', 5, ...
@@ -599,6 +596,7 @@ setSubplotProperties(gca);
 y_lbl_handle = ylabel('\textbf{$\mathbf{\tau_1}$, Shoulder Trq (N$\mathbf{\cdot}$m)}', ...
     'FontSize', 30, 'Interpreter', 'latex');
 y_lbl_handle.Position(1) = -0.12;
+y_lbl_handle.Position(2) = 12.5;
 legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
 
 % tau2
@@ -609,8 +607,12 @@ setSubplotProperties(gca);
 y_lbl_handle = ylabel('\textbf{$\mathbf{\tau_2}$, Elbow Trq (N$\mathbf{\cdot}$m)}', ...
     'FontSize', 30, 'Interpreter', 'latex');
 y_lbl_handle.Position(1) = -0.12;
-y_lbl_handle.Position(2) = 0.0;
+y_lbl_handle.Position(2) = 12.5;
 legend('FontSize', 24, 'Location', 'northeast', 'Interpreter', 'latex');
+
+[ymin, ymax] = getCommonYlim(tau_values(:,1), tau_values(:,2));
+nexttile(13); ylim([ymin, ymax]);
+nexttile(14); ylim([ymin, ymax]);
 
 % Save the Plot
 set(gcf, 'PaperUnits', 'inches');
