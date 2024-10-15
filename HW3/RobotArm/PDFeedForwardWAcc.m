@@ -24,7 +24,7 @@ function tau = PDFeedForwardWAcc(t, x, param, ref)
     tau1LowerLim = param.tau1Min;
     tau2LowerLim = param.tau2Min;
 
-    % Import Noize parameters
+    % Import Accuracy parameters
     MAccuracy = param.MAccuracy;
     CAccuracy = param.CAccuracy;
     NAccuracy = param.NAccuracy;
