@@ -219,7 +219,7 @@ y_lbl_handle.Position(1) = -0.17;
 nexttile(5); ylim([ymin, ymax]);
 nexttile(6); ylim([ymin, ymax]);
 
-print('ROB599-HW#3-Problem6-Fig7.1.png', '-dpng', '-r300');
+print('output\ROB599-HW#3-Problem6-Fig7.1.png', '-dpng', '-r300');
 %% Plot the System Errors
 
 figure('Position', [0, 0, 1200, 1000]);
@@ -331,7 +331,7 @@ y_lbl_handle.Position(2) = 1.0;
 nexttile(5); ylim([ymin, ymax]);
 nexttile(6); ylim([ymin, ymax]);
 
-print('ROB599-HW#3-Problem6-Fig7.2.png', '-dpng', '-r300');
+print('output\ROB599-HW#3-Problem6-Fig7.2.png', '-dpng', '-r300');
 
 %% Plot the Robot Arm Input Evolution
 
@@ -372,7 +372,7 @@ nexttile(2); ylim([ymin, ymax]);
 nexttile(1); pbaspect([1 0.5 1]);
 nexttile(2); pbaspect([1 0.5 1]);
 
-print('ROB599-HW#3-Problem6-Fig7.3.png', '-dpng', '-r300');
+print('output\ROB599-HW#3-Problem6-Fig7.3.png', '-dpng', '-r300');
 
 %% Combined Tall Plot
 figure('Position', [0, 0, 1200, 1200]);
@@ -622,7 +622,7 @@ nexttile(14); ylim([ymin, ymax]);
 % Save the Plot
 set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPosition', [0 0 36 48]); 
-print('ROB599-HW#3-Problem6B.png', '-dpng', '-r300');
+print('output\ROB599-HW#3-Problem6B.png', '-dpng', '-r300');
 
 %% Helper Functions
 % Computes the Torque Values at Give State Vector

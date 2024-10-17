@@ -212,7 +212,7 @@ subplot(4,2,8); ylim([ymin, ymax]);
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96]);
 
 % Save the figure
-print('ROB599-HW#3-Problem2.png', '-dpng', '-r300');
+print('output\ROB599-HW#3-Problem2.png', '-dpng', '-r300');
 
 %% Helper Functions
 % Computes the Torque Values at Give State Vector
