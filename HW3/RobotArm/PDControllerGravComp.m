@@ -12,6 +12,12 @@ function tau = PDControllerGravComp(t, x, param, ref)
     
     Kp2 = param.kp2;
     Kd2 = param.kd2;
+
+    Kp = [Kp1, 0;
+          0, Kp2];
+
+    Kd = [Kd1, 0;
+          0, Kd2];
     
     % Import Limits
     tau1UpperLim = param.tau1Max;
@@ -19,13 +25,6 @@ function tau = PDControllerGravComp(t, x, param, ref)
 
     tau2UpperLim = param.tau2Max;
     tau2LowerLim = param.tau2Min;
-
-    % Get Kp and Kd Matricies
-    Kp = [Kp1, 0;
-          0, Kp2];
-
-    Kd = [Kd1, 0;
-          0, Kd2];
 
     % Interpolate the Target State
     x_1_target = interp1(ref(end, :), ref(1, :), t, "nearest");
