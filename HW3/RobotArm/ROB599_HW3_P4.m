@@ -113,7 +113,7 @@ acceleration_color = [0.4940, 0.1840, 0.5560];
 figure('Position', [0, 0, 1200, 1000]);
 
 tLayout = tiledlayout(3,2,'Padding','Compact');
-tLayout.Title.String = "Figure 3.1. Robot Arm State Evolution. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10." + newline;
+tLayout.Title.String = "Figure 3.1. Robot Arm State Evolution. Cubic Trajectory Tracking. PD Controller. Kpi = 50. Kdi = 10." + newline;
 tLayout.Title.FontSize = 20;
 tLayout.Title.FontWeight = 'bold';
 
@@ -222,7 +222,7 @@ print('output\ROB599-HW#3-Problem4-Fig3.1.png', '-dpng', '-r300');
 figure('Position', [0, 0, 1200, 1000]);
 
 tLayout = tiledlayout(3,2,'Padding','Compact');
-tLayout.Title.String = "Figure 3.2. Robot Arm Errors Evolution. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10." + newline;
+tLayout.Title.String = "Figure 3.2. Robot Arm Errors Evolution. Cubic Trajectory Tracking. PD Controller. Kpi = 50. Kdi = 10." + newline;
 tLayout.Title.FontSize = 20;
 tLayout.Title.FontWeight = 'bold';
 
@@ -336,7 +336,7 @@ print('output\ROB599-HW#3-Problem4-Fig3.2.png', '-dpng', '-r300');
 figure('Position', [0, 0, 1200, 1000]);
 
 tLayout = tiledlayout(1,2,'Padding','Compact');
-tLayout.Title.String = "Figure 3.3. Robot Arm Input Evolution. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10." + newline;
+tLayout.Title.String = "Figure 3.3. Robot Arm Input Evolution. Cubic Trajectory Tracking. PD Controller. Kpi = 50. Kdi = 10." + newline;
 tLayout.Title.FontSize = 20;
 tLayout.Title.FontWeight = 'bold';
 
@@ -376,7 +376,7 @@ print('output\ROB599-HW#3-Problem4-Fig3.3.png', '-dpng', '-r300');
 figure('Position', [0, 0, 1200, 1200]);
 
 tLayout = tiledlayout(7,2,'Padding','Compact');
-tLayout.Title.String = "Figure 3. Robot Arm. Cubic Trajectory Tracking. PD Controller w Gravity Comp. Kpi = 50. Kdi = 10." + newline;
+tLayout.Title.String = "Figure 3. Robot Arm. Cubic Trajectory Tracking. PD Controller. Kpi = 50. Kdi = 10." + newline;
 tLayout.Title.FontSize = 15;
 tLayout.Title.FontWeight = 'bold';
 
