@@ -69,11 +69,11 @@ t_target = t;
 stamped_x_target = [x_target, t_target]';
 
 %% Run Simulation
-[tout, xout] = ode45(@(t, x) manipulator(t, x, @PDControllerGravComp, param, ...
+[tout, xout] = ode45(@(t, x) manipulator(t, x, @PDController, param, ...
    stamped_x_target), t, x0);
 
 % Compute Torques
-tau_values = postComputeTorques(tout, xout, @manipulator, @PDControllerGravComp, param, stamped_x_target);
+tau_values = postComputeTorques(tout, xout, @manipulator, @PDController, param, stamped_x_target);
 
 %% Postprocess Data
 % Compute the Errors
@@ -196,6 +196,7 @@ setSubplotProperties(gca);
 y_lbl_handle = ylabel('\textbf{$\mathbf{\ddot{q}_1}$, Shoulder Acc (rad/s$^2$)}', ...
     'FontSize', 18, 'Interpreter', 'latex');
 y_lbl_handle.Position(1) = -0.17;
+y_lbl_handle.Position(2) = 0.0;
 
 nexttile;
 plot(tout, q2_dot_dot, 'Color', acceleration_color, 'LineWidth', 5, ...
@@ -208,6 +209,7 @@ setSubplotProperties(gca);
 y_lbl_handle = ylabel('\textbf{$\mathbf{\ddot{q}_2}$, Elbow Acc (rad/s$^2$)}', ...
     'FontSize', 18, 'Interpreter', 'latex');
 y_lbl_handle.Position(1) = -0.17;
+y_lbl_handle.Position(2) = 0.0;
 
 % Set common y-axis limits for acceleration plots
 [ymin, ymax] = getCommonYlim([q1_dot_dot; q1d_dot_dot_vec], [q2_dot_dot; q2d_dot_dot_vec]);
@@ -237,6 +239,7 @@ setSubplotProperties(gca);
 y_lbl_handle = ylabel('\textbf{$\mathbf{e_1}$, Shoulder Err (rad)}', ...
     'FontSize', 18, 'Interpreter', 'latex');
 y_lbl_handle.Position(1) = -0.17;
+y_lbl_handle.Position(2) = 0.2;
 
 % Plot e2
 nexttile;
@@ -250,6 +253,7 @@ setSubplotProperties(gca);
 y_lbl_handle = ylabel('\textbf{$\mathbf{e_2}$, Elbow Err (rad)}', ...
     'FontSize', 18, 'Interpreter', 'latex');
 y_lbl_handle.Position(1) = -0.17;
+y_lbl_handle.Position(2) = 0.2;
 
 % Set common y-axis limits for angle plots
 [ymin, ymax] = getCommonYlim(error_vals(:,1), error_vals(:,3));
@@ -270,6 +274,7 @@ setSubplotProperties(gca);
 y_lbl_handle = ylabel('\textbf{$\mathbf{\dot{e}_1}$, Shoulder Vel Err (rad/s)}', ...
     'FontSize', 18, 'Interpreter', 'latex');
 y_lbl_handle.Position(1) = -0.17;
+y_lbl_handle.Position(2) = 0.5;
 
 % Plot e2 derivative
 nexttile;
@@ -283,7 +288,7 @@ setSubplotProperties(gca);
 y_lbl_handle = ylabel('\textbf{$\mathbf{\dot{e}_2}$, Elbow Vel Err (rad/s)}', ...
     'FontSize', 18, 'Interpreter', 'latex');
 y_lbl_handle.Position(1) = -0.17;
-y_lbl_handle.Position(2) = 0.0;
+y_lbl_handle.Position(2) = 0.5;
 
 % Set common y-axis limits for angle plots
 [ymin, ymax] = getCommonYlim(error_vals(:,2), error_vals(:,4));
@@ -303,6 +308,7 @@ setSubplotProperties(gca);
 y_lbl_handle = ylabel('\textbf{$\mathbf{\ddot{e}_1}$, Shoulder Acc Err (rad/s$^2$)}', ...
     'FontSize', 18, 'Interpreter', 'latex');
 y_lbl_handle.Position(1) = -0.17;
+y_lbl_handle.Position(2) = 5.0;
 
 % e2_dot_dot
 nexttile;
@@ -316,6 +322,7 @@ setSubplotProperties(gca);
 y_lbl_handle = ylabel('\textbf{$\mathbf{\ddot{e}_2}$, Elbow Acc Err (rad/s$^2$)}', ...
     'FontSize', 18, 'Interpreter', 'latex');
 y_lbl_handle.Position(1) = -0.17;
+y_lbl_handle.Position(2) = 5.0;
 
 % Set common y-axis limits for acceleration error plots
 [ymin, ymax] = getCommonYlim(e1_dot_dot, e2_dot_dot);
