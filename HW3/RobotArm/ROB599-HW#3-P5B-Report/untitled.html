@@ -1,0 +1,407 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>ROB599_HW3_P5B</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-10-18">
+<meta name="DC.source" content="untitled.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>ROB599_HW3_P5B</h1>
+<!--introduction-->
+<p>Simiulating a PD Controller with Feed Forward and Noize for Robot Arm with Moving Trajectory.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Cleanup</a>
+</li>
+<li>
+<a href="#2">Define Numerical Parameters of the System</a>
+</li>
+<li>
+<a href="#3">Define Initial Simulation Prameters</a>
+</li>
+<li>
+<a href="#4">Generate Target Trajectory</a>
+</li>
+<li>
+<a href="#5">Run Simulation</a>
+</li>
+<li>
+<a href="#6">Postprocess Data</a>
+</li>
+<li>
+<a href="#7">Plot the Results</a>
+</li>
+<li>
+<a href="#8">Helper Functions</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Cleanup</h2>
+<pre class="codeinput">clear
+clc
+close <span class="string">all</span>
+</pre>
+<h2 id="2">Define Numerical Parameters of the System</h2>
+<pre class="codeinput">
+<span class="comment">% Inertia Terms</span>
+param.m1 = 7.848;
+param.m2 = 4.49;
+
+param.I1 = 0.176;
+param.I2 = 0.0411;
+
+<span class="comment">% Geometry Terms</span>
+param.l1 = 0.3;
+param.lc1 = 0.1554;
+param.lc2 = 0.0341;
+
+<span class="comment">% Fundamental Constants</span>
+param.g = 9.81;
+
+<span class="comment">% Gains</span>
+param.kp1 = 50;
+param.kd1 = 10;
+
+param.kp2 = 50;
+param.kd2 = 10;
+
+<span class="comment">% Limits</span>
+param.tau1Max = 50;
+param.tau1Min = -50;
+
+param.tau2Max = 50;
+param.tau2Min = -50;
+
+<span class="comment">% Accuracy</span>
+param.MAccuracy = 0.9;
+param.CAccuracy = 0.9;
+param.NAccuracy = 0.9;
+</pre>
+<h2 id="3">Define Initial Simulation Prameters</h2>
+<pre class="codeinput">
+<span class="comment">% Initial Conditions</span>
+t = linspace(0,4,10000)';
+x0 = [0;0;0;0];
+tau = [0; 0];
+</pre>
+<h2 id="4">Generate Target Trajectory</h2>
+<pre class="codeinput">
+<span class="comment">% Cubic Polynomial Trajectory Waypoints</span>
+t_waypoints = [0; 2; 4];
+q_waypoints = [0; pi/2; 0];
+
+t_dot_waypoints = [0; 2; 4];
+q_dot_waypoints = [0; 0; 0];
+
+<span class="comment">% Generate the Cubic Trajectories</span>
+[q, qd, qdd, pp] = cubicpolytraj(q_waypoints', t_waypoints', t, <span class="string">'VelocityBoundaryCondition'</span>, q_dot_waypoints');
+
+<span class="comment">% Import the Trajectory into State Space</span>
+q1d_vec = q';
+q1d_dot_vec = qd';
+q1d_dot_dot_vec = qdd';
+
+q2d_vec = q';
+q2d_dot_vec = qd';
+q2d_dot_dot_vec = qdd';
+
+<span class="comment">% Generate Stamped Target State Trajectory</span>
+x_target = [q1d_vec, q1d_dot_vec, q2d_vec, q2d_dot_vec, q1d_dot_dot_vec, q2d_dot_dot_vec];
+t_target = t;
+
+stamped_x_target = [x_target, t_target]';
+</pre>
+<h2 id="5">Run Simulation</h2>
+<pre class="codeinput">[tout, xout] = ode45(@(t, x) manipulator(t, x, @PDFeedForwardWAcc, param, <span class="keyword">...</span>
+   stamped_x_target), t, x0);
+
+<span class="comment">% Compute Torques</span>
+tau_values = postComputeTorques(tout, xout, @manipulator, @PDFeedForwardWAcc, param, stamped_x_target);
+</pre>
+<h2 id="6">Postprocess Data</h2>
+<pre class="codeinput">
+<span class="comment">% Compute the Errors</span>
+error_vals_1 = computeErrors(xout(:,1), x_target(:,1));
+error_vals_2 = computeErrors(xout(:,2),x_target(:,2));
+
+error_vals_3 = computeErrors(xout(:,3), x_target(:,3));
+error_vals_4 = computeErrors(xout(:,4), x_target(:,4));
+
+error_vals =[error_vals_1, error_vals_2, error_vals_3, error_vals_4];
+
+<span class="comment">% Calculate accelerations</span>
+dt = diff(tout);
+[q1_dot_dot, q2_dot_dot] = savitzkyGolayDerivative(tout, xout(:,2), xout(:,4));
+
+<span class="comment">% Calculate acceleration errors</span>
+e1_dot_dot = computeErrors(q1_dot_dot, q1d_dot_dot_vec);
+e2_dot_dot = computeErrors(q2_dot_dot, q2d_dot_dot_vec);
+
+<span class="comment">% Generate the Error Target Vector</span>
+zero_vector = getZeroVec(tout);
+</pre>
+<h2 id="7">Plot the Results</h2>
+<p>Ommited for Brevity</p>
+<h2 id="8">Helper Functions</h2>
+<pre class="codeinput">
+<span class="comment">% Various Helper Functions to Execute Code above.</span>
+
+<span class="comment">% Computes the Torque Values at Give State Vector</span>
+<span class="keyword">function</span> tau_values = postComputeTorques(tout, xout, model_ref, controller_ref, param, ref)
+
+    num_steps = length(tout);
+    tau_values = zeros(num_steps, 2);
+    <span class="keyword">for</span> i = 1:num_steps
+        [~, tau] = model_ref(tout(i), xout(i,:)', controller_ref, param, ref);
+        tau_values(i,:) = tau';
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Computes the Error Vector</span>
+<span class="keyword">function</span> error_vals = computeErrors(x_actual, x_ref)
+    error_vals = x_ref - x_actual;
+<span class="keyword">end</span>
+
+<span class="comment">% Generates a Zero Vector</span>
+<span class="keyword">function</span> zero_vector = getZeroVec(t_out)
+    zero_vector = zeros(size(t_out));
+<span class="keyword">end</span>
+
+<span class="comment">% Filtering the Data to Get Better Derivative</span>
+<span class="keyword">function</span> [accel1, accel2] = savitzkyGolayDerivative(t, vel1, vel2)
+    <span class="comment">% Parameters for Savitzky-Golay filter</span>
+    window_length = 2001;  <span class="comment">% Must be odd</span>
+    polynomial_order = 1;
+
+    <span class="comment">% Compute accelerations using Savitzky-Golay filter</span>
+    accel1 = gradient(smooth(vel1, window_length, <span class="string">'sgolay'</span>, polynomial_order), t);
+    accel2 = gradient(smooth(vel2, window_length, <span class="string">'sgolay'</span>, polynomial_order), t);
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% ROB599_HW3_P5B
+% Simiulating a PD Controller with Feed Forward and Noize for Robot Arm with Moving Trajectory.
+%% Cleanup
+clear
+clc
+close all
+%% Define Numerical Parameters of the System
+
+% Inertia Terms
+param.m1 = 7.848;
+param.m2 = 4.49;
+
+param.I1 = 0.176;
+param.I2 = 0.0411;
+
+% Geometry Terms
+param.l1 = 0.3;
+param.lc1 = 0.1554;
+param.lc2 = 0.0341;
+
+% Fundamental Constants
+param.g = 9.81;
+
+% Gains
+param.kp1 = 50;
+param.kd1 = 10;
+
+param.kp2 = 50;
+param.kd2 = 10;
+
+% Limits
+param.tau1Max = 50;
+param.tau1Min = -50;
+
+param.tau2Max = 50;
+param.tau2Min = -50;
+
+% Accuracy
+param.MAccuracy = 0.9;
+param.CAccuracy = 0.9;
+param.NAccuracy = 0.9;
+
+%% Define Initial Simulation Prameters
+
+% Initial Conditions
+t = linspace(0,4,10000)';
+x0 = [0;0;0;0];
+tau = [0; 0];
+
+%% Generate Target Trajectory
+
+% Cubic Polynomial Trajectory Waypoints
+t_waypoints = [0; 2; 4];
+q_waypoints = [0; pi/2; 0];
+
+t_dot_waypoints = [0; 2; 4];
+q_dot_waypoints = [0; 0; 0];
+
+% Generate the Cubic Trajectories
+[q, qd, qdd, pp] = cubicpolytraj(q_waypoints', t_waypoints', t, 'VelocityBoundaryCondition', q_dot_waypoints');
+
+% Import the Trajectory into State Space
+q1d_vec = q';
+q1d_dot_vec = qd';
+q1d_dot_dot_vec = qdd';
+
+q2d_vec = q';
+q2d_dot_vec = qd';
+q2d_dot_dot_vec = qdd';
+
+% Generate Stamped Target State Trajectory
+x_target = [q1d_vec, q1d_dot_vec, q2d_vec, q2d_dot_vec, q1d_dot_dot_vec, q2d_dot_dot_vec];
+t_target = t;
+
+stamped_x_target = [x_target, t_target]';
+
+%% Run Simulation
+[tout, xout] = ode45(@(t, x) manipulator(t, x, @PDFeedForwardWAcc, param, ...
+   stamped_x_target), t, x0);
+
+% Compute Torques
+tau_values = postComputeTorques(tout, xout, @manipulator, @PDFeedForwardWAcc, param, stamped_x_target);
+
+%% Postprocess Data
+
+% Compute the Errors
+error_vals_1 = computeErrors(xout(:,1), x_target(:,1));
+error_vals_2 = computeErrors(xout(:,2),x_target(:,2));
+
+error_vals_3 = computeErrors(xout(:,3), x_target(:,3));
+error_vals_4 = computeErrors(xout(:,4), x_target(:,4));
+
+error_vals =[error_vals_1, error_vals_2, error_vals_3, error_vals_4];
+
+% Calculate accelerations 
+dt = diff(tout);
+[q1_dot_dot, q2_dot_dot] = savitzkyGolayDerivative(tout, xout(:,2), xout(:,4));
+
+% Calculate acceleration errors
+e1_dot_dot = computeErrors(q1_dot_dot, q1d_dot_dot_vec);
+e2_dot_dot = computeErrors(q2_dot_dot, q2d_dot_dot_vec);
+
+% Generate the Error Target Vector
+zero_vector = getZeroVec(tout);
+%% Plot the Results
+% Ommited for Brevity
+
+%% Helper Functions
+
+% Various Helper Functions to Execute Code above.
+
+% Computes the Torque Values at Give State Vector
+function tau_values = postComputeTorques(tout, xout, model_ref, controller_ref, param, ref)
+    
+    num_steps = length(tout);
+    tau_values = zeros(num_steps, 2);
+    for i = 1:num_steps
+        [~, tau] = model_ref(tout(i), xout(i,:)', controller_ref, param, ref);
+        tau_values(i,:) = tau';
+    end
+end
+
+% Computes the Error Vector
+function error_vals = computeErrors(x_actual, x_ref)
+    error_vals = x_ref - x_actual;
+end
+
+% Generates a Zero Vector
+function zero_vector = getZeroVec(t_out)
+    zero_vector = zeros(size(t_out));
+end
+
+% Filtering the Data to Get Better Derivative
+function [accel1, accel2] = savitzkyGolayDerivative(t, vel1, vel2)
+    % Parameters for Savitzky-Golay filter
+    window_length = 2001;  % Must be odd
+    polynomial_order = 1;
+    
+    % Compute accelerations using Savitzky-Golay filter
+    accel1 = gradient(smooth(vel1, window_length, 'sgolay', polynomial_order), t);
+    accel2 = gradient(smooth(vel2, window_length, 'sgolay', polynomial_order), t);
+end
+##### SOURCE END #####
+-->
+</body>
+</html>

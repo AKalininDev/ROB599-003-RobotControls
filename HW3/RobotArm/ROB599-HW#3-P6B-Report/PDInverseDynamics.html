@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>PDInverseDynamics</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-10-18">
+<meta name="DC.source" content="PDInverseDynamics.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<pre class="codeinput">
+<span class="keyword">function</span> tau = PDInverseDynamics(t, x, param, ref)
+
+    <span class="comment">% Interpreting State Space</span>
+    q1 = x(1); q1dot = x(2); q2 = x(3); q2dot = x(4);
+    q = [q1; q2];
+    qdot = [q1dot; q2dot];
+
+    <span class="comment">% Import Kp and Kd Gains</span>
+    Kp1 = param.kp1;
+    Kp2 = param.kp2;
+    Kd1 = param.kd1;
+    Kd2 = param.kd2;
+
+    Kp = [Kp1, 0;
+          0, Kp2];
+    Kd = [Kd1, 0;
+          0, Kd2];
+
+    <span class="comment">% Import Upper and Lower Limits</span>
+    tau1UpperLim = param.tau1Max;
+    tau2UpperLim = param.tau2Max;
+    tau1LowerLim = param.tau1Min;
+    tau2LowerLim = param.tau2Min;
+
+    <span class="comment">% Interpolate the Target States at Given Time t</span>
+    x_1_target = interp1(ref(end, :), ref(1, :), t, <span class="string">"linear"</span>);
+    x_2_target = interp1(ref(end, :), ref(2, :), t, <span class="string">"linear"</span>);
+    x_3_target = interp1(ref(end, :), ref(3, :), t, <span class="string">"linear"</span>);
+    x_4_target = interp1(ref(end, :), ref(4, :), t, <span class="string">"linear"</span>);
+    x_5_target = interp1(ref(end, :), ref(5, :), t, <span class="string">"linear"</span>);
+    x_6_target = interp1(ref(end, :), ref(6, :), t, <span class="string">"linear"</span>);
+
+    <span class="comment">% Interpret Target State Space</span>
+    q1d = x_1_target;
+    v1d = x_2_target;
+    q2d = x_3_target;
+    v2d = x_4_target;
+    a1d = x_5_target;
+    a2d = x_6_target;
+
+    qd = [q1d; q2d];
+    vd = [v1d; v2d];
+    ad = [a1d; a2d];
+
+    <span class="comment">% Compute Inertia, Coriolis, and Gravity Terms</span>
+    M = computeManipulatorInertiaM(x, param);
+    C = computeManipulatorCoriolisC(x, param);
+    N = computeManipulatorGravityN(x, param);
+
+    <span class="comment">% Get Error Vectors</span>
+    e = qd - q;
+    e_dot = vd - qdot;
+
+    <span class="comment">% Compute Controller Input</span>
+    aq = ad + Kp*e + Kd*e_dot;
+    tau = M*aq + C*qdot + N;
+
+    <span class="comment">% Safety Constrains</span>
+    tau(1) = constrain(tau(1), tau1UpperLim, tau1LowerLim);
+    tau(2) = constrain(tau(2), tau2UpperLim, tau2LowerLim);
+
+<span class="keyword">end</span>
+</pre>
+<pre class="codeoutput error">Not enough input arguments.
+
+Error in PDInverseDynamics (line 4)
+    q1 = x(1); q1dot = x(2); q2 = x(3); q2dot = x(4);
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+function tau = PDInverseDynamics(t, x, param, ref)
+    
+    % Interpreting State Space
+    q1 = x(1); q1dot = x(2); q2 = x(3); q2dot = x(4);
+    q = [q1; q2];
+    qdot = [q1dot; q2dot];
+    
+    % Import Kp and Kd Gains
+    Kp1 = param.kp1;
+    Kp2 = param.kp2;
+    Kd1 = param.kd1;
+    Kd2 = param.kd2;
+
+    Kp = [Kp1, 0;
+          0, Kp2];
+    Kd = [Kd1, 0;
+          0, Kd2];
+    
+    % Import Upper and Lower Limits
+    tau1UpperLim = param.tau1Max;
+    tau2UpperLim = param.tau2Max;
+    tau1LowerLim = param.tau1Min;
+    tau2LowerLim = param.tau2Min;
+
+    % Interpolate the Target States at Given Time t
+    x_1_target = interp1(ref(end, :), ref(1, :), t, "linear");
+    x_2_target = interp1(ref(end, :), ref(2, :), t, "linear");
+    x_3_target = interp1(ref(end, :), ref(3, :), t, "linear");
+    x_4_target = interp1(ref(end, :), ref(4, :), t, "linear");
+    x_5_target = interp1(ref(end, :), ref(5, :), t, "linear");
+    x_6_target = interp1(ref(end, :), ref(6, :), t, "linear");
+
+    % Interpret Target State Space
+    q1d = x_1_target;
+    v1d = x_2_target;
+    q2d = x_3_target;
+    v2d = x_4_target;
+    a1d = x_5_target;
+    a2d = x_6_target;
+
+    qd = [q1d; q2d];
+    vd = [v1d; v2d];
+    ad = [a1d; a2d];
+   
+    % Compute Inertia, Coriolis, and Gravity Terms
+    M = computeManipulatorInertiaM(x, param);
+    C = computeManipulatorCoriolisC(x, param);
+    N = computeManipulatorGravityN(x, param);
+    
+    % Get Error Vectors
+    e = qd - q;
+    e_dot = vd - qdot;
+    
+    % Compute Controller Input
+    aq = ad + Kp*e + Kd*e_dot;
+    tau = M*aq + C*qdot + N;
+
+    % Safety Constrains
+    tau(1) = constrain(tau(1), tau1UpperLim, tau1LowerLim);
+    tau(2) = constrain(tau(2), tau2UpperLim, tau2LowerLim);
+
+end
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>
