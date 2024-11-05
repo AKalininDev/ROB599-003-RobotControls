@@ -133,6 +133,71 @@ end
 inequalitiesSol = solveRealStrictInequalities(inequalities, kd);
 inequalities_sol = vpa(inequalitiesSol, 3)
 
+%%
+% <html><h2> Problem 3 A </h2></html>
+%
+% Acquire the transfer function of the system.
+
+% Define New Variables
+syms s
+syms pl_s pm_s r
+
+% Solve for Transfer Function theta_l/r
+H_s = theta_l == (k/(pl_s*pm_s)) * (k*theta_l + (kp + kd*s)*(r-pl_s*theta_l/k));
+H_s = solve(H_s, theta_l)/r;
+H_s = simplify(subs(H_s, [pl_s, pm_s], [Jl*s^2+Bl*s+k, Jm*s^2+Bm*s+k]));
+H_s = collect(H_s, s);
+pretty(H_s)
+
+H_s_eval = vpa(subs(H_s, [Jm, Jl, Bm, Bl, k], [param.Jm, param.Jl, param.Bm, param.Bl, param.k]), 3);
+pretty(H_s_eval)
+
+H_s_eval = vpa(subs(H_s, [Jm, Jl, Bm, Bl, k, kp], [param.Jm, param.Jl, param.Bm, param.Bl, param.k, param.kp]), 3);
+pretty(H_s_eval)
+
+%%
+% <html><h2> Problem 4 A </h2></html>
+%
+% Get the Root Locus Plot of the system.
+
+% Get the Open Loop Transfer Function
+Q_s = theta_l == (k/(pl_s*pm_s)) * (k*theta_l + (10 + s)*r);
+Q_s = solve(Q_s, theta_l)/r;
+Q_s = simplify(subs(Q_s, [pl_s, pm_s], [Jl*s^2+Bl*s+k, Jm*s^2+Bm*s+k]));
+Q_s = collect(Q_s, s);
+pretty(vpa(Q_s, 3))
+
+% Get the Transfer Function in Feedback Loop
+P_s = pl_s/k;
+P_s = simplify(subs(P_s, pl_s, Jl*s^2+Bl*s+k));
+P_s = collect(P_s, s);
+pretty(vpa(P_s, 3))
+
+% Acquire the Transfer Function
+SYS = collect(Q_s * P_s, s);
+SYS = subs(SYS, [Jm, Jl, Bm, Bl, k], [param.Jm, param.Jl, param.Bm, param.Bl, param.k]);
+[num, den] = numden(SYS);
+num = sym2poly(num);
+den = sym2poly(den);
+
+TF = tf(num, den)
+
+% Plot the Root Locus
+figure('Color', 'white', 'Position', [100, 100, 1200, 800]);
+rlocus(TF)
+set(findall(gca, 'Type', 'Line'),'LineWidth',3);
+sgrid();
+title('Motor Angle Feedback for Series Elastic Actuator.', 'FontWeight', 'bold', 'FontSize', 24);
+xlabel('Real Axis', 'FontWeight', 'bold', 'FontSize', 14);
+ylabel('Imaginary Axis', 'FontWeight', 'bold', 'FontSize', 14);
+grid on;
+box on;
+set(gca, 'FontSize', 14);
+
+% Save the figure in high resolution
+saveas(gcf, 'Motor_Angle_Feedback_Root_Locus.png');
+print(gcf, 'Motor_Angle_Feedback_Root_Locus', '-dpng', '-r300');  % Save as PNG with 300 DPI resolution
+
 
 %%
 % <html><h2> Helper Functions </h2></html>
