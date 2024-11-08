@@ -17,13 +17,9 @@ for i=1:length(inequalities)
         rhs_eval = eval(subs(rhs_s, var, 0));
         
         if rhs_eval < 0 && isequal(inequalities(i), (rhs_s < 0))
-            inequalitySolution = (-inf < var) & (var < inf);
-            inequalitiesSol = (inequalitiesSol) & (inequalitySolution);
             continue;
             
         elseif rhs_eval > 0 && isequal(inequalities(i), (rhs_s > 0))
-            inequalitySolution = (-inf < var) & (var < inf);
-            inequalitiesSol = (inequalitiesSol) & (inequalitySolution);
             continue;
         else
             inequalitiesSol = false;
@@ -50,7 +46,7 @@ for i=1:length(inequalities)
         
         if j == 1
             left_bound = -inf; % left bound is -inf for the first probe
-            right_bound = rhsProbes(j);
+            right_bound = roots(j);
             
         elseif j == length(rhsProbes)
             left_bound = roots(j - 1);
@@ -77,6 +73,18 @@ for i=1:length(inequalities)
     inequalitiesSol = (inequalitiesSol) & (inequalitySolution);
 end
 
-inequalitiesSol = simplify(expand((inequalitiesSol)));
+inequalitiesSol = simplify(expand(simplify(inequalitiesSol)));
 
 end
+
+
+
+%
+%
+%
+% eq1 = Jm*theta_m_ddot + Bm*theta_m_dot - k*(theta_l - theta_m) == u
+% eq2 = Jl*theta_l_ddot + Bl*theta_l_dot + k*(theta_l - theta_m) == 0
+% eq3 = u == kp*(theta_cmd - theta_l) - kd*theta_l_dot
+
+% H_s = theta_l == (k/(pl_s*pm_s)) * (k*theta_l + (kp + kd*s)*(r-theta_l));
+% Q_s = theta_l == (k/(pl_s*pm_s)) * (k*theta_l + (10 + s)*r);
