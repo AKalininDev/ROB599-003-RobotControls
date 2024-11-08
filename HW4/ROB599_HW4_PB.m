@@ -246,7 +246,7 @@ grid on;
 box on;
 
 % Save load angle feedback plot
-print(gcf, 'Figure 2.1B. Load Angle Feedback Controller Response.png', '-dpng', '-r300');
+print(gcf, 'Figure 2.2B. Load Angle Feedback Controller Response.png', '-dpng', '-r300');
 %% Helper/Debugging Functions
 
 % Display the factored form of the expression
