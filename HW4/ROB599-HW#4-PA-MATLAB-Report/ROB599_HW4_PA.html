@@ -1,0 +1,757 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>ROB599_HW4_PA</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-07">
+<meta name="DC.source" content="ROB599_HW4_PA.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>ROB599_HW4_PA</h1>
+<!--introduction-->
+<p>Simiulating a PD Controller with Motor Angle Feedback for Series Elastic Actuator.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Clean Up</a>
+</li>
+<li>
+<a href="#2">Problem 1A</a>
+</li>
+<li>
+<a href="#6">Problem 2A</a>
+</li>
+<li>
+<a href="#11">Problem 3A</a>
+</li>
+<li>
+<a href="#12">Problem 4A</a>
+</li>
+<li>
+<a href="#15">Problem 5A</a>
+</li>
+<li>
+<a href="#21">Helper/Debugging Functions</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Clean Up</h2>
+<pre class="codeinput">clear
+clc
+</pre>
+<h2 id="2">Problem 1A</h2>
+<p>Deriving the State Space Representation of the System.</p>
+<p><h3> Define System Variables </h3></p>
+<pre class="codeinput">
+<span class="comment">% Inertia Terms</span>
+syms <span class="string">Jm</span> <span class="string">Jl</span>
+
+<span class="comment">% Damping Terms</span>
+syms <span class="string">Bm</span> <span class="string">Bl</span>
+
+<span class="comment">% Elastic Term</span>
+syms <span class="string">k</span>
+
+<span class="comment">% State Variables</span>
+syms <span class="string">theta_m</span> <span class="string">theta_m_dot</span> <span class="string">theta_m_ddot</span>
+syms <span class="string">theta_l</span> <span class="string">theta_l_dot</span> <span class="string">theta_l_ddot</span>
+syms <span class="string">u</span>
+
+<span class="comment">% Control Terms</span>
+syms <span class="string">kp</span> <span class="string">kd</span> <span class="string">theta_cmd</span>
+</pre>
+<p><h3> Define EOMs </h3></p>
+<pre class="codeinput">eq1 = Jm*theta_m_ddot + Bm*theta_m_dot - k*(theta_l - theta_m) == u;
+eq2 = Jl*theta_l_ddot + Bl*theta_l_dot + k*(theta_l - theta_m) == 0;
+eq3 = u == kp*(theta_cmd - theta_m) - kd*theta_m_dot;
+
+<span class="comment">% Display Equations</span>
+pretty(eq1)
+pretty(eq2)
+pretty(eq3)
+</pre>
+<pre class="codeoutput">Bm theta_m_dot + Jm theta_m_ddot - k (theta_l - theta_m) == u
+
+Bl theta_l_dot + Jl theta_l_ddot + k (theta_l - theta_m) == 0
+
+u == - kd theta_m_dot - kp (theta_m - theta_cmd)
+
+</pre>
+<p><h3> Acquire State Space Representaiton </h3></p>
+<pre class="codeinput">
+<span class="comment">% State Space Variables</span>
+syms <span class="string">x1</span> <span class="string">x2</span> <span class="string">x3</span> <span class="string">x4</span>
+syms <span class="string">x2_dot</span> <span class="string">x4_dot</span>
+
+<span class="comment">% Substitute State Space Variables into EOMs</span>
+eq1_state = subs(eq1, [theta_m, theta_m_dot, theta_l, theta_l_dot, theta_m_ddot], [x1, x2, x3, x4, x2_dot]);
+eq2_state = subs(eq2, [theta_m, theta_m_dot, theta_l, theta_l_dot, theta_l_ddot], [x1, x2, x3, x4, x4_dot]);
+u_state = subs(eq3, [theta_m, theta_m_dot, theta_l, theta_l_dot], [x1, x2, x3, x4]);
+u_state = solve(u_state, u);
+
+<span class="comment">% Solve for x2_dot</span>
+eq1_state = subs(eq1_state, u, u_state);
+x2_dot = solve(eq1_state, x2_dot);
+x2_dot = simplify(x2_dot);
+x2_dot = collect(x2_dot, [x1, x2, x3, x4, theta_cmd]);
+
+<span class="comment">% Solve for x4_dot</span>
+x4_dot = solve(eq2_state, x4_dot);
+x4_dot = simplify(x4_dot);
+x4_dot = collect(x4_dot, [x1, x2, x3, x4, theta_cmd]);
+
+<span class="comment">% Form state equations</span>
+x_dot = [x2;
+    x2_dot;
+    x4;
+    x4_dot];
+disp(<span class="string">"X_dot = "</span>); pretty(x_dot)
+
+<span class="comment">% Extract A matrix and B vector (x_dot = Ax + B*theta_cmd)</span>
+A = jacobian(x_dot, [x1; x2; x3; x4]);
+A = simplify(A);
+disp(<span class="string">"A = "</span>); pretty(A)
+
+B = jacobian(x_dot, theta_cmd);
+B = simplify(B)
+</pre>
+<pre class="codeoutput">X_dot = 
+/                             x2                            \
+|                                                           |
+| /   k + kp \      /   Bm + kd \       k      kp           |
+| | - ------ | x1 + | - ------- | x2 + -- x3 + -- theta_cmd |
+| \     Jm   /      \      Jm   /      Jm      Jm           |
+|                                                           |
+|                             x4                            |
+|                                                           |
+|              k      /    k \      /   Bl \                |
+|             -- x1 + | - -- | x3 + | - -- | x4             |
+\             Jl      \   Jl /      \   Jl /                /
+
+A = 
+/     0,        1,       0,    0  \
+|                                 |
+|   k + kp    Bm + kd    k        |
+| - ------, - -------,  --,    0  |
+|     Jm         Jm     Jm        |
+|                                 |
+|     0,        0,       0,    1  |
+|                                 |
+|     k                   k    Bl |
+|    --,        0,     - --, - -- |
+\    Jl                  Jl    Jl /
+
+ 
+B =
+ 
+    0
+kp/Jm
+    0
+    0
+ 
+</pre>
+<h2 id="6">Problem 2A</h2>
+<p>Determine the range of kd such that the system is stable using Routh Hurwitz.</p>
+<pre class="codeinput">param.Jm = 0.0097;
+param.Jl = 0.0097;
+
+param.Bm = 0.04169;
+param.Bl = 0.04169;
+
+param.k = 100;
+
+param.kp = 10;
+
+A_eval = subs(A, [Jm, Jl, Bm, Bl, k, kp], [param.Jm, param.Jl, param.Bm, param.Bl, param.k, param.kp]);
+B_eval = subs(B, [Jm, Jl, Bm, Bl, k, kp], [param.Jm, param.Jl, param.Bm, param.Bl, param.k, param.kp]);
+
+A_num = vpa(A_eval, 3)
+B_num = vpa(B_eval, 3)
+</pre>
+<pre class="codeoutput"> 
+A_num =
+ 
+[       0,              1.0,        0,    0]
+[-1.13e+4, - 103.0*kd - 4.3,  1.03e+4,    0]
+[       0,                0,        0,  1.0]
+[ 1.03e+4,                0, -1.03e+4, -4.3]
+ 
+ 
+B_num =
+ 
+     0
+1030.0
+     0
+     0
+ 
+</pre>
+<p><h3> Acquire Characteristic Equations </h3></p>
+<p>Characteristic Equation: det(A - lambda*I) = 0</p>
+<pre class="codeinput">syms <span class="string">lambda</span>
+char_poly = det(A_eval - lambda*eye(4));
+char_poly = collect(char_poly, lambda);
+disp(<span class="string">'Characteristic Polynomial: '</span>);
+pretty(vpa(char_poly, 3))
+</pre>
+<pre class="codeoutput">Characteristic Polynomial: 
+      4                          3
+lambda  + (103.0 kd + 8.6) lambda  + (443.0 kd + 2.17e+4)
+
+         2
+   lambda  + (1.06e+6 kd + 9.3e+4) lambda + 1.06e+7
+
+</pre>
+<p><h3> Construct Routh-Hurwitz Matrix </h3></p>
+<pre class="codeinput">H = getRouthMatrix(char_poly, lambda);
+disp(<span class="string">'Routh-Hurwitz Matrix: '</span>);
+pretty(vpa(H, 3))
+</pre>
+<pre class="codeoutput">Routh-Hurwitz Matrix: 
+/ 103.0 kd + 8.6, 1.06e+6 kd + 9.3e+4,          0,             0    \
+|                                                                   |
+|       1.0,       443.0 kd + 2.17e+4,       1.06e+7,          0    |
+|                                                                   |
+|        0,          103.0 kd + 8.6,   1.06e+6 kd + 9.3e+4,    0    |
+|                                                                   |
+\        0,               1.0,          443.0 kd + 2.17e+4, 1.06e+7 /
+
+</pre>
+<p><h3> Compute Principle Minors of Routh-Hurwitz Matrix </h3></p>
+<pre class="codeinput">principalMinors = computePrincipalMinors(H);
+<span class="comment">% showFactoredForm(principalMinors, kd);</span>
+</pre>
+<p><h3> Solve for Stability Requirements </h3></p>
+<pre class="codeinput">inequalities = [0 &lt; kd];
+<span class="keyword">for</span> i=1:length(principalMinors)
+    inequality = principalMinors(i) &gt; 0;
+    inequalities = [inequalities, inequality];
+<span class="keyword">end</span>
+
+inequalitiesSol = solveRealStrictInequalities(inequalities, kd);
+disp(<span class="string">"Stability Requirements: "</span>);
+pretty(vpa(inequalitiesSol, 3))
+</pre>
+<pre class="codeoutput">Stability Requirements: 
+0.0 &lt; kd
+
+</pre>
+<h2 id="11">Problem 3A</h2>
+<p>Acquire the transfer function of the system.</p>
+<pre class="codeinput">
+<span class="comment">% Define New Variables</span>
+syms <span class="string">s</span>
+syms <span class="string">pl_s</span> <span class="string">pm_s</span> <span class="string">r</span>
+
+<span class="comment">% Solve for Transfer Function theta_l/r</span>
+H_s = theta_l == (k/(pl_s*pm_s)) * (k*theta_l + (kp + kd*s)*(r-pl_s*theta_l/k));
+H_s = solve(H_s, theta_l)/r;
+H_s = simplify(subs(H_s, [pl_s, pm_s], [Jl*s^2+Bl*s+k, Jm*s^2+Bm*s+k]));
+H_s = collect(H_s, s);
+disp(<span class="string">"Closed Loop Transfer Function"</span>);
+disp(<span class="string">'H_s = '</span>); disp(H_s)
+
+H_s_eval = vpa(subs(H_s, [Jm, Jl, Bm, Bl, k], [param.Jm, param.Jl, param.Bm, param.Bl, param.k]), 3);
+disp(<span class="string">'H_s_eval = '</span>);disp(H_s_eval)
+
+H_s_eval = vpa(subs(H_s, [Jm, Jl, Bm, Bl, k, kp], [param.Jm, param.Jl, param.Bm, param.Bl, param.k, param.kp]), 3);
+disp(<span class="string">'H_s_eval = '</span>); disp(H_s_eval)
+</pre>
+<pre class="codeoutput">Closed Loop Transfer Function
+H_s = 
+(k*kd*s + k*kp)/(Jl*Jm*s^4 + (Jl*kd + Bl*Jm + Bm*Jl)*s^3 + (Bl*kd + Jl*k + Jm*k + Jl*kp + Bl*Bm)*s^2 + (Bl*k + Bm*k + Bl*kp + k*kd)*s + k*kp)
+ 
+H_s_eval = 
+(100.0*kp + 100.0*kd*s)/(9.41e-5*s^4 + (0.0097*kd + 8.09e-4)*s^3 + (0.0417*kd + 0.0097*kp + 1.94)*s^2 + (100.0*kd + 0.0417*kp + 8.34)*s + 100.0*kp)
+ 
+H_s_eval = 
+(100.0*kd*s + 1000.0)/(9.41e-5*s^4 + (0.0097*kd + 8.09e-4)*s^3 + (0.0417*kd + 2.04)*s^2 + (100.0*kd + 8.75)*s + 1000.0)
+ 
+</pre>
+<h2 id="12">Problem 4A</h2>
+<p>Get the Root Locus Plot of the system.</p>
+<p><h3> Acquire Open Loop Transfer Function L(s). </h3></p>
+<pre class="codeinput">
+<span class="comment">% Solve for the Forward Transfer Function</span>
+Q_s = theta_l == (k/(pl_s*pm_s)) * (k*theta_l + (10 + s)*r);
+Q_s = solve(Q_s, theta_l)/r;
+Q_s = subs(Q_s, [pl_s, pm_s], [Jl*s^2+Bl*s+k, Jm*s^2+Bm*s+k]);
+
+<span class="comment">% Solve for the Feedback Transfer Function</span>
+P_s = pl_s/k;
+P_s = subs(P_s, pl_s, Jl*s^2+Bl*s+k);
+
+<span class="comment">% Get the Open Loop Transfer Function</span>
+SYS = subs(Q_s * P_s, [Jm, Jl, Bm, Bl, k], [param.Jm, param.Jl, param.Bm, param.Bl, param.k]);
+SYS = collect(SYS, s);
+[num, den] = numden(SYS);
+num = sym2poly(num);
+den = sym2poly(den);
+L_s = tf(num, den);
+
+disp(<span class="string">'Open Loop Transfer Function'</span>);
+disp(<span class="string">'L(s) = '</span>); pretty(SYS)
+</pre>
+<pre class="codeoutput">Open Loop Transfer Function
+L(s) = 
+          3               2
+97000000 s  + 1386900000 s  + 1004169000000 s + 10000000000000
+--------------------------------------------------------------
+            4            3                2
+    940900 s  + 8087860 s  + 19417380561 s  + 83380000000 s
+
+</pre>
+<p><h3> Plot the Root Locus Using Open Loop Transfer Function L(s). </h3></p>
+<pre class="codeinput">figure(<span class="string">'Color'</span>, <span class="string">'white'</span>, <span class="string">'Position'</span>, [100, 100, 1200, 800]);
+rlocus(L_s)
+set(findall(gca, <span class="string">'Type'</span>, <span class="string">'Line'</span>),<span class="string">'LineWidth'</span>, 3);
+sgrid();
+title(<span class="string">'Figure 1A. Series Elastic Actuator. Motor Angle Feedback. Root Locus, Kd Range. Kp/Kd = 10.'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 24);
+xlabel(<span class="string">'Real Axis'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 18);
+ylabel(<span class="string">'Imaginary Axis'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 18);
+grid <span class="string">on</span>;
+box <span class="string">on</span>;
+set(gca, <span class="string">'FontSize'</span>, 14);
+
+<span class="comment">% Save the figure</span>
+print(gcf, <span class="string">'Figure 1A. Root Locus of Motor Angle Feedback.png'</span>, <span class="string">'-dpng'</span>, <span class="string">'-r300'</span>);  <span class="comment">% Save as PNG with 300 DPI resolution</span>
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW4_PA_01.png" alt=""> <h2 id="15">Problem 5A</h2>
+<p>Initialize Simulink Parameters for the System. Adding numerical values of the parameters</p>
+<p><h3> Redefining the Numerical Parameters </h3></p>
+<pre class="codeinput">param.Jm = 0.0097;
+param.Jl = 0.0097;
+
+param.Bm = 0.04169;
+param.Bl = 0.04169;
+
+param.k = 100;
+
+param.kp = 10;
+param.kd = 0.05;
+</pre>
+<p><h3> Run the Simulink Model </h3></p>
+<pre class="codeinput">simOut = sim(<span class="string">'ROB599_HW4_P5'</span>, <span class="string">'SimulationMode'</span>, <span class="string">'normal'</span>, <span class="string">'StopTime'</span>, <span class="string">'10'</span>);
+</pre>
+<pre class="codeoutput">Warning: Solver is encountering difficulty in simulating model 'ROB599_HW4_P5'
+at time 1.0000000000000036. Simulink will continue to simulate with warnings.
+Please check the model for errors. 
+Warning: Solver was unable to reduce the step size without violating minimum
+step size of 3.55271E-15 for 1 consecutive times at time 1.  Solver will
+continue simulation with the step size restricted to 3.55271E-15 and using an
+effective relative error tolerance of 0.0135238, which is greater than the
+specified relative error tolerance of 0.001. This usually may be caused by the
+high stiffness of the system. Please check the system or increase the solver
+Number of consecutive min steps violation parameter. 
+</pre>
+<p><h3> Pull The Simulation Results for Plotting. </h3></p>
+<pre class="codeinput">
+<span class="comment">% Get the Step Response Data (Motor Angle Feedback)</span>
+motorStepResponseTime = simOut.MotorStepResponse.Time;
+motorStepResponse = simOut.MotorStepResponse.Data;
+
+<span class="comment">% Get the Step Response (Load Angle Feedback)</span>
+loadStepResponseTime = simOut.LoadStepResponse.Time;
+loadStepResponse = simOut.LoadStepResponse.Data;
+
+<span class="comment">% Get the Step Response (Reference Input)</span>
+signalStepResponseTime = simOut.StepInputSignal.Time;
+signalStepResponse = simOut.StepInputSignal.Data;
+</pre>
+<p><h3> Create Figure for Motor Angle Feedback Step Response. </h3></p>
+<pre class="codeinput">figure(<span class="string">'Color'</span>, <span class="string">'white'</span>, <span class="string">'Position'</span>, [100, 100, 1200, 800]);
+plot(motorStepResponseTime, motorStepResponse, <span class="string">'LineWidth'</span>, 3);
+hold <span class="string">on</span>;
+set(gca, <span class="string">'FontSize'</span>, 14);
+plot(signalStepResponseTime, signalStepResponse, <span class="string">'--'</span>, <span class="string">'LineWidth'</span>, 3);
+title(<span class="string">'Figure 2.1A. Motor Angle Feedback Controller Response. Kp = 10, Kd = 0.05'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 24);
+xlabel(<span class="string">'Time (s)'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 18);
+ylabel(<span class="string">'Angle (rad)'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 18);
+legend(<span class="string">'Load Angle'</span>, <span class="string">'Reference Input'</span>);
+grid <span class="string">on</span>;
+box <span class="string">on</span>;
+
+<span class="comment">% Save motor angle feedback plot</span>
+print(gcf, <span class="string">'Figure 2.1A. Motor Angle Feedback Controller Response.png'</span>, <span class="string">'-dpng'</span>, <span class="string">'-r300'</span>);
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW4_PA_02.png" alt=""> <p><h3> Create Figure for Load Angle Feedback Step Response. </h3></p>
+<pre class="codeinput">figure(<span class="string">'Color'</span>, <span class="string">'white'</span>, <span class="string">'Position'</span>, [100, 100, 1200, 800]);
+plot(loadStepResponseTime, loadStepResponse, <span class="string">'LineWidth'</span>, 3);
+hold <span class="string">on</span>;
+set(gca, <span class="string">'FontSize'</span>, 14);
+plot(signalStepResponseTime, signalStepResponse, <span class="string">'--'</span>, <span class="string">'LineWidth'</span>, 3);
+title(<span class="string">'Figure 2.2A. Load Angle Feedback Controller Response. Kp = 10, Kd = 0.05'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 24);
+xlabel(<span class="string">'Time (s)'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 18);
+ylabel(<span class="string">'Angle (rad)'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 18);
+legend(<span class="string">'Load Angle'</span>, <span class="string">'Reference Input'</span>);
+grid <span class="string">on</span>;
+box <span class="string">on</span>;
+
+<span class="comment">% Save load angle feedback plot</span>
+print(gcf, <span class="string">'Figure 2.2A. Load Angle Feedback Controller Response.png'</span>, <span class="string">'-dpng'</span>, <span class="string">'-r300'</span>);
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW4_PA_03.png" alt=""> <h2 id="21">Helper/Debugging Functions</h2>
+<pre class="codeinput">
+<span class="comment">% Display the factored form of the expression</span>
+<span class="keyword">function</span> showFactoredForm(expressions, var)
+factoredForm = sym([]);
+<span class="keyword">for</span> i=1:length(expressions)
+    factoredForm = [factoredForm, prod(factor(expressions(i), var, <span class="string">"FactorMode"</span>, <span class="string">"real"</span>))];
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> i=1:length(factoredForm)
+
+    <span class="comment">% Display the factored form of the expression</span>
+    factoredFormEquation = vpa(factoredForm(i), 3)
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% ROB599_HW4_PA
+% Simiulating a PD Controller with Motor Angle Feedback for Series Elastic Actuator.
+
+%% Clean Up
+clear
+clc
+%% Problem 1A
+% Deriving the State Space Representation of the System.
+
+%%
+% <html><h3> Define System Variables </h3></html>
+
+% Inertia Terms
+syms Jm Jl
+
+% Damping Terms
+syms Bm Bl
+
+% Elastic Term
+syms k
+
+% State Variables
+syms theta_m theta_m_dot theta_m_ddot
+syms theta_l theta_l_dot theta_l_ddot
+syms u
+
+% Control Terms
+syms kp kd theta_cmd
+%%
+% <html><h3> Define EOMs </h3></html>
+eq1 = Jm*theta_m_ddot + Bm*theta_m_dot - k*(theta_l - theta_m) == u;
+eq2 = Jl*theta_l_ddot + Bl*theta_l_dot + k*(theta_l - theta_m) == 0;
+eq3 = u == kp*(theta_cmd - theta_m) - kd*theta_m_dot;
+
+% Display Equations
+pretty(eq1)
+pretty(eq2)
+pretty(eq3)
+%%
+% <html><h3> Acquire State Space Representaiton </h3></html>
+
+% State Space Variables
+syms x1 x2 x3 x4
+syms x2_dot x4_dot
+
+% Substitute State Space Variables into EOMs
+eq1_state = subs(eq1, [theta_m, theta_m_dot, theta_l, theta_l_dot, theta_m_ddot], [x1, x2, x3, x4, x2_dot]);
+eq2_state = subs(eq2, [theta_m, theta_m_dot, theta_l, theta_l_dot, theta_l_ddot], [x1, x2, x3, x4, x4_dot]);
+u_state = subs(eq3, [theta_m, theta_m_dot, theta_l, theta_l_dot], [x1, x2, x3, x4]);
+u_state = solve(u_state, u);
+
+% Solve for x2_dot
+eq1_state = subs(eq1_state, u, u_state);
+x2_dot = solve(eq1_state, x2_dot);
+x2_dot = simplify(x2_dot);
+x2_dot = collect(x2_dot, [x1, x2, x3, x4, theta_cmd]);
+
+% Solve for x4_dot
+x4_dot = solve(eq2_state, x4_dot);
+x4_dot = simplify(x4_dot);
+x4_dot = collect(x4_dot, [x1, x2, x3, x4, theta_cmd]);
+
+% Form state equations
+x_dot = [x2;
+    x2_dot;
+    x4;
+    x4_dot];
+disp("X_dot = "); pretty(x_dot)
+
+% Extract A matrix and B vector (x_dot = Ax + B*theta_cmd)
+A = jacobian(x_dot, [x1; x2; x3; x4]);
+A = simplify(A);
+disp("A = "); pretty(A)
+
+B = jacobian(x_dot, theta_cmd);
+B = simplify(B)
+%% Problem 2A
+% Determine the range of kd such that the system is stable using Routh Hurwitz.
+param.Jm = 0.0097;
+param.Jl = 0.0097;
+
+param.Bm = 0.04169;
+param.Bl = 0.04169;
+
+param.k = 100;
+
+param.kp = 10;
+
+A_eval = subs(A, [Jm, Jl, Bm, Bl, k, kp], [param.Jm, param.Jl, param.Bm, param.Bl, param.k, param.kp]);
+B_eval = subs(B, [Jm, Jl, Bm, Bl, k, kp], [param.Jm, param.Jl, param.Bm, param.Bl, param.k, param.kp]);
+
+A_num = vpa(A_eval, 3)
+B_num = vpa(B_eval, 3)
+%%
+% <html><h3> Acquire Characteristic Equations </h3></html>
+%
+% Characteristic Equation: det(A - lambda*I) = 0
+syms lambda
+char_poly = det(A_eval - lambda*eye(4));
+char_poly = collect(char_poly, lambda);
+disp('Characteristic Polynomial: ');
+pretty(vpa(char_poly, 3))
+%%
+% <html><h3> Construct Routh-Hurwitz Matrix </h3></html>
+H = getRouthMatrix(char_poly, lambda);
+disp('Routh-Hurwitz Matrix: ');
+pretty(vpa(H, 3))
+
+%%
+% <html><h3> Compute Principle Minors of Routh-Hurwitz Matrix </h3></html>
+principalMinors = computePrincipalMinors(H);
+% showFactoredForm(principalMinors, kd);
+
+%%
+% <html><h3> Solve for Stability Requirements </h3></html>
+inequalities = [0 < kd];
+for i=1:length(principalMinors)
+    inequality = principalMinors(i) > 0;
+    inequalities = [inequalities, inequality];
+end
+
+inequalitiesSol = solveRealStrictInequalities(inequalities, kd);
+disp("Stability Requirements: ");
+pretty(vpa(inequalitiesSol, 3))
+%% Problem 3A
+% Acquire the transfer function of the system.
+
+% Define New Variables
+syms s
+syms pl_s pm_s r
+
+% Solve for Transfer Function theta_l/r
+H_s = theta_l == (k/(pl_s*pm_s)) * (k*theta_l + (kp + kd*s)*(r-pl_s*theta_l/k));
+H_s = solve(H_s, theta_l)/r;
+H_s = simplify(subs(H_s, [pl_s, pm_s], [Jl*s^2+Bl*s+k, Jm*s^2+Bm*s+k]));
+H_s = collect(H_s, s);
+disp("Closed Loop Transfer Function");
+disp('H_s = '); disp(H_s)
+
+H_s_eval = vpa(subs(H_s, [Jm, Jl, Bm, Bl, k], [param.Jm, param.Jl, param.Bm, param.Bl, param.k]), 3);
+disp('H_s_eval = ');disp(H_s_eval)
+
+H_s_eval = vpa(subs(H_s, [Jm, Jl, Bm, Bl, k, kp], [param.Jm, param.Jl, param.Bm, param.Bl, param.k, param.kp]), 3);
+disp('H_s_eval = '); disp(H_s_eval)
+%% Problem 4A
+% Get the Root Locus Plot of the system.
+
+%%
+% <html><h3> Acquire Open Loop Transfer Function L(s). </h3></html>
+
+% Solve for the Forward Transfer Function
+Q_s = theta_l == (k/(pl_s*pm_s)) * (k*theta_l + (10 + s)*r);
+Q_s = solve(Q_s, theta_l)/r;
+Q_s = subs(Q_s, [pl_s, pm_s], [Jl*s^2+Bl*s+k, Jm*s^2+Bm*s+k]);
+
+% Solve for the Feedback Transfer Function
+P_s = pl_s/k;
+P_s = subs(P_s, pl_s, Jl*s^2+Bl*s+k);
+
+% Get the Open Loop Transfer Function
+SYS = subs(Q_s * P_s, [Jm, Jl, Bm, Bl, k], [param.Jm, param.Jl, param.Bm, param.Bl, param.k]);
+SYS = collect(SYS, s);
+[num, den] = numden(SYS);
+num = sym2poly(num);
+den = sym2poly(den);
+L_s = tf(num, den);
+
+disp('Open Loop Transfer Function');
+disp('L(s) = '); pretty(SYS)
+%%
+% <html><h3> Plot the Root Locus Using Open Loop Transfer Function L(s). </h3></html>
+figure('Color', 'white', 'Position', [100, 100, 1200, 800]);
+rlocus(L_s)
+set(findall(gca, 'Type', 'Line'),'LineWidth', 3);
+sgrid();
+title('Figure 1A. Series Elastic Actuator. Motor Angle Feedback. Root Locus, Kd Range. Kp/Kd = 10.', 'FontWeight', 'bold', 'FontSize', 24);
+xlabel('Real Axis', 'FontWeight', 'bold', 'FontSize', 18);
+ylabel('Imaginary Axis', 'FontWeight', 'bold', 'FontSize', 18);
+grid on;
+box on;
+set(gca, 'FontSize', 14);
+
+% Save the figure
+print(gcf, 'Figure 1A. Root Locus of Motor Angle Feedback.png', '-dpng', '-r300');  % Save as PNG with 300 DPI resolution
+%% Problem 5A
+% Initialize Simulink Parameters for the System.
+% Adding numerical values of the parameters
+
+%%
+% <html><h3> Redefining the Numerical Parameters </h3></html>
+
+param.Jm = 0.0097;
+param.Jl = 0.0097;
+
+param.Bm = 0.04169;
+param.Bl = 0.04169;
+
+param.k = 100;
+
+param.kp = 10;
+param.kd = 0.05;
+%%
+% <html><h3> Run the Simulink Model </h3></html>
+simOut = sim('ROB599_HW4_P5', 'SimulationMode', 'normal', 'StopTime', '10');
+%%
+% <html><h3> Pull The Simulation Results for Plotting. </h3></html>
+
+% Get the Step Response Data (Motor Angle Feedback)
+motorStepResponseTime = simOut.MotorStepResponse.Time;
+motorStepResponse = simOut.MotorStepResponse.Data;
+
+% Get the Step Response (Load Angle Feedback)
+loadStepResponseTime = simOut.LoadStepResponse.Time;
+loadStepResponse = simOut.LoadStepResponse.Data;
+
+% Get the Step Response (Reference Input)
+signalStepResponseTime = simOut.StepInputSignal.Time;
+signalStepResponse = simOut.StepInputSignal.Data;
+%%
+% <html><h3> Create Figure for Motor Angle Feedback Step Response. </h3></html>
+
+figure('Color', 'white', 'Position', [100, 100, 1200, 800]);
+plot(motorStepResponseTime, motorStepResponse, 'LineWidth', 3);
+hold on;
+set(gca, 'FontSize', 14);
+plot(signalStepResponseTime, signalStepResponse, 'REPLACE_WITH_DASH_DASH', 'LineWidth', 3);
+title('Figure 2.1A. Motor Angle Feedback Controller Response. Kp = 10, Kd = 0.05', 'FontWeight', 'bold', 'FontSize', 24);
+xlabel('Time (s)', 'FontWeight', 'bold', 'FontSize', 18);
+ylabel('Angle (rad)', 'FontWeight', 'bold', 'FontSize', 18);
+legend('Load Angle', 'Reference Input');
+grid on;
+box on;
+
+% Save motor angle feedback plot
+print(gcf, 'Figure 2.1A. Motor Angle Feedback Controller Response.png', '-dpng', '-r300');
+%%
+% <html><h3> Create Figure for Load Angle Feedback Step Response. </h3></html>
+
+figure('Color', 'white', 'Position', [100, 100, 1200, 800]);
+plot(loadStepResponseTime, loadStepResponse, 'LineWidth', 3);
+hold on;
+set(gca, 'FontSize', 14);
+plot(signalStepResponseTime, signalStepResponse, 'REPLACE_WITH_DASH_DASH', 'LineWidth', 3);
+title('Figure 2.2A. Load Angle Feedback Controller Response. Kp = 10, Kd = 0.05', 'FontWeight', 'bold', 'FontSize', 24);
+xlabel('Time (s)', 'FontWeight', 'bold', 'FontSize', 18);
+ylabel('Angle (rad)', 'FontWeight', 'bold', 'FontSize', 18);
+legend('Load Angle', 'Reference Input');
+grid on;
+box on;
+
+% Save load angle feedback plot
+print(gcf, 'Figure 2.2A. Load Angle Feedback Controller Response.png', '-dpng', '-r300');
+%% Helper/Debugging Functions
+
+% Display the factored form of the expression
+function showFactoredForm(expressions, var)
+factoredForm = sym([]);
+for i=1:length(expressions)
+    factoredForm = [factoredForm, prod(factor(expressions(i), var, "FactorMode", "real"))];
+end
+
+for i=1:length(factoredForm)
+    
+    % Display the factored form of the expression
+    factoredFormEquation = vpa(factoredForm(i), 3)
+end
+end
+##### SOURCE END #####
+-->
+</body>
+</html>
