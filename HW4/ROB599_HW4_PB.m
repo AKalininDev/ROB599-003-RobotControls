@@ -180,7 +180,7 @@ grid on;
 box on;
 
 % Save the figure
-print(gcf, 'Figure 1B. Root Locus of Motor Angle Feedback.png', '-dpng', '-r300');  % Save as PNG with 300 DPI resolution
+print(gcf, 'Figure 1B. Root Locus of Load Angle Feedback.png', '-dpng', '-r300');  % Save as PNG with 300 DPI resolution
 %% Problem 5B
 % Initialize Simulink Parameters for the System.
 % Adding numerical values of the parameters
