@@ -1,18 +1,10 @@
 %% ROB599_HW4_PA
 % Simiulating a PD Controller with Motor Angle Feedback for Series Elastic Actuator.
-% Problem 1A: Derive the state space representation of the system.
-% Problem 2A: Add numerical values of the parameters to the system and determine kd range such that the system is stable using Routh Hurwitz.
-% Problem 3A: Determine the transfer function of the system.
-% Problem 4A: Create root locus plot for the system.
-% Problem 5A: Simulate the system with Kp = 10, Kd = 0.05 for Motor Angle Feedback System and for Load Angle Feedback System.
 
 %% Clean Up
 clear
 clc
-
-%%
-% <html><h2> Problem 1A </h2></html>
-%
+%% Problem 1A
 % Deriving the State Space Representation of the System.
 
 %%
@@ -34,10 +26,8 @@ syms u
 
 % Control Terms
 syms kp kd theta_cmd
-
 %%
 % <html><h3> Define EOMs </h3></html>
-% Define EOMs
 eq1 = Jm*theta_m_ddot + Bm*theta_m_dot - k*(theta_l - theta_m) == u;
 eq2 = Jl*theta_l_ddot + Bl*theta_l_dot + k*(theta_l - theta_m) == 0;
 eq3 = u == kp*(theta_cmd - theta_m) - kd*theta_m_dot;
@@ -46,7 +36,6 @@ eq3 = u == kp*(theta_cmd - theta_m) - kd*theta_m_dot;
 pretty(eq1)
 pretty(eq2)
 pretty(eq3)
-
 %%
 % <html><h3> Acquire State Space Representaiton </h3></html>
 
@@ -78,7 +67,6 @@ x_dot = [x2;
     x4_dot];
 disp("X_dot = "); pretty(x_dot)
 
-
 % Extract A matrix and B vector (x_dot = Ax + B*theta_cmd)
 A = jacobian(x_dot, [x1; x2; x3; x4]);
 A = simplify(A);
@@ -86,11 +74,7 @@ disp("A = "); pretty(A)
 
 B = jacobian(x_dot, theta_cmd);
 B = simplify(B)
-
-
-%%
-% <html><h2> Problem 2A </h2></html>
-%
+%% Problem 2A
 % Determine the range of kd such that the system is stable using Routh Hurwitz.
 param.Jm = 0.0097;
 param.Jl = 0.0097;
@@ -107,16 +91,15 @@ B_eval = subs(B, [Jm, Jl, Bm, Bl, k, kp], [param.Jm, param.Jl, param.Bm, param.B
 
 A_num = vpa(A_eval, 3)
 B_num = vpa(B_eval, 3)
-
 %%
 % <html><h3> Acquire Characteristic Equations </h3></html>
+%
 % Characteristic Equation: det(A - lambda*I) = 0
 syms lambda
 char_poly = det(A_eval - lambda*eye(4));
 char_poly = collect(char_poly, lambda);
 disp('Characteristic Polynomial: ');
 pretty(vpa(char_poly, 3))
-
 %%
 % <html><h3> Construct Routh-Hurwitz Matrix </h3></html>
 H = getRouthMatrix(char_poly, lambda);
@@ -139,10 +122,7 @@ end
 inequalitiesSol = solveRealStrictInequalities(inequalities, kd);
 disp("Stability Requirements: ");
 pretty(vpa(inequalitiesSol, 3))
-
-%%
-% <html><h2> Problem 3A </h2></html>
-%
+%% Problem 3A
 % Acquire the transfer function of the system.
 
 % Define New Variables
@@ -155,17 +135,14 @@ H_s = solve(H_s, theta_l)/r;
 H_s = simplify(subs(H_s, [pl_s, pm_s], [Jl*s^2+Bl*s+k, Jm*s^2+Bm*s+k]));
 H_s = collect(H_s, s);
 disp("Closed Loop Transfer Function");
-disp('H_s = '); pretty(H_s)
+disp('H_s = '); disp(H_s)
 
 H_s_eval = vpa(subs(H_s, [Jm, Jl, Bm, Bl, k], [param.Jm, param.Jl, param.Bm, param.Bl, param.k]), 3);
-disp('H_s_eval = ');pretty(H_s_eval)
+disp('H_s_eval = ');disp(H_s_eval)
 
 H_s_eval = vpa(subs(H_s, [Jm, Jl, Bm, Bl, k, kp], [param.Jm, param.Jl, param.Bm, param.Bl, param.k, param.kp]), 3);
-disp('H_s_eval = '); pretty(H_s_eval)
-
-%%
-% <html><h2> Problem 4A</h2></html>
-%
+disp('H_s_eval = '); disp(H_s_eval)
+%% Problem 4A
 % Get the Root Locus Plot of the system.
 
 %%
@@ -190,7 +167,6 @@ L_s = tf(num, den);
 
 disp('Open Loop Transfer Function');
 disp('L(s) = '); pretty(SYS)
-
 %%
 % <html><h3> Plot the Root Locus Using Open Loop Transfer Function L(s). </h3></html>
 figure('Color', 'white', 'Position', [100, 100, 1200, 800]);
@@ -206,10 +182,7 @@ set(gca, 'FontSize', 14);
 
 % Save the figure
 print(gcf, 'Figure 1A. Root Locus of Motor Angle Feedback.png', '-dpng', '-r300');  % Save as PNG with 300 DPI resolution
-
-%%
-% <html><h2> Problem 5A</h2></html>
-%
+%% Problem 5A
 % Initialize Simulink Parameters for the System.
 % Adding numerical values of the parameters
 
@@ -226,12 +199,9 @@ param.k = 100;
 
 param.kp = 10;
 param.kd = 0.05;
-
 %%
 % <html><h3> Run the Simulink Model </h3></html>
-simOut = sim('ROB599_HW4_P5', 'SimulationMode', 'normal', ...
-    'StopTime', '10');
-
+simOut = sim('ROB599_HW4_P5', 'SimulationMode', 'normal', 'StopTime', '10');
 %%
 % <html><h3> Pull The Simulation Results for Plotting. </h3></html>
 
@@ -246,7 +216,6 @@ loadStepResponse = simOut.LoadStepResponse.Data;
 % Get the Step Response (Reference Input)
 signalStepResponseTime = simOut.StepInputSignal.Time;
 signalStepResponse = simOut.StepInputSignal.Data;
-
 %%
 % <html><h3> Create Figure for Motor Angle Feedback Step Response. </h3></html>
 
@@ -262,10 +231,8 @@ legend('Load Angle', 'Reference Input');
 grid on;
 box on;
 
-
 % Save motor angle feedback plot
 print(gcf, 'Figure 2.1A. Motor Angle Feedback Controller Response.png', '-dpng', '-r300');
-
 %%
 % <html><h3> Create Figure for Load Angle Feedback Step Response. </h3></html>
 
@@ -283,11 +250,7 @@ box on;
 
 % Save load angle feedback plot
 print(gcf, 'Figure 2.2A. Load Angle Feedback Controller Response.png', '-dpng', '-r300');
-
-
-%%
-% <html><h2> Helper/Debugging Functions </h2></html>
-%
+%% Helper/Debugging Functions
 
 % Display the factored form of the expression
 function showFactoredForm(expressions, var)
@@ -301,5 +264,4 @@ for i=1:length(factoredForm)
     % Display the factored form of the expression
     factoredFormEquation = vpa(factoredForm(i), 3)
 end
-
 end
