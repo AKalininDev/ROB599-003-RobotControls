@@ -4,6 +4,7 @@
 % Problem 2A: Add numerical values of the parameters to the system and determine kd range such that the system is stable using Routh Hurwitz.
 % Problem 3A: Determine the transfer function of the system.
 % Problem 4A: Create root locus plot for the system.
+% Problem 5A: Simulate the system with Kp = 10, Kd = 0.05 for Motor Angle Feedback System and for Load Angle Feedback System.
 
 %% Clean Up
 clear
@@ -36,9 +37,15 @@ syms kp kd theta_cmd
 
 %%
 % <html><h3> Define EOMs </h3></html>
-eq1 = Jm*theta_m_ddot + Bm*theta_m_dot - k*(theta_l - theta_m) == u
-eq2 = Jl*theta_l_ddot + Bl*theta_l_dot + k*(theta_l - theta_m) == 0
-eq3 = u == kp*(theta_cmd - theta_m) - kd*theta_m_dot
+% Define EOMs
+eq1 = Jm*theta_m_ddot + Bm*theta_m_dot - k*(theta_l - theta_m) == u;
+eq2 = Jl*theta_l_ddot + Bl*theta_l_dot + k*(theta_l - theta_m) == 0;
+eq3 = u == kp*(theta_cmd - theta_m) - kd*theta_m_dot;
+
+% Display Equations
+pretty(eq1)
+pretty(eq2)
+pretty(eq3)
 
 %%
 % <html><h3> Acquire State Space Representaiton </h3></html>
@@ -68,21 +75,23 @@ x4_dot = collect(x4_dot, [x1, x2, x3, x4, theta_cmd]);
 x_dot = [x2;
     x2_dot;
     x4;
-    x4_dot]
+    x4_dot];
+disp("X_dot = "); pretty(x_dot)
+
 
 % Extract A matrix and B vector (x_dot = Ax + B*theta_cmd)
 A = jacobian(x_dot, [x1; x2; x3; x4]);
-A = simplify(A)
+A = simplify(A);
+disp("A = "); pretty(A)
 
 B = jacobian(x_dot, theta_cmd);
 B = simplify(B)
 
+
 %%
-% <html><h2> Problem 2 A </h2></html>
+% <html><h2> Problem 2A </h2></html>
 %
 % Determine the range of kd such that the system is stable using Routh Hurwitz.
-
-% Adding numerical values of the parameters
 param.Jm = 0.0097;
 param.Jl = 0.0097;
 
@@ -102,28 +111,25 @@ B_num = vpa(B_eval, 3)
 %%
 % <html><h3> Acquire Characteristic Equations </h3></html>
 % Characteristic Equation: det(A - lambda*I) = 0
-
 syms lambda
-char_eq = det(A_eval - lambda*eye(4));
-char_eq = collect(char_eq, lambda);
-char_eq_num = vpa(char_eq, 3)
+char_poly = det(A_eval - lambda*eye(4));
+char_poly = collect(char_poly, lambda);
+disp('Characteristic Polynomial: ');
+pretty(vpa(char_poly, 3))
 
 %%
 % <html><h3> Construct Routh-Hurwitz Matrix </h3></html>
-
-routh_matrix = getRouthMatrix(char_eq, lambda);
-routh_matrix_num = vpa(routh_matrix, 3)
+H = getRouthMatrix(char_poly, lambda);
+disp('Routh-Hurwitz Matrix: ');
+pretty(vpa(H, 3))
 
 %%
 % <html><h3> Compute Principle Minors of Routh-Hurwitz Matrix </h3></html>
-
-principalMinors = computePrincipalMinors(routh_matrix);
-showFactoredForm(principalMinors, kd);
+principalMinors = computePrincipalMinors(H);
+% showFactoredForm(principalMinors, kd);
 
 %%
 % <html><h3> Solve for Stability Requirements </h3></html>
-
-%inequalities = sym([]);
 inequalities = [0 < kd];
 for i=1:length(principalMinors)
     inequality = principalMinors(i) > 0;
@@ -131,10 +137,11 @@ for i=1:length(principalMinors)
 end
 
 inequalitiesSol = solveRealStrictInequalities(inequalities, kd);
-inequalities_sol = vpa(inequalitiesSol, 3)
+disp("Stability Requirements: ");
+pretty(vpa(inequalitiesSol, 3))
 
 %%
-% <html><h2> Problem 3 A </h2></html>
+% <html><h2> Problem 3A </h2></html>
 %
 % Acquire the transfer function of the system.
 
@@ -147,60 +154,139 @@ H_s = theta_l == (k/(pl_s*pm_s)) * (k*theta_l + (kp + kd*s)*(r-pl_s*theta_l/k));
 H_s = solve(H_s, theta_l)/r;
 H_s = simplify(subs(H_s, [pl_s, pm_s], [Jl*s^2+Bl*s+k, Jm*s^2+Bm*s+k]));
 H_s = collect(H_s, s);
-pretty(H_s)
+disp("Closed Loop Transfer Function");
+disp('H_s = '); pretty(H_s)
 
 H_s_eval = vpa(subs(H_s, [Jm, Jl, Bm, Bl, k], [param.Jm, param.Jl, param.Bm, param.Bl, param.k]), 3);
-pretty(H_s_eval)
+disp('H_s_eval = ');pretty(H_s_eval)
 
 H_s_eval = vpa(subs(H_s, [Jm, Jl, Bm, Bl, k, kp], [param.Jm, param.Jl, param.Bm, param.Bl, param.k, param.kp]), 3);
-pretty(H_s_eval)
+disp('H_s_eval = '); pretty(H_s_eval)
 
 %%
-% <html><h2> Problem 4 A </h2></html>
+% <html><h2> Problem 4A</h2></html>
 %
 % Get the Root Locus Plot of the system.
 
-% Get the Open Loop Transfer Function
+%%
+% <html><h3> Acquire Open Loop Transfer Function L(s). </h3></html>
+
+% Solve for the Forward Transfer Function
 Q_s = theta_l == (k/(pl_s*pm_s)) * (k*theta_l + (10 + s)*r);
 Q_s = solve(Q_s, theta_l)/r;
-Q_s = simplify(subs(Q_s, [pl_s, pm_s], [Jl*s^2+Bl*s+k, Jm*s^2+Bm*s+k]));
-Q_s = collect(Q_s, s);
-pretty(vpa(Q_s, 3))
+Q_s = subs(Q_s, [pl_s, pm_s], [Jl*s^2+Bl*s+k, Jm*s^2+Bm*s+k]);
 
-% Get the Transfer Function in Feedback Loop
+% Solve for the Feedback Transfer Function
 P_s = pl_s/k;
-P_s = simplify(subs(P_s, pl_s, Jl*s^2+Bl*s+k));
-P_s = collect(P_s, s);
-pretty(vpa(P_s, 3))
+P_s = subs(P_s, pl_s, Jl*s^2+Bl*s+k);
 
-% Acquire the Transfer Function
-SYS = collect(Q_s * P_s, s);
-SYS = subs(SYS, [Jm, Jl, Bm, Bl, k], [param.Jm, param.Jl, param.Bm, param.Bl, param.k]);
+% Get the Open Loop Transfer Function
+SYS = subs(Q_s * P_s, [Jm, Jl, Bm, Bl, k], [param.Jm, param.Jl, param.Bm, param.Bl, param.k]);
+SYS = collect(SYS, s);
 [num, den] = numden(SYS);
 num = sym2poly(num);
 den = sym2poly(den);
+L_s = tf(num, den);
 
-TF = tf(num, den)
+disp('Open Loop Transfer Function');
+disp('L(s) = '); pretty(SYS)
 
-% Plot the Root Locus
+%%
+% <html><h3> Plot the Root Locus Using Open Loop Transfer Function L(s). </h3></html>
 figure('Color', 'white', 'Position', [100, 100, 1200, 800]);
-rlocus(TF)
-set(findall(gca, 'Type', 'Line'),'LineWidth',3);
+rlocus(L_s)
+set(findall(gca, 'Type', 'Line'),'LineWidth', 3);
 sgrid();
-title('Motor Angle Feedback for Series Elastic Actuator.', 'FontWeight', 'bold', 'FontSize', 24);
-xlabel('Real Axis', 'FontWeight', 'bold', 'FontSize', 14);
-ylabel('Imaginary Axis', 'FontWeight', 'bold', 'FontSize', 14);
+title('Figure 1A. Series Elastic Actuator. Motor Angle Feedback. Root Locus, Kd Range. Kp/Kd = 10.', 'FontWeight', 'bold', 'FontSize', 24);
+xlabel('Real Axis', 'FontWeight', 'bold', 'FontSize', 18);
+ylabel('Imaginary Axis', 'FontWeight', 'bold', 'FontSize', 18);
 grid on;
 box on;
 set(gca, 'FontSize', 14);
 
-% Save the figure in high resolution
-saveas(gcf, 'Motor_Angle_Feedback_Root_Locus.png');
-print(gcf, 'Motor_Angle_Feedback_Root_Locus', '-dpng', '-r300');  % Save as PNG with 300 DPI resolution
+% Save the figure
+print(gcf, 'Figure 1A. Root Locus of Motor Angle Feedback.png', '-dpng', '-r300');  % Save as PNG with 300 DPI resolution
+
+%%
+% <html><h2> Problem 5A</h2></html>
+%
+% Initialize Simulink Parameters for the System.
+% Adding numerical values of the parameters
+
+%%
+% <html><h3> Redefining the Numerical Parameters </h3></html>
+
+param.Jm = 0.0097;
+param.Jl = 0.0097;
+
+param.Bm = 0.04169;
+param.Bl = 0.04169;
+
+param.k = 100;
+
+param.kp = 10;
+param.kd = 0.05;
+
+%%
+% <html><h3> Run the Simulink Model </h3></html>
+simOut = sim('ROB599_HW4_P5', 'SimulationMode', 'normal', ...
+    'StopTime', '10');
+
+%%
+% <html><h3> Pull The Simulation Results for Plotting. </h3></html>
+
+% Get the Step Response Data (Motor Angle Feedback)
+motorStepResponseTime = simOut.MotorStepResponse.Time;
+motorStepResponse = simOut.MotorStepResponse.Data;
+
+% Get the Step Response (Load Angle Feedback)
+loadStepResponseTime = simOut.LoadStepResponse.Time;
+loadStepResponse = simOut.LoadStepResponse.Data;
+
+% Get the Step Response (Reference Input)
+signalStepResponseTime = simOut.StepInputSignal.Time;
+signalStepResponse = simOut.StepInputSignal.Data;
+
+%%
+% <html><h3> Create Figure for Motor Angle Feedback Step Response. </h3></html>
+
+figure('Color', 'white', 'Position', [100, 100, 1200, 800]);
+plot(motorStepResponseTime, motorStepResponse, 'LineWidth', 3);
+hold on;
+set(gca, 'FontSize', 14);
+plot(signalStepResponseTime, signalStepResponse, '--', 'LineWidth', 3);
+title('Figure 2.1A. Motor Angle Feedback Controller Response. Kp = 10, Kd = 0.05', 'FontWeight', 'bold', 'FontSize', 24);
+xlabel('Time (s)', 'FontWeight', 'bold', 'FontSize', 18);
+ylabel('Angle (rad)', 'FontWeight', 'bold', 'FontSize', 18);
+legend('Load Angle', 'Reference Input');
+grid on;
+box on;
+
+
+% Save motor angle feedback plot
+print(gcf, 'Figure 2.1A. Motor Angle Feedback Controller Response.png', '-dpng', '-r300');
+
+%%
+% <html><h3> Create Figure for Load Angle Feedback Step Response. </h3></html>
+
+figure('Color', 'white', 'Position', [100, 100, 1200, 800]);
+plot(loadStepResponseTime, loadStepResponse, 'LineWidth', 3);
+hold on;
+set(gca, 'FontSize', 14);
+plot(signalStepResponseTime, signalStepResponse, '--', 'LineWidth', 3);
+title('Figure 2.2A. Load Angle Feedback Controller Response. Kp = 10, Kd = 0.05', 'FontWeight', 'bold', 'FontSize', 24);
+xlabel('Time (s)', 'FontWeight', 'bold', 'FontSize', 18);
+ylabel('Angle (rad)', 'FontWeight', 'bold', 'FontSize', 18);
+legend('Load Angle', 'Reference Input');
+grid on;
+box on;
+
+% Save load angle feedback plot
+print(gcf, 'Figure 2.2A. Load Angle Feedback Controller Response.png', '-dpng', '-r300');
 
 
 %%
-% <html><h2> Helper Functions </h2></html>
+% <html><h2> Helper/Debugging Functions </h2></html>
 %
 
 % Display the factored form of the expression
