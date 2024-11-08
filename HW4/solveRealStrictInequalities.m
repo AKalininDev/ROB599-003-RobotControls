@@ -76,15 +76,3 @@ end
 inequalitiesSol = simplify(expand(simplify(inequalitiesSol)));
 
 end
-
-
-
-%
-%
-%
-% eq1 = Jm*theta_m_ddot + Bm*theta_m_dot - k*(theta_l - theta_m) == u
-% eq2 = Jl*theta_l_ddot + Bl*theta_l_dot + k*(theta_l - theta_m) == 0
-% eq3 = u == kp*(theta_cmd - theta_l) - kd*theta_l_dot
-
-% H_s = theta_l == (k/(pl_s*pm_s)) * (k*theta_l + (kp + kd*s)*(r-theta_l));
-% Q_s = theta_l == (k/(pl_s*pm_s)) * (k*theta_l + (10 + s)*r);
