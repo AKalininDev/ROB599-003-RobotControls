@@ -249,7 +249,7 @@ plot(simResponseTime, simResponse, 'LineWidth', 3);
 hold on;
 set(gca, 'FontSize', 14);
 plot(refSignalTime, refInput, '--', 'LineWidth', 3);
-title('Figure 6. Knee Actuator. Motor Angle Feedback Controller Response. Kp = 6.9, Kd = 0.69', 'FontWeight', 'bold', 'FontSize', 24);
+sgtitle('Figure 6. Ramp Response of the Knee Actuator with Lead Compensator ' + controllerTF, 'FontSize', 20, 'FontWeight', 'bold', 'Interpreter', 'latex');
 xlabel('Time (s)', 'FontWeight', 'bold', 'FontSize', 18);
 ylabel('Angle (rad)', 'FontWeight', 'bold', 'FontSize', 18);
 legend('Actuator Angle', 'Reference Input');
@@ -257,4 +257,4 @@ grid on;
 box on;
 
 % Save motor angle feedback plot
-print(gcf, 'Figure 6. Knee Actuator. Motor Angle Feedback Controller Response.png', '-dpng', '-r300');
+print(gcf, 'Figure 6. Ramp Response of the Knee Actuator with Lead Compensator.png', '-dpng', '-r300');
