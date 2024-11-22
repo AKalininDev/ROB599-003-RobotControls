@@ -26,7 +26,7 @@ b_eval = eval(solve(equation, b))
 G_s_omega = 10^(4.6/20);
 wc = 6;
 
-equation = 1/((I*wc)^2 + b_eval^2) == G_s_omega^2;
+equation = sqrt(1/((I*wc)^2 + b_eval^2)) == G_s_omega;
 I_eval = abs(eval(solve(equation, I)));
 I_eval = I_eval(1) % two solutions, pick the positive one
 
@@ -172,7 +172,7 @@ print(gcf, 'Figure 4. Bode Plot of the Knee Actuator with Gain K = 9.png', '-dpn
 
 % Noting from Bode Plot
 PM_c = 29.5;
-wm = 12.9;
+wm = 13.0;
 
 % Computing corresponding zc and pc
 phi_m = PM_d - PM_c + 5;
@@ -217,7 +217,8 @@ end
 delete(findobj(h, 'Type', 'text'));
 
 % Set the title and labels
-sgtitle('Figure 5. Bode Plot of the Knee Actuator with Lead Compensator. K = 9.', 'FontSize', 20, 'FontWeight', 'bold');
+controllerTF = "$$C(s) = " + num2str(K*pc/zc) + "\frac{s + " + num2str(-zc) + "}{s + " + num2str(-pc) + "}$$";
+sgtitle('Figure 5. Bode Plot of the Knee Actuator with Lead Compensator ' + controllerTF, 'FontSize', 20, 'FontWeight', 'bold', 'Interpreter', 'latex');
 xlabel(axesObjs(2), 'Frequency ', 'FontSize', 18, 'FontWeight', 'bold');
 set(get(axesObjs(1), 'XLabel'), 'String', '');
 ylabel(axesObjs(2), 'Magnitude ', 'FontSize', 18, 'FontWeight', 'bold');
@@ -251,7 +252,7 @@ plot(refSignalTime, refInput, '--', 'LineWidth', 3);
 title('Figure 6. Knee Actuator. Motor Angle Feedback Controller Response. Kp = 6.9, Kd = 0.69', 'FontWeight', 'bold', 'FontSize', 24);
 xlabel('Time (s)', 'FontWeight', 'bold', 'FontSize', 18);
 ylabel('Angle (rad)', 'FontWeight', 'bold', 'FontSize', 18);
-legend('Load Angle', 'Reference Input');
+legend('Actuator Angle', 'Reference Input');
 grid on;
 box on;
 
