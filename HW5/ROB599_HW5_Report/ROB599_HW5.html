@@ -1,0 +1,689 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>ROB599_HW5</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-22">
+<meta name="DC.source" content="ROB599_HW5.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>ROB599_HW5</h1>
+<!--introduction-->
+<p>Analyzing the dynamics of knee actuator</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Clean Up</a>
+</li>
+<li>
+<a href="#2">Problem 1A: Determine the system parameters</a>
+</li>
+<li>
+<a href="#3">Problem 1B: Bode Plot of the Actuator</a>
+</li>
+<li>
+<a href="#4">Problem 2A: Determine the Transfer Function of the Plant from Torque to Angle</a>
+</li>
+<li>
+<a href="#5">Problem 2B: Plot the Root Locus &amp; Step Response</a>
+</li>
+<li>
+<a href="#6">Problem 2C: Design Lead Compensator</a>
+</li>
+<li>
+<a href="#7">Problem 2D: Create a Simulink Model and Simulate Ramp Input Signal</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Clean Up</h2>
+<pre class="codeinput">close <span class="string">all</span>
+clear
+clc
+</pre>
+<h2 id="2">Problem 1A: Determine the system parameters</h2>
+<pre class="codeinput">
+<span class="comment">% Define the system variables</span>
+syms <span class="string">s</span>
+syms <span class="string">I</span> <span class="string">b</span>
+syms <span class="string">G_s</span>
+
+plant_tf = 1/(I*s + b);
+
+<span class="comment">% Evaluate at DC Gain</span>
+G_s_0 = 10^(7.6/20);
+plant = subs(plant_tf, s, 0);
+equation = abs(plant) == G_s_0;
+
+b_eval = eval(solve(equation, b))
+
+<span class="comment">% Evaluate at Cutoff Frequency</span>
+G_s_omega = 10^(4.6/20);
+wc = 6;
+
+equation = sqrt(1/((I*wc)^2 + b_eval^2)) == G_s_omega;
+I_eval = abs(eval(solve(equation, I)));
+I_eval = I_eval(1) <span class="comment">% two solutions, pick the positive one</span>
+</pre>
+<pre class="codeoutput">
+b_eval =
+
+    0.4169
+
+
+I_eval =
+
+    0.0693
+
+</pre>
+<h2 id="3">Problem 1B: Bode Plot of the Actuator</h2>
+<pre class="codeinput">
+<span class="comment">% Defining the Transfer Function of the Actuator</span>
+TF = tf([1], [I_eval b_eval]);
+
+<span class="comment">% Plot the Bode plot</span>
+figure(<span class="string">'Position'</span>, [100, 100, 1200, 800]);
+
+<span class="comment">% Create Bode plot</span>
+opts = bodeoptions;
+opts.Grid = <span class="string">'on'</span>;
+opts.FreqUnits = <span class="string">'rad/s'</span>;
+opts.PhaseWrapping = <span class="string">'off'</span>;
+opts.Title.String = <span class="string">''</span>;  <span class="comment">% Remove "Bode Diagram" text</span>
+opts.XLabel.String = <span class="string">'Frequency (rad/s)'</span>;  <span class="comment">% Set custom x-label</span>
+bodeplot(TF, opts)
+
+<span class="comment">% Get the axes handles</span>
+h = gcf;
+axesObjs = findobj(h, <span class="string">'Type'</span>, <span class="string">'axes'</span>);
+
+<span class="comment">% Set the properties for the Bode plot lines</span>
+bodePlotLines = findobj(h, <span class="string">'Type'</span>, <span class="string">'line'</span>);
+set(bodePlotLines, <span class="string">'LineWidth'</span>, 2, <span class="string">'Color'</span>, <span class="string">'blue'</span>);
+
+<span class="comment">% Set the properties for the axes</span>
+<span class="keyword">for</span> i = 1:length(axesObjs)
+    set(axesObjs(i), <span class="string">'FontSize'</span>, 14, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);
+    grid(axesObjs(i), <span class="string">'on'</span>);
+    set(axesObjs(i), <span class="string">'GridAlpha'</span>, 0.3);
+    set(axesObjs(i), <span class="string">'MinorGridAlpha'</span>, 0.15);
+    set(axesObjs(i), <span class="string">'XScale'</span>, <span class="string">'log'</span>);
+<span class="keyword">end</span>
+
+<span class="comment">% Hide all default titles and text</span>
+delete(findobj(h, <span class="string">'Type'</span>, <span class="string">'text'</span>));
+
+<span class="comment">% Set the title and labels</span>
+sgtitle(<span class="string">'Figure 1. Bode Plot of the Knee Actuator. I = 0.2249; b = 0.4169.'</span>, <span class="string">'FontSize'</span>, 20, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);
+xlabel(axesObjs(2), <span class="string">'Frequency '</span>, <span class="string">'FontSize'</span>, 18, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);  <span class="comment">% Only lower plot</span>
+set(get(axesObjs(1), <span class="string">'XLabel'</span>), <span class="string">'String'</span>, <span class="string">''</span>);  <span class="comment">% Remove x-label from upper plot</span>
+ylabel(axesObjs(2), <span class="string">'Magnitude '</span>, <span class="string">'FontSize'</span>, 18, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);
+ylabel(axesObjs(1), <span class="string">'Phase '</span>, <span class="string">'FontSize'</span>, 18, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);
+
+print(gcf, <span class="string">'Figure 1. Bode Plot of the Knee Actuator.png'</span>, <span class="string">'-dpng'</span>, <span class="string">'-r300'</span>);
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW5_01.png" alt=""> <h2 id="4">Problem 2A: Determine the Transfer Function of the Plant from Torque to Angle</h2>
+<pre class="codeinput">plant = tf([1], [I_eval b_eval 0])
+</pre>
+<pre class="codeoutput">
+plant =
+ 
+            1
+  ----------------------
+  0.06931 s^2 + 0.4169 s
+ 
+Continuous-time transfer function.
+</pre>
+<h2 id="5">Problem 2B: Plot the Root Locus &amp; Step Response</h2>
+<pre class="codeinput">
+<span class="comment">% kp/kd = 10</span>
+controller = tf([1 10], [1])
+L = controller * plant
+
+<span class="comment">% Plot the Root Locus</span>
+figure(<span class="string">'Color'</span>, <span class="string">'white'</span>, <span class="string">'Position'</span>, [100, 100, 1200, 800]);
+rlocus(L)
+axis([-25 5 -9, 9]);
+set(gca, <span class="string">'FontSize'</span>, 14);
+set(findall(gca, <span class="string">'Type'</span>, <span class="string">'Line'</span>),<span class="string">'LineWidth'</span>, 3);
+sgrid([0.2, 0.4, 0.6, 0.8], [2, 4, 6, 8, 10, 15, 20]);
+title(<span class="string">'Figure 2. Knee Actuator. Root Locus, Kd Range. Kp/Kd = 10.'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 24);
+xlabel(<span class="string">'Real Axis'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 18);
+ylabel(<span class="string">'Imaginary Axis'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 18);
+grid <span class="string">on</span>;
+box <span class="string">on</span>;
+
+print(gcf, <span class="string">'Figure 2. Root Locus of Knee Actuator Controller.png'</span>, <span class="string">'-dpng'</span>, <span class="string">'-r300'</span>);
+
+<span class="comment">% Analyze the Step Response</span>
+<span class="comment">% Define the closed loop system</span>
+kd = 0.69; <span class="comment">% from the root locus</span>
+kp = 10 * kd;
+controller = tf([kd kp], [1]);
+CL = feedback(controller * plant, 1)
+
+<span class="comment">% Plot the Step Response</span>
+figure(<span class="string">'Color'</span>, <span class="string">'white'</span>, <span class="string">'Position'</span>, [100, 100, 1200, 800]);
+step(CL)
+set(gca, <span class="string">'FontSize'</span>, 14);
+set(findall(gca, <span class="string">'Type'</span>, <span class="string">'Line'</span>),<span class="string">'LineWidth'</span>, 3);
+title(<span class="string">'Figure 3. Knee Actuator. Step Response, Kd = 0.69, Kp = 6.9.'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 24);
+xlabel(<span class="string">'Time'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 18);
+ylabel(<span class="string">'Angle (rad)'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 18);
+grid <span class="string">on</span>;
+box <span class="string">on</span>;
+
+print(gcf, <span class="string">'Figure 3. Step Response of Knee Actuator Controller.png'</span>, <span class="string">'-dpng'</span>, <span class="string">'-r300'</span>);
+</pre>
+<pre class="codeoutput">
+controller =
+ 
+  s + 10
+ 
+Continuous-time transfer function.
+
+L =
+ 
+          s + 10
+  ----------------------
+  0.06931 s^2 + 0.4169 s
+ 
+Continuous-time transfer function.
+
+CL =
+ 
+         0.69 s + 6.9
+  ---------------------------
+  0.06931 s^2 + 1.107 s + 6.9
+ 
+Continuous-time transfer function.
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW5_02.png" alt=""> <img vspace="5" hspace="5" src="ROB599_HW5_03.png" alt=""> <h2 id="6">Problem 2C: Design Lead Compensator</h2>
+<pre class="codeinput">
+<span class="comment">% Define the desired characteristics</span>
+PM_d = 45;
+e_SS = 0.05;
+
+<span class="comment">% Evaluated Queantities from the Bode Plot of the Plant with Gain K</span>
+K = 9; <span class="comment">% K&gt;8.337 ensures e_ss &lt; 0.05</span>
+
+<span class="comment">% Plot the Bode plot of the plant with gain K</span>
+figure(<span class="string">'Position'</span>, [100, 100, 1200, 800]);
+<span class="comment">% Create Bode plot</span>
+opts = bodeoptions;
+opts.Grid = <span class="string">'on'</span>;
+opts.FreqUnits = <span class="string">'rad/s'</span>;
+opts.PhaseWrapping = <span class="string">'off'</span>;
+opts.Title.String = <span class="string">''</span>;  <span class="comment">% Remove "Bode Diagram" text</span>
+opts.XLabel.String = <span class="string">'Frequency (rad/s)'</span>;  <span class="comment">% Set custom x-label</span>
+margin(K * plant, opts)
+
+<span class="comment">% Get the axes handles</span>
+h = gcf;
+axesObjs = findobj(h, <span class="string">'Type'</span>, <span class="string">'axes'</span>);
+
+<span class="comment">% Set the properties for the Bode plot lines</span>
+bodePlotLines = findobj(h, <span class="string">'Type'</span>, <span class="string">'line'</span>);
+set(bodePlotLines, <span class="string">'LineWidth'</span>, 2, <span class="string">'Color'</span>, <span class="string">'blue'</span>);
+
+<span class="comment">% Set the properties for the axes</span>
+<span class="keyword">for</span> i = 1:length(axesObjs)
+    set(axesObjs(i), <span class="string">'FontSize'</span>, 14, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);
+    grid(axesObjs(i), <span class="string">'on'</span>);
+    set(axesObjs(i), <span class="string">'GridAlpha'</span>, 0.3);
+    set(axesObjs(i), <span class="string">'MinorGridAlpha'</span>, 0.15);
+    set(axesObjs(i), <span class="string">'XScale'</span>, <span class="string">'log'</span>);
+<span class="keyword">end</span>
+
+<span class="comment">% Hide all default titles and text</span>
+delete(findobj(h, <span class="string">'Type'</span>, <span class="string">'text'</span>));
+
+<span class="comment">% Set the title and labels</span>
+sgtitle(<span class="string">'Figure 4. Bode Plot of the Knee Actuator with Gain K = 9.'</span>, <span class="string">'FontSize'</span>, 20, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);
+xlabel(axesObjs(2), <span class="string">'Frequency '</span>, <span class="string">'FontSize'</span>, 18, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);  <span class="comment">% Only lower plot</span>
+set(get(axesObjs(1), <span class="string">'XLabel'</span>), <span class="string">'String'</span>, <span class="string">''</span>);  <span class="comment">% Remove x-label from upper plot</span>
+ylabel(axesObjs(2), <span class="string">'Magnitude '</span>, <span class="string">'FontSize'</span>, 18, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);
+ylabel(axesObjs(1), <span class="string">'Phase '</span>, <span class="string">'FontSize'</span>, 18, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);
+
+print(gcf, <span class="string">'Figure 4. Bode Plot of the Knee Actuator with Gain K = 9.png'</span>, <span class="string">'-dpng'</span>, <span class="string">'-r300'</span>);
+
+<span class="comment">% Noting from Bode Plot</span>
+PM_c = 29.5;
+wm = 13.0;
+
+<span class="comment">% Computing corresponding zc and pc</span>
+phi_m = PM_d - PM_c + 5;
+a = (1 - sind(phi_m)) / (1 + sind(phi_m));
+CrossGain = 20*log10(sqrt(a));
+
+zc = - wm * sqrt(a);
+pc = zc / a;
+
+C_s = tf(K*pc/zc*[1 -zc], [1 -pc])
+
+<span class="comment">% Plot the Bode Plot of the System with Lead Compensator</span>
+
+<span class="comment">% Create Bode plot</span>
+figure(<span class="string">'Position'</span>, [100, 100, 1200, 800]);
+opts = bodeoptions;
+opts.Grid = <span class="string">'on'</span>;
+opts.FreqUnits = <span class="string">'rad/s'</span>;
+opts.PhaseWrapping = <span class="string">'off'</span>;
+opts.Title.String = <span class="string">''</span>;  <span class="comment">% Remove "Bode Diagram" text</span>
+opts.XLabel.String = <span class="string">'Frequency (rad/s)'</span>;  <span class="comment">% Set custom x-label</span>
+margin(C_s * plant, opts)
+
+<span class="comment">% Get the axes handles</span>
+h = gcf;
+axesObjs = findobj(h, <span class="string">'Type'</span>, <span class="string">'axes'</span>);
+
+<span class="comment">% Set the properties for the Bode plot lines</span>
+bodePlotLines = findobj(h, <span class="string">'Type'</span>, <span class="string">'line'</span>);
+set(bodePlotLines, <span class="string">'LineWidth'</span>, 2, <span class="string">'Color'</span>, <span class="string">'blue'</span>);
+
+<span class="comment">% Set the properties for the axes</span>
+<span class="keyword">for</span> i = 1:length(axesObjs)
+    set(axesObjs(i), <span class="string">'FontSize'</span>, 14, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);
+    grid(axesObjs(i), <span class="string">'on'</span>);
+    set(axesObjs(i), <span class="string">'GridAlpha'</span>, 0.3);
+    set(axesObjs(i), <span class="string">'MinorGridAlpha'</span>, 0.15);
+    set(axesObjs(i), <span class="string">'XScale'</span>, <span class="string">'log'</span>);
+<span class="keyword">end</span>
+
+<span class="comment">% Hide all default titles and text</span>
+delete(findobj(h, <span class="string">'Type'</span>, <span class="string">'text'</span>));
+
+<span class="comment">% Set the title and labels</span>
+controllerTF = <span class="string">"$$C(s) = "</span> + num2str(K*pc/zc) + <span class="string">"\frac{s + "</span> + num2str(-zc) + <span class="string">"}{s + "</span> + num2str(-pc) + <span class="string">"}$$"</span>;
+sgtitle(<span class="string">'Figure 5. Bode Plot of the Knee Actuator with Lead Compensator '</span> + controllerTF, <span class="string">'FontSize'</span>, 20, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(axesObjs(2), <span class="string">'Frequency '</span>, <span class="string">'FontSize'</span>, 18, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);
+set(get(axesObjs(1), <span class="string">'XLabel'</span>), <span class="string">'String'</span>, <span class="string">''</span>);
+ylabel(axesObjs(2), <span class="string">'Magnitude '</span>, <span class="string">'FontSize'</span>, 18, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);
+ylabel(axesObjs(1), <span class="string">'Phase '</span>, <span class="string">'FontSize'</span>, 18, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);
+
+print(gcf, <span class="string">'Figure 5. Bode Plot of the Knee Actuator with Lead Compensator.png'</span>, <span class="string">'-dpng'</span>, <span class="string">'-r300'</span>);
+</pre>
+<pre class="codeoutput">
+C_s =
+ 
+  18.7 s + 168.7
+  --------------
+    s + 18.74
+ 
+Continuous-time transfer function.
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW5_04.png" alt=""> <img vspace="5" hspace="5" src="ROB599_HW5_05.png" alt=""> <h2 id="7">Problem 2D: Create a Simulink Model and Simulate Ramp Input Signal</h2>
+<pre class="codeinput">
+<span class="comment">% Recall the transfer function of the system</span>
+C_s = tf(K*pc/zc*[1 -zc], [1 -pc]);
+P_s = plant;
+
+<span class="comment">% Run the Simulink Model</span>
+simOut = sim(<span class="string">'ROB599_HW5_P2D'</span>, <span class="string">'SimulationMode'</span>, <span class="string">'normal'</span>, <span class="string">'StopTime'</span>, <span class="string">'10'</span>);
+
+<span class="comment">% Get the Step Response Data (Motor Angle Feedback)</span>
+refSignalTime = simOut.ref_signal.Time;
+refInput = simOut.ref_signal.Data;
+
+<span class="comment">% Get the Step Response (Load Angle Feedback)</span>
+simResponseTime = simOut.theta.Time;
+simResponse = simOut.theta.Data;
+
+<span class="comment">% Create Figure for Motor Angle Feedback Step Response</span>
+figure(<span class="string">'Color'</span>, <span class="string">'white'</span>, <span class="string">'Position'</span>, [100, 100, 1200, 800]);
+plot(simResponseTime, simResponse, <span class="string">'LineWidth'</span>, 3);
+hold <span class="string">on</span>;
+set(gca, <span class="string">'FontSize'</span>, 14);
+plot(refSignalTime, refInput, <span class="string">'--'</span>, <span class="string">'LineWidth'</span>, 3);
+title(<span class="string">'Figure 6. Knee Actuator. Motor Angle Feedback Controller Response. Kp = 6.9, Kd = 0.69'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 24);
+xlabel(<span class="string">'Time (s)'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 18);
+ylabel(<span class="string">'Angle (rad)'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="string">'FontSize'</span>, 18);
+legend(<span class="string">'Actuator Angle'</span>, <span class="string">'Reference Input'</span>);
+grid <span class="string">on</span>;
+box <span class="string">on</span>;
+
+<span class="comment">% Save motor angle feedback plot</span>
+print(gcf, <span class="string">'Figure 6. Knee Actuator. Motor Angle Feedback Controller Response.png'</span>, <span class="string">'-dpng'</span>, <span class="string">'-r300'</span>);
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW5_06.png" alt=""> <p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% ROB599_HW5
+% Analyzing the dynamics of knee actuator
+
+%% Clean Up
+close all
+clear
+clc
+
+%% Problem 1A: Determine the system parameters
+
+% Define the system variables
+syms s
+syms I b
+syms G_s
+
+plant_tf = 1/(I*s + b);
+
+% Evaluate at DC Gain
+G_s_0 = 10^(7.6/20);
+plant = subs(plant_tf, s, 0);
+equation = abs(plant) == G_s_0;
+
+b_eval = eval(solve(equation, b))
+
+% Evaluate at Cutoff Frequency
+G_s_omega = 10^(4.6/20);
+wc = 6;
+
+equation = sqrt(1/((I*wc)^2 + b_eval^2)) == G_s_omega;
+I_eval = abs(eval(solve(equation, I)));
+I_eval = I_eval(1) % two solutions, pick the positive one
+
+%% Problem 1B: Bode Plot of the Actuator
+
+% Defining the Transfer Function of the Actuator
+TF = tf([1], [I_eval b_eval]);
+
+% Plot the Bode plot
+figure('Position', [100, 100, 1200, 800]);
+
+% Create Bode plot
+opts = bodeoptions;
+opts.Grid = 'on';
+opts.FreqUnits = 'rad/s';
+opts.PhaseWrapping = 'off';
+opts.Title.String = '';  % Remove "Bode Diagram" text
+opts.XLabel.String = 'Frequency (rad/s)';  % Set custom x-label
+bodeplot(TF, opts)
+
+% Get the axes handles
+h = gcf;
+axesObjs = findobj(h, 'Type', 'axes');
+
+% Set the properties for the Bode plot lines
+bodePlotLines = findobj(h, 'Type', 'line');
+set(bodePlotLines, 'LineWidth', 2, 'Color', 'blue');
+
+% Set the properties for the axes
+for i = 1:length(axesObjs)
+    set(axesObjs(i), 'FontSize', 14, 'FontWeight', 'bold');
+    grid(axesObjs(i), 'on');
+    set(axesObjs(i), 'GridAlpha', 0.3);
+    set(axesObjs(i), 'MinorGridAlpha', 0.15);
+    set(axesObjs(i), 'XScale', 'log');
+end
+
+% Hide all default titles and text
+delete(findobj(h, 'Type', 'text'));
+
+% Set the title and labels
+sgtitle('Figure 1. Bode Plot of the Knee Actuator. I = 0.2249; b = 0.4169.', 'FontSize', 20, 'FontWeight', 'bold');
+xlabel(axesObjs(2), 'Frequency ', 'FontSize', 18, 'FontWeight', 'bold');  % Only lower plot
+set(get(axesObjs(1), 'XLabel'), 'String', '');  % Remove x-label from upper plot
+ylabel(axesObjs(2), 'Magnitude ', 'FontSize', 18, 'FontWeight', 'bold');
+ylabel(axesObjs(1), 'Phase ', 'FontSize', 18, 'FontWeight', 'bold');
+
+print(gcf, 'Figure 1. Bode Plot of the Knee Actuator.png', '-dpng', '-r300');
+
+
+%% Problem 2A: Determine the Transfer Function of the Plant from Torque to Angle
+plant = tf([1], [I_eval b_eval 0])
+
+%% Problem 2B: Plot the Root Locus & Step Response
+
+% kp/kd = 10
+controller = tf([1 10], [1])
+L = controller * plant
+
+% Plot the Root Locus
+figure('Color', 'white', 'Position', [100, 100, 1200, 800]);
+rlocus(L)
+axis([-25 5 -9, 9]);
+set(gca, 'FontSize', 14);
+set(findall(gca, 'Type', 'Line'),'LineWidth', 3);
+sgrid([0.2, 0.4, 0.6, 0.8], [2, 4, 6, 8, 10, 15, 20]);
+title('Figure 2. Knee Actuator. Root Locus, Kd Range. Kp/Kd = 10.', 'FontWeight', 'bold', 'FontSize', 24);
+xlabel('Real Axis', 'FontWeight', 'bold', 'FontSize', 18);
+ylabel('Imaginary Axis', 'FontWeight', 'bold', 'FontSize', 18);
+grid on;
+box on;
+
+print(gcf, 'Figure 2. Root Locus of Knee Actuator Controller.png', '-dpng', '-r300');
+
+% Analyze the Step Response
+% Define the closed loop system
+kd = 0.69; % from the root locus
+kp = 10 * kd;
+controller = tf([kd kp], [1]);
+CL = feedback(controller * plant, 1)
+
+% Plot the Step Response
+figure('Color', 'white', 'Position', [100, 100, 1200, 800]);
+step(CL)
+set(gca, 'FontSize', 14);
+set(findall(gca, 'Type', 'Line'),'LineWidth', 3);
+title('Figure 3. Knee Actuator. Step Response, Kd = 0.69, Kp = 6.9.', 'FontWeight', 'bold', 'FontSize', 24);
+xlabel('Time', 'FontWeight', 'bold', 'FontSize', 18);
+ylabel('Angle (rad)', 'FontWeight', 'bold', 'FontSize', 18);
+grid on;
+box on;
+
+print(gcf, 'Figure 3. Step Response of Knee Actuator Controller.png', '-dpng', '-r300');
+
+%% Problem 2C: Design Lead Compensator
+
+% Define the desired characteristics
+PM_d = 45;
+e_SS = 0.05;
+
+% Evaluated Queantities from the Bode Plot of the Plant with Gain K
+K = 9; % K>8.337 ensures e_ss < 0.05
+
+% Plot the Bode plot of the plant with gain K
+figure('Position', [100, 100, 1200, 800]);
+% Create Bode plot
+opts = bodeoptions;
+opts.Grid = 'on';
+opts.FreqUnits = 'rad/s';
+opts.PhaseWrapping = 'off';
+opts.Title.String = '';  % Remove "Bode Diagram" text
+opts.XLabel.String = 'Frequency (rad/s)';  % Set custom x-label
+margin(K * plant, opts)
+
+% Get the axes handles
+h = gcf;
+axesObjs = findobj(h, 'Type', 'axes');
+
+% Set the properties for the Bode plot lines
+bodePlotLines = findobj(h, 'Type', 'line');
+set(bodePlotLines, 'LineWidth', 2, 'Color', 'blue');
+
+% Set the properties for the axes
+for i = 1:length(axesObjs)
+    set(axesObjs(i), 'FontSize', 14, 'FontWeight', 'bold');
+    grid(axesObjs(i), 'on');
+    set(axesObjs(i), 'GridAlpha', 0.3);
+    set(axesObjs(i), 'MinorGridAlpha', 0.15);
+    set(axesObjs(i), 'XScale', 'log');
+end
+
+% Hide all default titles and text
+delete(findobj(h, 'Type', 'text'));
+
+% Set the title and labels
+sgtitle('Figure 4. Bode Plot of the Knee Actuator with Gain K = 9.', 'FontSize', 20, 'FontWeight', 'bold');
+xlabel(axesObjs(2), 'Frequency ', 'FontSize', 18, 'FontWeight', 'bold');  % Only lower plot
+set(get(axesObjs(1), 'XLabel'), 'String', '');  % Remove x-label from upper plot
+ylabel(axesObjs(2), 'Magnitude ', 'FontSize', 18, 'FontWeight', 'bold');
+ylabel(axesObjs(1), 'Phase ', 'FontSize', 18, 'FontWeight', 'bold');
+
+print(gcf, 'Figure 4. Bode Plot of the Knee Actuator with Gain K = 9.png', '-dpng', '-r300');
+
+% Noting from Bode Plot
+PM_c = 29.5;
+wm = 13.0;
+
+% Computing corresponding zc and pc
+phi_m = PM_d - PM_c + 5;
+a = (1 - sind(phi_m)) / (1 + sind(phi_m));
+CrossGain = 20*log10(sqrt(a));
+
+zc = - wm * sqrt(a);
+pc = zc / a;
+
+C_s = tf(K*pc/zc*[1 -zc], [1 -pc])
+
+% Plot the Bode Plot of the System with Lead Compensator
+
+% Create Bode plot
+figure('Position', [100, 100, 1200, 800]);
+opts = bodeoptions;
+opts.Grid = 'on';
+opts.FreqUnits = 'rad/s';
+opts.PhaseWrapping = 'off';
+opts.Title.String = '';  % Remove "Bode Diagram" text
+opts.XLabel.String = 'Frequency (rad/s)';  % Set custom x-label
+margin(C_s * plant, opts)
+
+% Get the axes handles
+h = gcf;
+axesObjs = findobj(h, 'Type', 'axes');
+
+% Set the properties for the Bode plot lines
+bodePlotLines = findobj(h, 'Type', 'line');
+set(bodePlotLines, 'LineWidth', 2, 'Color', 'blue');
+
+% Set the properties for the axes
+for i = 1:length(axesObjs)
+    set(axesObjs(i), 'FontSize', 14, 'FontWeight', 'bold');
+    grid(axesObjs(i), 'on');
+    set(axesObjs(i), 'GridAlpha', 0.3);
+    set(axesObjs(i), 'MinorGridAlpha', 0.15);
+    set(axesObjs(i), 'XScale', 'log');
+end
+
+% Hide all default titles and text
+delete(findobj(h, 'Type', 'text'));
+
+% Set the title and labels
+controllerTF = "$$C(s) = " + num2str(K*pc/zc) + "\frac{s + " + num2str(-zc) + "}{s + " + num2str(-pc) + "}$$";
+sgtitle('Figure 5. Bode Plot of the Knee Actuator with Lead Compensator ' + controllerTF, 'FontSize', 20, 'FontWeight', 'bold', 'Interpreter', 'latex');
+xlabel(axesObjs(2), 'Frequency ', 'FontSize', 18, 'FontWeight', 'bold');
+set(get(axesObjs(1), 'XLabel'), 'String', '');
+ylabel(axesObjs(2), 'Magnitude ', 'FontSize', 18, 'FontWeight', 'bold');
+ylabel(axesObjs(1), 'Phase ', 'FontSize', 18, 'FontWeight', 'bold');
+
+print(gcf, 'Figure 5. Bode Plot of the Knee Actuator with Lead Compensator.png', '-dpng', '-r300');
+
+%% Problem 2D: Create a Simulink Model and Simulate Ramp Input Signal
+
+% Recall the transfer function of the system
+C_s = tf(K*pc/zc*[1 -zc], [1 -pc]);
+P_s = plant;
+
+% Run the Simulink Model
+simOut = sim('ROB599_HW5_P2D', 'SimulationMode', 'normal', 'StopTime', '10');
+
+% Get the Step Response Data (Motor Angle Feedback)
+refSignalTime = simOut.ref_signal.Time;
+refInput = simOut.ref_signal.Data;
+
+% Get the Step Response (Load Angle Feedback)
+simResponseTime = simOut.theta.Time;
+simResponse = simOut.theta.Data;
+
+% Create Figure for Motor Angle Feedback Step Response
+figure('Color', 'white', 'Position', [100, 100, 1200, 800]);
+plot(simResponseTime, simResponse, 'LineWidth', 3);
+hold on;
+set(gca, 'FontSize', 14);
+plot(refSignalTime, refInput, 'REPLACE_WITH_DASH_DASH', 'LineWidth', 3);
+title('Figure 6. Knee Actuator. Motor Angle Feedback Controller Response. Kp = 6.9, Kd = 0.69', 'FontWeight', 'bold', 'FontSize', 24);
+xlabel('Time (s)', 'FontWeight', 'bold', 'FontSize', 18);
+ylabel('Angle (rad)', 'FontWeight', 'bold', 'FontSize', 18);
+legend('Actuator Angle', 'Reference Input');
+grid on;
+box on;
+
+% Save motor angle feedback plot
+print(gcf, 'Figure 6. Knee Actuator. Motor Angle Feedback Controller Response.png', '-dpng', '-r300');
+##### SOURCE END #####
+-->
+</body>
+</html>
