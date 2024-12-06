@@ -10,6 +10,7 @@ close all
 
 % Define System Variables
 syms Jm Jl Bm Bl k
+syms k1 k2 k3 k4
 
 % Define the Numerical Values of the System Parameters
 Jm_val = 0.0097; % kg*m^2
@@ -25,6 +26,10 @@ A = [0,     1,     0,       0;
     k/Jm,   0,      -k/Jm,  -Bm/Jm];
 
 B = [0; 0; 0; 1/Jm];
+
+K_m = [k1, k2, k3, k4];
+
+As_cl = collect(A - B*K_m, Jm)
 
 % Substitude numerical values for the system parameters
 A_val = eval(subs(A, [Jm, Jl, Bm, Bl, k], [Jm_val, Jl_val, Bm_val, Bl_val, k_val]));
@@ -58,7 +63,7 @@ K_c
 
 % Define Weighting Matrices
 Q_d = diag([5, 0.1, 5, 0.1]);
-R_d = 1;
+R_d = 0.1;
 
 % Solve for the LQR controller
 [K_d, S_d, e_d] = lqr(A_val, B_val, Q_d, R_d);
@@ -71,12 +76,6 @@ K_d
 % Define Simulation Parameters
 x0 = [pi/2; 0; pi/2; 0];
 tspan = [0 5];
-
-% Define the Closed Loop System Matrix
-A_cl = A_val - B_val*K_b;
-
-% Simulate the System
-[t_out, x_out] = ode45(@(t, x) A_cl*x, tspan, x0);
 
 % Define the Closed Loop Systems for all cases
 A_cl_b = A_val - B_val*K_b;

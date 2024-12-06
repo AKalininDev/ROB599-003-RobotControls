@@ -110,7 +110,7 @@ dx_act = simulateLinearSystem(x_act', A_val, B_val, u)'; % transpose to match th
 
 % Plot the Simulation Results
 plotSystemStates(t, x, x_hat, dx_act, dx_hat, ...
-    'Simulation of the Mass-Spring-Damper System with LQE Observer', ...
+    'Simulation of the Mass-Spring-Damper System with L = [5 -1]T Observer', ...
     5, 'Figure 5. Mass Spring Damper. 2B.png');
 
 
@@ -185,7 +185,6 @@ plotSystemStates(t, x, x_hat, dx_act, dx_hat, ...
 
 
 % Second Case: Using optimal LQE observer from 2C
-
 % Define the Observer Parameters
 G = eye(2);
 Q = diag([10^(-4), 10^(-4)]);
