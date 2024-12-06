@@ -1,0 +1,435 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>ROB599_HW6_P1</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-12-06">
+<meta name="DC.source" content="ROB599_HW6_P1.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>ROB599_HW6_P1</h1>
+<!--introduction-->
+<p>Analyzing LQR controller of a series elastic actuator</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Clean Up</a>
+</li>
+<li>
+<a href="#2">Problem 1A: Define the State Space of the System</a>
+</li>
+<li>
+<a href="#3">Problem 1B: Solve LQR with Q = [1, 0.1, 1, 0.1] and R = 1</a>
+</li>
+<li>
+<a href="#4">Problem 1C: Solve LQR with Q = [1, 0.1, 1, 0.1] and R = 0.1</a>
+</li>
+<li>
+<a href="#5">Problem 1D: Solve LQR with Q = [5, 0.1, 5, 0.1] and R = 0.1</a>
+</li>
+<li>
+<a href="#6">Problem 1E: Simulate the System with LQR Controller for 1B, 1C, and 1D</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Clean Up</h2>
+<pre class="codeinput">clear
+clc
+close <span class="string">all</span>
+</pre>
+<h2 id="2">Problem 1A: Define the State Space of the System</h2>
+<pre class="codeinput">
+<span class="comment">% Define System Variables</span>
+syms <span class="string">Jm</span> <span class="string">Jl</span> <span class="string">Bm</span> <span class="string">Bl</span> <span class="string">k</span>
+syms <span class="string">k1</span> <span class="string">k2</span> <span class="string">k3</span> <span class="string">k4</span>
+
+<span class="comment">% Define the Numerical Values of the System Parameters</span>
+Jm_val = 0.0097; <span class="comment">% kg*m^2</span>
+Jl_val = 0.0097; <span class="comment">% kg*m^2</span>
+Bm_val = 0.04169; <span class="comment">% Ns/m</span>
+Bl_val = 0.04169; <span class="comment">% Ns/m</span>
+k_val = 100;  <span class="comment">% Nm/rad</span>
+
+<span class="comment">% State Space Representation of the System</span>
+A = [0,     1,     0,       0;
+    -k/Jl, -Bl/Jl, k/Jl,    0;
+    0,      0,      0,      1;
+    k/Jm,   0,      -k/Jm,  -Bm/Jm];
+
+B = [0; 0; 0; 1/Jm];
+
+K_m = [k1, k2, k3, k4];
+
+As_cl = collect(A - B*K_m, Jm)
+
+<span class="comment">% Substitude numerical values for the system parameters</span>
+A_val = eval(subs(A, [Jm, Jl, Bm, Bl, k], [Jm_val, Jl_val, Bm_val, Bl_val, k_val]));
+B_val = eval(subs(B, [Jm, Jl, Bm, Bl, k], [Jm_val, Jl_val, Bm_val, Bl_val, k_val]));
+</pre>
+<pre class="codeoutput"> 
+As_cl =
+ 
+[          0,        1,             0,              0]
+[      -k/Jl,   -Bl/Jl,          k/Jl,              0]
+[          0,        0,             0,              1]
+[(k - k1)/Jm, (-k2)/Jm, (- k - k3)/Jm, (- Bm - k4)/Jm]
+ 
+</pre>
+<h2 id="3">Problem 1B: Solve LQR with Q = [1, 0.1, 1, 0.1] and R = 1</h2>
+<pre class="codeinput">
+<span class="comment">% Define Weighting Matrices</span>
+Q_b = diag([1, 0.1, 1, 0.1]);
+R_b = 1;
+
+<span class="comment">% Solve for the LQR controller</span>
+[K_b, S_b, e_b] = lqr(A_val, B_val, Q_b, R_b);
+
+<span class="comment">% Display the LQR controller</span>
+K_b
+</pre>
+<pre class="codeoutput">
+K_b =
+
+   -3.2737    0.0307    4.6879    0.3973
+
+</pre>
+<h2 id="4">Problem 1C: Solve LQR with Q = [1, 0.1, 1, 0.1] and R = 0.1</h2>
+<pre class="codeinput">
+<span class="comment">% Define Weighting Matrices</span>
+Q_c = diag([1, 0.1, 1, 0.1]);
+R_c = 0.1;
+
+<span class="comment">% Solve for the LQR controller</span>
+[K_c, S_c, e_c] = lqr(A_val, B_val, Q_c, R_c);
+
+<span class="comment">% Display the LQR controller</span>
+K_c
+</pre>
+<pre class="codeoutput">
+K_c =
+
+  -36.5581    0.0901   41.0302    1.2991
+
+</pre>
+<h2 id="5">Problem 1D: Solve LQR with Q = [5, 0.1, 5, 0.1] and R = 0.1</h2>
+<pre class="codeinput">
+<span class="comment">% Define Weighting Matrices</span>
+Q_d = diag([5, 0.1, 5, 0.1]);
+R_d = 0.1;
+
+<span class="comment">% Solve for the LQR controller</span>
+[K_d, S_d, e_d] = lqr(A_val, B_val, Q_d, R_d);
+
+<span class="comment">% Display the LQR controller</span>
+K_d
+</pre>
+<pre class="codeoutput">
+K_d =
+
+  -36.0517    0.1392   46.0517    1.3350
+
+</pre>
+<h2 id="6">Problem 1E: Simulate the System with LQR Controller for 1B, 1C, and 1D</h2>
+<pre class="codeinput">
+<span class="comment">% Define Simulation Parameters</span>
+x0 = [pi/2; 0; pi/2; 0];
+tspan = [0 5];
+
+<span class="comment">% Define the Closed Loop Systems for all cases</span>
+A_cl_b = A_val - B_val*K_b;
+A_cl_c = A_val - B_val*K_c;
+A_cl_d = A_val - B_val*K_d;
+
+<span class="comment">% Simulate all systems</span>
+[t_b, x_b] = ode45(@(t, x) A_cl_b*x, tspan, x0);
+[t_c, x_c] = ode45(@(t, x) A_cl_c*x, tspan, x0);
+[t_d, x_d] = ode45(@(t, x) A_cl_d*x, tspan, x0);
+
+<span class="comment">% Create figures for each case</span>
+controllers = {<span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>};
+Q_values = {<span class="string">'Q = diag([1, 0.1, 1, 0.1])'</span>, <span class="string">'Q = diag([1, 0.1, 1, 0.1])'</span>, <span class="string">'Q = diag([5, 0.1, 5, 0.1])'</span>};
+R_values = {<span class="string">'R = 1'</span>, <span class="string">'R = 0.1'</span>, <span class="string">'R = 0.1'</span>};
+t_data = {t_b, t_c, t_d};
+x_data = {x_b, x_c, x_d};
+K_data = {K_b, K_c, K_d};
+
+<span class="keyword">for</span> i = 1:length(controllers)
+    <span class="comment">% Create figure with specific size</span>
+    fig = figure(<span class="string">'Position'</span>, [100, 100, 1900, 1400]);
+    set(fig, <span class="string">'Color'</span>, <span class="string">'white'</span>);
+
+    <span class="comment">% Plot the state variables</span>
+    subplot(3, 1, 1)
+    plot(t_data{i}, x_data{i}(:, 1), <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, [0 0.4470 0.7410])
+    hold <span class="string">on</span>
+    plot(t_data{i}, x_data{i}(:, 3), <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, [0.8500 0.3250 0.0980])
+    xlabel(<span class="string">'Time [s]'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 14, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>)
+    ylabel(<span class="string">'Position [rad]'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 14, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>)
+    legend({<span class="string">'$\theta_m$'</span>, <span class="string">'$\theta_l$'</span>}, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 14, <span class="string">'Location'</span>, <span class="string">'best'</span>)
+    title(<span class="string">'Motor and Load Positions'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 16, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>)
+    grid <span class="string">on</span>
+    grid <span class="string">minor</span>
+    box <span class="string">on</span>
+
+    <span class="comment">% Plot the state velocities</span>
+    subplot(3, 1, 2)
+    plot(t_data{i}, x_data{i}(:, 2), <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, [0 0.4470 0.7410])
+    hold <span class="string">on</span>
+    plot(t_data{i}, x_data{i}(:, 4), <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, [0.8500 0.3250 0.0980])
+    xlabel(<span class="string">'Time [s]'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 14)
+    ylabel(<span class="string">'Velocity [rad/s]'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 14, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>)
+    legend({<span class="string">'$\dot{\theta}_m$'</span>, <span class="string">'$\dot{\theta}_l$'</span>}, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 14, <span class="string">'Location'</span>, <span class="string">'best'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>)
+    title(<span class="string">'Motor and Load Velocities'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 16, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>)
+    grid <span class="string">on</span>
+    grid <span class="string">minor</span>
+    box <span class="string">on</span>
+
+    <span class="comment">% Plot the control input</span>
+    subplot(3, 1, 3)
+    plot(t_data{i}, -K_data{i}*x_data{i}', <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, [0.4940 0.1840 0.5560])
+    xlabel(<span class="string">'Time [s]'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 14, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>)
+    ylabel(<span class="string">'Control Input [Nm]'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 14, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>)
+    title(<span class="string">'Control Input'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 16, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>)
+    grid <span class="string">on</span>
+    grid <span class="string">minor</span>
+    box <span class="string">on</span>
+
+    <span class="comment">% Adjust overall figure appearance with Q and R information</span>
+    sgtitle({[<span class="string">'Figure '</span> num2str(i) <span class="string">'. LQR Controller Simulation - Case '</span> upper(controllers{i})], <span class="keyword">...</span>
+        [Q_values{i} <span class="string">', '</span> R_values{i}]}, <span class="keyword">...</span>
+        <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 30, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>)
+
+    <span class="comment">% Save the plot with high resolution</span>
+    saveas(gcf, [<span class="string">'Figure'</span> num2str(i) <span class="string">'_LQR_Controller_Simulation_Case1'</span> upper(controllers{i}) <span class="string">'.png'</span>])
+<span class="keyword">end</span>
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW6_P1_01.png" alt=""> <img vspace="5" hspace="5" src="ROB599_HW6_P1_02.png" alt=""> <img vspace="5" hspace="5" src="ROB599_HW6_P1_03.png" alt=""> <p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% ROB599_HW6_P1
+% Analyzing LQR controller of a series elastic actuator
+
+%% Clean Up
+clear
+clc
+close all
+
+%% Problem 1A: Define the State Space of the System
+
+% Define System Variables
+syms Jm Jl Bm Bl k
+syms k1 k2 k3 k4
+
+% Define the Numerical Values of the System Parameters
+Jm_val = 0.0097; % kg*m^2
+Jl_val = 0.0097; % kg*m^2
+Bm_val = 0.04169; % Ns/m
+Bl_val = 0.04169; % Ns/m
+k_val = 100;  % Nm/rad
+
+% State Space Representation of the System
+A = [0,     1,     0,       0;
+    -k/Jl, -Bl/Jl, k/Jl,    0;
+    0,      0,      0,      1;
+    k/Jm,   0,      -k/Jm,  -Bm/Jm];
+
+B = [0; 0; 0; 1/Jm];
+
+K_m = [k1, k2, k3, k4];
+
+As_cl = collect(A - B*K_m, Jm)
+
+% Substitude numerical values for the system parameters
+A_val = eval(subs(A, [Jm, Jl, Bm, Bl, k], [Jm_val, Jl_val, Bm_val, Bl_val, k_val]));
+B_val = eval(subs(B, [Jm, Jl, Bm, Bl, k], [Jm_val, Jl_val, Bm_val, Bl_val, k_val]));
+
+%% Problem 1B: Solve LQR with Q = [1, 0.1, 1, 0.1] and R = 1
+
+% Define Weighting Matrices
+Q_b = diag([1, 0.1, 1, 0.1]);
+R_b = 1;
+
+% Solve for the LQR controller
+[K_b, S_b, e_b] = lqr(A_val, B_val, Q_b, R_b);
+
+% Display the LQR controller
+K_b
+
+%% Problem 1C: Solve LQR with Q = [1, 0.1, 1, 0.1] and R = 0.1
+
+% Define Weighting Matrices
+Q_c = diag([1, 0.1, 1, 0.1]);
+R_c = 0.1;
+
+% Solve for the LQR controller
+[K_c, S_c, e_c] = lqr(A_val, B_val, Q_c, R_c);
+
+% Display the LQR controller
+K_c
+
+%% Problem 1D: Solve LQR with Q = [5, 0.1, 5, 0.1] and R = 0.1
+
+% Define Weighting Matrices
+Q_d = diag([5, 0.1, 5, 0.1]);
+R_d = 0.1;
+
+% Solve for the LQR controller
+[K_d, S_d, e_d] = lqr(A_val, B_val, Q_d, R_d);
+
+% Display the LQR controller
+K_d
+
+%% Problem 1E: Simulate the System with LQR Controller for 1B, 1C, and 1D
+
+% Define Simulation Parameters
+x0 = [pi/2; 0; pi/2; 0];
+tspan = [0 5];
+
+% Define the Closed Loop Systems for all cases
+A_cl_b = A_val - B_val*K_b;
+A_cl_c = A_val - B_val*K_c;
+A_cl_d = A_val - B_val*K_d;
+
+% Simulate all systems
+[t_b, x_b] = ode45(@(t, x) A_cl_b*x, tspan, x0);
+[t_c, x_c] = ode45(@(t, x) A_cl_c*x, tspan, x0);
+[t_d, x_d] = ode45(@(t, x) A_cl_d*x, tspan, x0);
+
+% Create figures for each case
+controllers = {'b', 'c', 'd'};
+Q_values = {'Q = diag([1, 0.1, 1, 0.1])', 'Q = diag([1, 0.1, 1, 0.1])', 'Q = diag([5, 0.1, 5, 0.1])'};
+R_values = {'R = 1', 'R = 0.1', 'R = 0.1'};
+t_data = {t_b, t_c, t_d};
+x_data = {x_b, x_c, x_d};
+K_data = {K_b, K_c, K_d};
+
+for i = 1:length(controllers)
+    % Create figure with specific size
+    fig = figure('Position', [100, 100, 1900, 1400]);
+    set(fig, 'Color', 'white');
+    
+    % Plot the state variables
+    subplot(3, 1, 1)
+    plot(t_data{i}, x_data{i}(:, 1), 'LineWidth', 3, 'Color', [0 0.4470 0.7410])
+    hold on
+    plot(t_data{i}, x_data{i}(:, 3), 'LineWidth', 3, 'Color', [0.8500 0.3250 0.0980])
+    xlabel('Time [s]', 'Interpreter', 'latex', 'FontSize', 14, 'FontWeight', 'bold')
+    ylabel('Position [rad]', 'Interpreter', 'latex', 'FontSize', 14, 'FontWeight', 'bold')
+    legend({'$\theta_m$', '$\theta_l$'}, 'Interpreter', 'latex', 'FontSize', 14, 'Location', 'best')
+    title('Motor and Load Positions', 'Interpreter', 'latex', 'FontSize', 16, 'FontWeight', 'bold')
+    grid on
+    grid minor
+    box on
+    
+    % Plot the state velocities
+    subplot(3, 1, 2)
+    plot(t_data{i}, x_data{i}(:, 2), 'LineWidth', 3, 'Color', [0 0.4470 0.7410])
+    hold on
+    plot(t_data{i}, x_data{i}(:, 4), 'LineWidth', 3, 'Color', [0.8500 0.3250 0.0980])
+    xlabel('Time [s]', 'Interpreter', 'latex', 'FontSize', 14)
+    ylabel('Velocity [rad/s]', 'Interpreter', 'latex', 'FontSize', 14, 'FontWeight', 'bold')
+    legend({'$\dot{\theta}_m$', '$\dot{\theta}_l$'}, 'Interpreter', 'latex', 'FontSize', 14, 'Location', 'best', 'FontWeight', 'bold')
+    title('Motor and Load Velocities', 'Interpreter', 'latex', 'FontSize', 16, 'FontWeight', 'bold')
+    grid on
+    grid minor
+    box on
+    
+    % Plot the control input
+    subplot(3, 1, 3)
+    plot(t_data{i}, -K_data{i}*x_data{i}', 'LineWidth', 3, 'Color', [0.4940 0.1840 0.5560])
+    xlabel('Time [s]', 'Interpreter', 'latex', 'FontSize', 14, 'FontWeight', 'bold')
+    ylabel('Control Input [Nm]', 'Interpreter', 'latex', 'FontSize', 14, 'FontWeight', 'bold')
+    title('Control Input', 'Interpreter', 'latex', 'FontSize', 16, 'FontWeight', 'bold')
+    grid on
+    grid minor
+    box on
+    
+    % Adjust overall figure appearance with Q and R information
+    sgtitle({['Figure ' num2str(i) '. LQR Controller Simulation - Case ' upper(controllers{i})], ...
+        [Q_values{i} ', ' R_values{i}]}, ...
+        'Interpreter', 'latex', 'FontSize', 30, 'FontWeight', 'bold')
+    
+    % Save the plot with high resolution
+    saveas(gcf, ['Figure' num2str(i) '_LQR_Controller_Simulation_Case1' upper(controllers{i}) '.png'])
+end
+
+##### SOURCE END #####
+-->
+</body>
+</html>

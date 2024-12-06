@@ -1,0 +1,671 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>ROB699_HW6_P2</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-12-06">
+<meta name="DC.source" content="ROB599_HW6_P2.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>ROB699_HW6_P2</h1>
+<!--introduction-->
+<p>Analyzing LQR controller of a spring-mass-damper system</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Clean Up</a>
+</li>
+<li>
+<a href="#2">Define the System</a>
+</li>
+<li>
+<a href="#3">Problem 2A: Simulate controller u = -Kx, K = [5, 1]</a>
+</li>
+<li>
+<a href="#4">Problem 2B: Using only the Available States for Measurement</a>
+</li>
+<li>
+<a href="#5">Problem 2C: Constructing the Observer using LQE</a>
+</li>
+<li>
+<a href="#6">Problem 2D: Repeat 2B adn 2C with added Noise</a>
+</li>
+<li>
+<a href="#7">Helper Functions</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Clean Up</h2>
+<pre class="codeinput">clear
+clc
+close <span class="string">all</span>
+</pre>
+<h2 id="2">Define the System</h2>
+<pre class="codeinput">
+<span class="comment">% Define System Variables</span>
+syms <span class="string">m</span> <span class="string">k</span> <span class="string">b</span>
+syms <span class="string">x</span> <span class="string">dx</span> <span class="string">ddx</span> <span class="string">u</span>
+
+<span class="comment">% Define the Numerical Values of the System Parameters</span>
+m_val = 1; <span class="comment">% kg</span>
+b_val = 2; <span class="comment">% Ns/m</span>
+k_val = 1; <span class="comment">% N/m</span>
+
+<span class="comment">% System Dynamics Equation</span>
+eq = m*ddx + b*dx + k*x == u;
+
+<span class="comment">% Solve for the Acceleration</span>
+ddx = solve(eq, ddx);
+ddx = collect(ddx, [x, dx, u])
+
+<span class="comment">% State Space Representation of the System</span>
+A = [0, 1; -k/m, -b/m];
+B = [0; 1/m];
+
+<span class="comment">% Substitude numerical values for the system parameters</span>
+A_val = eval(subs(A, [m, b, k], [m_val, b_val, k_val]));
+B_val = eval(subs(B, [m, b, k], [m_val, b_val, k_val]));
+<span class="comment">% dx = A_val*x + B_val*u</span>
+</pre>
+<pre class="codeoutput"> 
+ddx =
+ 
+(-k/m)*x + (-b/m)*dx + u/m
+ 
+</pre>
+<h2 id="3">Problem 2A: Simulate controller u = -Kx, K = [5, 1]</h2>
+<pre class="codeinput">
+<span class="comment">% Define System</span>
+K = [5, 1];
+A_cl = A_val - B_val*K; <span class="comment">% dx = A_val*x - B_val*K*x = (A_val - B_val*K)*x</span>
+
+<span class="comment">% Define Simulation Parameters</span>
+x_o = [1; 0]; <span class="comment">% x(0) = 1, dx(0) = 0</span>
+t_span = [0 10];
+
+<span class="comment">% Simulate the Closed Loop System</span>
+[t, x] = ode45(@(t, x) A_cl*x, t_span, x_o);
+
+<span class="comment">% Evaluate the dx(t) from the Simulation Results</span>
+dx = x * A_cl'; <span class="comment">% dx = (A_cl*x')' = x*A_cl' to match the dimensions of x</span>
+
+<span class="comment">% Plot the Simulation Results</span>
+<span class="comment">% Create figure with specific size</span>
+fig = figure(<span class="string">'Position'</span>, [100, 100, 1900, 1400]);
+
+<span class="comment">% First subplot</span>
+subplot(2, 1, 1)
+plot(t, x(:, 1), <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, <span class="string">'#0072BD'</span>)
+hold <span class="string">on</span>
+plot(t, x(:, 2), <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, <span class="string">'#D95319'</span>)
+xlabel(<span class="string">'Time [s]'</span>, <span class="string">'FontSize'</span>, 16)
+ylabel(<span class="string">'$$\displaystyle{x}$$'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 24, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>)
+title(<span class="string">'Position and Velocity'</span>, <span class="string">'FontSize'</span>, 24)
+legend(<span class="string">'$x_1$ [m]'</span>, <span class="string">'$x_2$ [m/s]'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 20, <span class="string">'Location'</span>, <span class="string">'best'</span>)
+grid <span class="string">on</span>
+grid <span class="string">minor</span>
+set(gca, <span class="string">'FontSize'</span>, 14)
+hold <span class="string">off</span>
+
+<span class="comment">% Second subplot</span>
+subplot(2, 1, 2)
+plot(t, dx(:, 1), <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, <span class="string">'#0072BD'</span>)
+hold <span class="string">on</span>
+plot(t, dx(:, 2), <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, <span class="string">'#D95319'</span>)
+xlabel(<span class="string">'Time [s]'</span>, <span class="string">'FontSize'</span>, 16)
+ylabel(<span class="string">'$$\displaystyle{\dot{x}}$$'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 24, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>)
+title(<span class="string">'Velocity and Acceleration'</span>, <span class="string">'FontSize'</span>, 24)
+legend(<span class="string">'$\dot{x}_1$ [m/s]'</span>, <span class="string">'$\dot{x}_2$ [m/s$^2$]'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 20, <span class="string">'Location'</span>, <span class="string">'best'</span>)
+grid <span class="string">on</span>
+grid <span class="string">minor</span>
+set(gca, <span class="string">'FontSize'</span>, 14)
+hold <span class="string">off</span>
+
+sgtitle(<span class="string">'Figure 4. Simulation of the Mass-Spring-Damper System $$\displaystyle{\dot{x} = Ax + Bu}$$ with Controller $$u = -Kx$$, $$K = [5, 1]$$'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 24, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>)
+saveas(fig, <span class="string">'Figure 4. Mass Spring Damper. 2A.png'</span>, <span class="string">'png'</span>)
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW6_P2_01.png" alt=""> <h2 id="4">Problem 2B: Using only the Available States for Measurement</h2>
+<pre class="codeinput">
+<span class="comment">% Define the Obser Parameters</span>
+C = [1, 0];
+L = [5, -1]';
+
+<span class="comment">% Define the System Parameters</span>
+x_a = [1; 0]; <span class="comment">% x(0) = 1, dx(0) = 0 (true initial conditions)</span>
+x_m = [1.2; 0.2]; <span class="comment">% x(0) = 1.2, dx(0) = 0.2 (measured approximations)</span>
+x_init = [x_a; x_m]; <span class="comment">% Initial State Vector</span>
+t_span = [0 10];
+
+<span class="comment">% Simulate the System</span>
+[t, x] = ode45(@(t, x) systemDynamicsWObserver(t, x, A_val, B_val, K, L, C, C*x(1:2)), t_span, x_init);
+
+<span class="comment">% Evaluate Past Derivatives</span>
+x_hat = x(:, 3:4);
+y_measured = (C*x_hat')';
+dx_hat = observerEstimate(x_hat', A_val, B_val, K, L, C, y_measured')'; <span class="comment">% transpose to match the dimensions of x</span>
+
+x_act = x(:, 1:2);
+u = -K*x_hat';
+dx_act = simulateLinearSystem(x_act', A_val, B_val, u)'; <span class="comment">% transpose to match the dimensions of x</span>
+
+<span class="comment">% Plot the Simulation Results</span>
+plotSystemStates(t, x, x_hat, dx_act, dx_hat, <span class="keyword">...</span>
+    <span class="string">'Simulation of the Mass-Spring-Damper System with L = [5 -1]T Observer'</span>, <span class="keyword">...</span>
+    5, <span class="string">'Figure 5. Mass Spring Damper. 2B.png'</span>);
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW6_P2_02.png" alt=""> <h2 id="5">Problem 2C: Constructing the Observer using LQE</h2>
+<pre class="codeinput">
+<span class="comment">% Define the Observer Parameters</span>
+G = eye(2);
+Q = diag([10^(-4), 10^(-4)]);
+R = 0.1;
+L = lqe(A_val, G, C, Q, R);
+
+<span class="comment">% Define System Parameters</span>
+x_a = [1; 0]; <span class="comment">% x(0) = 1, dx(0) = 0 (true initial conditions)</span>
+x_m = [1.2; 0.2]; <span class="comment">% x(0) = 1.2, dx(0) = 0.2 (measured approximations)</span>
+x_init = [x_a; x_m];
+t_span = [0 10];
+
+<span class="comment">% Simulate the System</span>
+[t, x] = ode45(@(t, x) systemDynamicsWObserver(t, x, A_val, B_val, K, L, C, C*x(1:2)), t_span, x_init);
+
+<span class="comment">% Evaluate Past Derivatives</span>
+x_hat = x(:, 3:4);
+y_measured = (C*x_hat')';
+dx_hat = observerEstimate(x_hat', A_val, B_val, K, L, C, y_measured')'; <span class="comment">% transpose to match the dimensions of x</span>
+
+x_act = x(:, 1:2);
+u = -K*x_hat';
+dx_act = simulateLinearSystem(x_act', A_val, B_val, u)'; <span class="comment">% transpose to match the dimensions of x</span>
+
+<span class="comment">% Plot the Simulation Results</span>
+plotSystemStates(t, x, x_hat, dx_act, dx_hat, <span class="keyword">...</span>
+    <span class="string">'Simulation of the Mass-Spring-Damper System with Optimal LQE Observer'</span>, <span class="keyword">...</span>
+    6, <span class="string">'Figure 6. Mass Spring Damper. 2C.png'</span>);
+</pre>
+<img vspace="5" hspace="5" src="ROB599_HW6_P2_03.png" alt=""> <h2 id="6">Problem 2D: Repeat 2B adn 2C with added Noise</h2>
+<pre class="codeinput">
+<span class="comment">% Define Noise Parameters</span>
+sigma = 0.1;
+mean = 0;
+
+<span class="comment">% First case: Using original observer from 2B</span>
+<span class="comment">% Define the Observer Parameters</span>
+C = [1, 0];
+L = [5, -1]';
+
+<span class="comment">% Define System Parameters</span>
+x_a = [1; 0]; <span class="comment">% x(0) = 1, dx(0) = 0 (true initial conditions)</span>
+x_m = [1.2; 0.2]; <span class="comment">% x(0) = 1.2, dx(0) = 0.2 (measured approximations)</span>
+x_init = [x_a; x_m];
+
+<span class="comment">% Define Simulation Parameters</span>
+t_span = 0:0.01:10; <span class="comment">% controlling time steps to prevent ode45 from compensating for the noise</span>
+generated_noize = sigma * randn(size(C,1), length(t_span)) + mean;
+
+<span class="comment">% Simulate the System with Noisy Measurements</span>
+[t, x] = ode45(@(t, x) systemDynamicsWObserver(t, x, A_val, B_val, K, L, C, <span class="keyword">...</span>
+    getNoisyMeasurement(t, x(1:2), C, generated_noize, t_span)), t_span, x_init);
+
+<span class="comment">% Evaluate Past Derivatives</span>
+x_hat = x(:, 3:4);
+y_measured = (C*x_hat' + generated_noize)';
+dx_hat = observerEstimate(x_hat', A_val, B_val, K, L, C, y_measured')';
+
+x_act = x(:, 1:2);
+u = -K*x_hat';
+dx_act = simulateLinearSystem(x_act', A_val, B_val, u)';
+
+<span class="comment">% Plot the Simulation Results</span>
+plotSystemStates(t, x, x_hat, dx_act, dx_hat, <span class="keyword">...</span>
+    <span class="string">'Mass-Spring-Damper System with Original Observer L = [5, -1] and Noisy Measurements'</span>, <span class="keyword">...</span>
+    7, <span class="string">'Figure 7. Mass Spring Damper. 2D Original.png'</span>);
+
+
+<span class="comment">% Second Case: Using optimal LQE observer from 2C</span>
+<span class="comment">% Define the Observer Parameters</span>
+G = eye(2);
+Q = diag([10^(-4), 10^(-4)]);
+R = 0.1;
+L = lqe(A_val, G, C, Q, R);
+
+<span class="comment">% Simulate the System with the Same System Parameters</span>
+[t, x] = ode45(@(t, x) systemDynamicsWObserver(t, x, A_val, B_val, K, L, C, <span class="keyword">...</span>
+    getNoisyMeasurement(t, x(1:2), C, generated_noize, t_span)), t_span, x_init);
+
+<span class="comment">% Evaluate Past Derivatives</span>
+x_hat = x(:, 3:4);
+y_measured = (C*x_hat' + generated_noize)';
+dx_hat = observerEstimate(x_hat', A_val, B_val, K, L, C, y_measured')';
+
+x_act = x(:, 1:2);
+u = -K*x_hat';
+dx_act = simulateLinearSystem(x_act', A_val, B_val, u)';
+
+<span class="comment">% Plot the Simulation Results</span>
+plotSystemStates(t, x, x_hat, dx_act, dx_hat, <span class="keyword">...</span>
+    <span class="string">'Mass-Spring-Damper System with Optimal LQE Observer and Noisy Measurements'</span>, <span class="keyword">...</span>
+    8, <span class="string">'Figure 8. Mass Spring Damper. 2D LQE.png'</span>);
+</pre>
+<h2 id="7">Helper Functions</h2>
+<pre class="codeinput">
+<span class="keyword">function</span> x_dot = systemDynamicsWObserver(t, x, A, B, K, L, C, y_sense)
+
+<span class="comment">% Control Input &amp; Observer Prediction (Avalible)</span>
+x_hat = x(3:4);
+u = -K*x_hat;
+x_hat_dot = observerEstimate(x_hat, A, B, K, L, C, y_sense);
+
+<span class="comment">% Compute the Actual Dynamics (Hidden Truth)</span>
+x_act = x(1:2);
+x_act_dot = simulateLinearSystem(x_act, A, B, u);
+
+<span class="comment">% Combine the Dynamics</span>
+x_dot = [x_act_dot; x_hat_dot];
+
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> plotSystemStates(t, x, x_hat, dx_act, dx_hat, figureTitle, figureNumber, saveFileName)
+<span class="comment">% Create figure with specified size</span>
+fig = figure(<span class="string">'Position'</span>, [100, 100, 1900, 1400]);
+
+<span class="comment">% Plot states</span>
+subplot(2,1,1)
+hold <span class="string">on</span>
+plot(t, x(:, 1), <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, <span class="string">'#0072BD'</span>)
+plot(t, x(:, 2), <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, <span class="string">'#D95319'</span>)
+plot(t, x_hat(:, 1), <span class="string">'--'</span>, <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, <span class="string">'#77B6E7'</span>)
+plot(t, x_hat(:, 2), <span class="string">'--'</span>, <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, <span class="string">'#FFAD7A'</span>)
+xlabel(<span class="string">'Time [s]'</span>, <span class="string">'FontSize'</span>, 16)
+ylabel(<span class="string">'$$\displaystyle{x}$$'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 24)
+title(<span class="string">'Actual and Estimated States'</span>, <span class="string">'FontSize'</span>, 24)
+legend(<span class="string">'$x_1$ actual [m]'</span>, <span class="string">'$x_2$ actual [m/s]'</span>, <span class="keyword">...</span>
+    <span class="string">'$\hat{x}_1$ estimated [m]'</span>, <span class="string">'$\hat{x}_2$ estimated [m/s]'</span>, <span class="keyword">...</span>
+    <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 20, <span class="string">'Location'</span>, <span class="string">'best'</span>)
+grid <span class="string">on</span>
+grid <span class="string">minor</span>
+set(gca, <span class="string">'FontSize'</span>, 14)
+
+<span class="comment">% Plot derivatives</span>
+subplot(2,1,2)
+hold <span class="string">on</span>
+plot(t, dx_act(:,1), <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, <span class="string">'#0072BD'</span>)
+plot(t, dx_act(:,2), <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, <span class="string">'#D95319'</span>)
+plot(t, dx_hat(:,1), <span class="string">'--'</span>, <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, <span class="string">'#77B6E7'</span>)
+plot(t, dx_hat(:,2), <span class="string">'--'</span>, <span class="string">'LineWidth'</span>, 3, <span class="string">'Color'</span>, <span class="string">'#FFAD7A'</span>)
+xlabel(<span class="string">'Time [s]'</span>, <span class="string">'FontSize'</span>, 16)
+ylabel(<span class="string">'$$\displaystyle{\dot{x}}$$'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 24)
+title(<span class="string">'Actual and Estimated State Derivatives'</span>, <span class="string">'FontSize'</span>, 24)
+legend(<span class="string">'$\dot{x}_1$ actual [m/s]'</span>, <span class="string">'$\dot{x}_2$ actual [m/s$^2$]'</span>, <span class="keyword">...</span>
+    <span class="string">'$\dot{\hat{x}}_1$ estimated [m/s]'</span>, <span class="string">'$\dot{\hat{x}}_2$ estimated [m/s$^2$]'</span>, <span class="keyword">...</span>
+    <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 20, <span class="string">'Location'</span>, <span class="string">'best'</span>)
+grid <span class="string">on</span>
+grid <span class="string">minor</span>
+set(gca, <span class="string">'FontSize'</span>, 14)
+
+<span class="comment">% Set overall title</span>
+sgtitle(sprintf(<span class="string">'Figure %d. %s'</span>, figureNumber, figureTitle), <span class="keyword">...</span>
+    <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>, <span class="string">'FontSize'</span>, 24, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>)
+
+<span class="comment">% Save figure</span>
+saveas(fig, saveFileName, <span class="string">'png'</span>)
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% ROB699_HW6_P2
+% Analyzing LQR controller of a spring-mass-damper system
+
+%% Clean Up
+clear
+clc
+close all
+
+%% Define the System
+
+% Define System Variables
+syms m k b
+syms x dx ddx u
+
+% Define the Numerical Values of the System Parameters
+m_val = 1; % kg
+b_val = 2; % Ns/m
+k_val = 1; % N/m
+
+% System Dynamics Equation
+eq = m*ddx + b*dx + k*x == u;
+
+% Solve for the Acceleration
+ddx = solve(eq, ddx);
+ddx = collect(ddx, [x, dx, u])
+
+% State Space Representation of the System
+A = [0, 1; -k/m, -b/m];
+B = [0; 1/m];
+
+% Substitude numerical values for the system parameters
+A_val = eval(subs(A, [m, b, k], [m_val, b_val, k_val]));
+B_val = eval(subs(B, [m, b, k], [m_val, b_val, k_val]));
+% dx = A_val*x + B_val*u
+
+%% Problem 2A: Simulate controller u = -Kx, K = [5, 1]
+
+% Define System
+K = [5, 1];
+A_cl = A_val - B_val*K; % dx = A_val*x - B_val*K*x = (A_val - B_val*K)*x
+
+% Define Simulation Parameters
+x_o = [1; 0]; % x(0) = 1, dx(0) = 0
+t_span = [0 10];
+
+% Simulate the Closed Loop System
+[t, x] = ode45(@(t, x) A_cl*x, t_span, x_o);
+
+% Evaluate the dx(t) from the Simulation Results
+dx = x * A_cl'; % dx = (A_cl*x')' = x*A_cl' to match the dimensions of x
+
+% Plot the Simulation Results
+% Create figure with specific size
+fig = figure('Position', [100, 100, 1900, 1400]);
+
+% First subplot
+subplot(2, 1, 1)
+plot(t, x(:, 1), 'LineWidth', 3, 'Color', '#0072BD')
+hold on
+plot(t, x(:, 2), 'LineWidth', 3, 'Color', '#D95319')
+xlabel('Time [s]', 'FontSize', 16)
+ylabel('$$\displaystyle{x}$$', 'Interpreter', 'latex', 'FontSize', 24, 'FontWeight', 'bold')
+title('Position and Velocity', 'FontSize', 24)
+legend('$x_1$ [m]', '$x_2$ [m/s]', 'Interpreter', 'latex', 'FontSize', 20, 'Location', 'best')
+grid on
+grid minor
+set(gca, 'FontSize', 14)
+hold off
+
+% Second subplot
+subplot(2, 1, 2)
+plot(t, dx(:, 1), 'LineWidth', 3, 'Color', '#0072BD')
+hold on
+plot(t, dx(:, 2), 'LineWidth', 3, 'Color', '#D95319')
+xlabel('Time [s]', 'FontSize', 16)
+ylabel('$$\displaystyle{\dot{x}}$$', 'Interpreter', 'latex', 'FontSize', 24, 'FontWeight', 'bold')
+title('Velocity and Acceleration', 'FontSize', 24)
+legend('$\dot{x}_1$ [m/s]', '$\dot{x}_2$ [m/s$^2$]', 'Interpreter', 'latex', 'FontSize', 20, 'Location', 'best')
+grid on
+grid minor
+set(gca, 'FontSize', 14)
+hold off
+
+sgtitle('Figure 4. Simulation of the Mass-Spring-Damper System $$\displaystyle{\dot{x} = Ax + Bu}$$ with Controller $$u = -Kx$$, $$K = [5, 1]$$', 'Interpreter', 'latex', 'FontSize', 24, 'FontWeight', 'bold')
+saveas(fig, 'Figure 4. Mass Spring Damper. 2A.png', 'png')
+
+%% Problem 2B: Using only the Available States for Measurement
+
+% Define the Obser Parameters
+C = [1, 0];
+L = [5, -1]';
+
+% Define the System Parameters
+x_a = [1; 0]; % x(0) = 1, dx(0) = 0 (true initial conditions)
+x_m = [1.2; 0.2]; % x(0) = 1.2, dx(0) = 0.2 (measured approximations)
+x_init = [x_a; x_m]; % Initial State Vector
+t_span = [0 10];
+
+% Simulate the System
+[t, x] = ode45(@(t, x) systemDynamicsWObserver(t, x, A_val, B_val, K, L, C, C*x(1:2)), t_span, x_init);
+
+% Evaluate Past Derivatives
+x_hat = x(:, 3:4);
+y_measured = (C*x_hat')';
+dx_hat = observerEstimate(x_hat', A_val, B_val, K, L, C, y_measured')'; % transpose to match the dimensions of x
+
+x_act = x(:, 1:2);
+u = -K*x_hat';
+dx_act = simulateLinearSystem(x_act', A_val, B_val, u)'; % transpose to match the dimensions of x
+
+% Plot the Simulation Results
+plotSystemStates(t, x, x_hat, dx_act, dx_hat, ...
+    'Simulation of the Mass-Spring-Damper System with L = [5 -1]T Observer', ...
+    5, 'Figure 5. Mass Spring Damper. 2B.png');
+
+
+%% Problem 2C: Constructing the Observer using LQE
+
+% Define the Observer Parameters
+G = eye(2);
+Q = diag([10^(-4), 10^(-4)]);
+R = 0.1;
+L = lqe(A_val, G, C, Q, R);
+
+% Define System Parameters
+x_a = [1; 0]; % x(0) = 1, dx(0) = 0 (true initial conditions)
+x_m = [1.2; 0.2]; % x(0) = 1.2, dx(0) = 0.2 (measured approximations)
+x_init = [x_a; x_m];
+t_span = [0 10];
+
+% Simulate the System
+[t, x] = ode45(@(t, x) systemDynamicsWObserver(t, x, A_val, B_val, K, L, C, C*x(1:2)), t_span, x_init);
+
+% Evaluate Past Derivatives
+x_hat = x(:, 3:4);
+y_measured = (C*x_hat')';
+dx_hat = observerEstimate(x_hat', A_val, B_val, K, L, C, y_measured')'; % transpose to match the dimensions of x
+
+x_act = x(:, 1:2);
+u = -K*x_hat';
+dx_act = simulateLinearSystem(x_act', A_val, B_val, u)'; % transpose to match the dimensions of x
+
+% Plot the Simulation Results
+plotSystemStates(t, x, x_hat, dx_act, dx_hat, ...
+    'Simulation of the Mass-Spring-Damper System with Optimal LQE Observer', ...
+    6, 'Figure 6. Mass Spring Damper. 2C.png');
+
+%% Problem 2D: Repeat 2B adn 2C with added Noise
+
+% Define Noise Parameters
+sigma = 0.1;
+mean = 0;
+
+% First case: Using original observer from 2B
+% Define the Observer Parameters
+C = [1, 0];
+L = [5, -1]';
+
+% Define System Parameters
+x_a = [1; 0]; % x(0) = 1, dx(0) = 0 (true initial conditions)
+x_m = [1.2; 0.2]; % x(0) = 1.2, dx(0) = 0.2 (measured approximations)
+x_init = [x_a; x_m];
+
+% Define Simulation Parameters
+t_span = 0:0.01:10; % controlling time steps to prevent ode45 from compensating for the noise
+generated_noize = sigma * randn(size(C,1), length(t_span)) + mean;
+
+% Simulate the System with Noisy Measurements
+[t, x] = ode45(@(t, x) systemDynamicsWObserver(t, x, A_val, B_val, K, L, C, ...
+    getNoisyMeasurement(t, x(1:2), C, generated_noize, t_span)), t_span, x_init);
+
+% Evaluate Past Derivatives
+x_hat = x(:, 3:4);
+y_measured = (C*x_hat' + generated_noize)';
+dx_hat = observerEstimate(x_hat', A_val, B_val, K, L, C, y_measured')';
+
+x_act = x(:, 1:2);
+u = -K*x_hat';
+dx_act = simulateLinearSystem(x_act', A_val, B_val, u)';
+
+% Plot the Simulation Results
+plotSystemStates(t, x, x_hat, dx_act, dx_hat, ...
+    'Mass-Spring-Damper System with Original Observer L = [5, -1] and Noisy Measurements', ...
+    7, 'Figure 7. Mass Spring Damper. 2D Original.png');
+
+
+% Second Case: Using optimal LQE observer from 2C
+% Define the Observer Parameters
+G = eye(2);
+Q = diag([10^(-4), 10^(-4)]);
+R = 0.1;
+L = lqe(A_val, G, C, Q, R);
+
+% Simulate the System with the Same System Parameters
+[t, x] = ode45(@(t, x) systemDynamicsWObserver(t, x, A_val, B_val, K, L, C, ...
+    getNoisyMeasurement(t, x(1:2), C, generated_noize, t_span)), t_span, x_init);
+
+% Evaluate Past Derivatives
+x_hat = x(:, 3:4);
+y_measured = (C*x_hat' + generated_noize)';
+dx_hat = observerEstimate(x_hat', A_val, B_val, K, L, C, y_measured')';
+
+x_act = x(:, 1:2);
+u = -K*x_hat';
+dx_act = simulateLinearSystem(x_act', A_val, B_val, u)';
+
+% Plot the Simulation Results
+plotSystemStates(t, x, x_hat, dx_act, dx_hat, ...
+    'Mass-Spring-Damper System with Optimal LQE Observer and Noisy Measurements', ...
+    8, 'Figure 8. Mass Spring Damper. 2D LQE.png');
+
+%% Helper Functions
+
+function x_dot = systemDynamicsWObserver(t, x, A, B, K, L, C, y_sense)
+
+% Control Input & Observer Prediction (Avalible)
+x_hat = x(3:4);
+u = -K*x_hat;
+x_hat_dot = observerEstimate(x_hat, A, B, K, L, C, y_sense);
+
+% Compute the Actual Dynamics (Hidden Truth)
+x_act = x(1:2);
+x_act_dot = simulateLinearSystem(x_act, A, B, u);
+
+% Combine the Dynamics
+x_dot = [x_act_dot; x_hat_dot];
+
+end
+
+function plotSystemStates(t, x, x_hat, dx_act, dx_hat, figureTitle, figureNumber, saveFileName)
+% Create figure with specified size
+fig = figure('Position', [100, 100, 1900, 1400]);
+
+% Plot states
+subplot(2,1,1)
+hold on
+plot(t, x(:, 1), 'LineWidth', 3, 'Color', '#0072BD')
+plot(t, x(:, 2), 'LineWidth', 3, 'Color', '#D95319')
+plot(t, x_hat(:, 1), 'REPLACE_WITH_DASH_DASH', 'LineWidth', 3, 'Color', '#77B6E7')
+plot(t, x_hat(:, 2), 'REPLACE_WITH_DASH_DASH', 'LineWidth', 3, 'Color', '#FFAD7A')
+xlabel('Time [s]', 'FontSize', 16)
+ylabel('$$\displaystyle{x}$$', 'Interpreter', 'latex', 'FontSize', 24)
+title('Actual and Estimated States', 'FontSize', 24)
+legend('$x_1$ actual [m]', '$x_2$ actual [m/s]', ...
+    '$\hat{x}_1$ estimated [m]', '$\hat{x}_2$ estimated [m/s]', ...
+    'Interpreter', 'latex', 'FontSize', 20, 'Location', 'best')
+grid on
+grid minor
+set(gca, 'FontSize', 14)
+
+% Plot derivatives
+subplot(2,1,2)
+hold on
+plot(t, dx_act(:,1), 'LineWidth', 3, 'Color', '#0072BD')
+plot(t, dx_act(:,2), 'LineWidth', 3, 'Color', '#D95319')
+plot(t, dx_hat(:,1), 'REPLACE_WITH_DASH_DASH', 'LineWidth', 3, 'Color', '#77B6E7')
+plot(t, dx_hat(:,2), 'REPLACE_WITH_DASH_DASH', 'LineWidth', 3, 'Color', '#FFAD7A')
+xlabel('Time [s]', 'FontSize', 16)
+ylabel('$$\displaystyle{\dot{x}}$$', 'Interpreter', 'latex', 'FontSize', 24)
+title('Actual and Estimated State Derivatives', 'FontSize', 24)
+legend('$\dot{x}_1$ actual [m/s]', '$\dot{x}_2$ actual [m/s$^2$]', ...
+    '$\dot{\hat{x}}_1$ estimated [m/s]', '$\dot{\hat{x}}_2$ estimated [m/s$^2$]', ...
+    'Interpreter', 'latex', 'FontSize', 20, 'Location', 'best')
+grid on
+grid minor
+set(gca, 'FontSize', 14)
+
+% Set overall title
+sgtitle(sprintf('Figure %d. %s', figureNumber, figureTitle), ...
+    'Interpreter', 'latex', 'FontSize', 24, 'FontWeight', 'bold')
+
+% Save figure
+saveas(fig, saveFileName, 'png')
+end
+##### SOURCE END #####
+-->
+</body>
+</html>
